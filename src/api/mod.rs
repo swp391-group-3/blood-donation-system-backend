@@ -1,4 +1,4 @@
-use std::{net::SocketAddr, sync::Arc};
+use std::net::SocketAddr;
 
 use anyhow::Result;
 use axum::Router;
@@ -33,7 +33,7 @@ pub async fn run() -> Result<()> {
 }
 
 #[cfg(test)]
-fn build_test_app() -> TestServer {
+fn build_test_server() -> TestServer {
     let app = build_app();
     TestServer::builder()
         .save_cookies()
