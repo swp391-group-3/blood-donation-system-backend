@@ -1,7 +1,16 @@
 use std::net::SocketAddr;
 
 use anyhow::Result;
-use axum::Router;
+use axum::{
+    Router,
+    http::{
+        HeaderName, Method,
+        header::{
+            ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_METHODS,
+            ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION, CONTENT_TYPE, ORIGIN,
+        },
+    },
+};
 #[cfg(test)]
 use axum_test::TestServer;
 use state::ApiState;
@@ -12,6 +21,23 @@ use crate::config::CONFIG;
 mod controller;
 mod doc;
 mod state;
+
+const ALLOW_HEADERS: [HeaderName; 7] = [
+    ORIGIN,
+    AUTHORIZATION,
+    ACCESS_CONTROL_ALLOW_ORIGIN,
+    CONTENT_TYPE,
+    ACCEPT,
+    ACCESS_CONTROL_ALLOW_METHODS,
+    ACCESS_CONTROL_ALLOW_HEADERS,
+];
+const ALLOW_METHODS: [Method; 5] = [
+    Method::GET,
+    Method::POST,
+    Method::DELETE,
+    Method::PATCH,
+    Method::PUT,
+];
 
 fn build_app() -> Router {
     let state = ApiState::new();
