@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use axum::Router;
 use utoipa::{
     Modify, OpenApi,
@@ -5,7 +7,7 @@ use utoipa::{
 };
 use utoipa_swagger_ui::SwaggerUi;
 
-use super::controller;
+use super::{controller, state::ApiState};
 
 struct SecurityAddon;
 
@@ -32,6 +34,8 @@ impl Modify for SecurityAddon {
 )]
 struct ApiDoc;
 
-pub fn build() -> Router {
-    SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi())
+pub fn build() -> Router<Arc<ApiState>> {
+    SwaggerUi::new("/swagger-ui")
+        .url("/api-docs/openapi.json", ApiDoc::openapi())
+        .into()
 }
