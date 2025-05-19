@@ -13,3 +13,6 @@ tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["fmt", "chrono", "env-filter"] }
 utoipa = { git = "https://github.com/juhaku/utoipa.git", features = ["chrono", "uuid"] }
 utoipa-swagger-ui = { git = "https://github.com/juhaku/utoipa.git", features = ["axum"]  }
+
+[dev-dependencies]
+axum-test = "17.3.0"

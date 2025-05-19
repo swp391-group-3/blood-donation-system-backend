@@ -1,7 +1,9 @@
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 
 use anyhow::Result;
 use axum::Router;
+#[cfg(test)]
+use axum_test::TestServer;
 use state::ApiState;
 use tokio::net::TcpListener;
 
@@ -11,17 +13,32 @@ mod controller;
 mod doc;
 mod state;
 
-pub async fn run() -> Result<()> {
+fn build_app() -> Router {
     let state = ApiState::new();
 
-    let router: Router = Router::new()
+    Router::new()
         .merge(controller::build())
         .merge(doc::build())
-        .with_state(state);
+        .with_state(state)
+}
+
+pub async fn run() -> Result<()> {
+    let app = build_app();
 
     let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
 
-    axum::serve(listener, router)
+    axum::serve(listener, app)
         .await
         .map_err(anyhow::Error::from)
+}
+
+#[cfg(test)]
+fn build_test_app() -> TestServer {
+    let app = build_app();
+    TestServer::builder()
+        .save_cookies()
+        .expect_success_by_default()
+        .mock_transport()
+        .build(app)
+        .unwrap()
 }
