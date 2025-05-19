@@ -7,7 +7,7 @@ const fn default_port() -> u16 {
 }
 
 fn default_cors_domain() -> String {
-    "http://localhost:3000".to_string()
+    "http://localhost:5173".to_string()
 }
 
 #[derive(Deserialize)]

@@ -15,7 +15,7 @@ use axum::{
 use axum_test::TestServer;
 use state::ApiState;
 use tokio::net::TcpListener;
-use tower_http::cors::CorsLayer;
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
 
 use crate::config::CONFIG;
 
@@ -54,6 +54,7 @@ fn build_app() -> Router {
     Router::new()
         .merge(controller::build())
         .merge(doc::build())
+        .layer(TraceLayer::new_for_http())
         .layer(cors_layer)
         .with_state(state)
 }
