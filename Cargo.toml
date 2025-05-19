@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+axum = { version = "0.8.4", features = ["macros"] }
 config = { version = "0.15.11", default-features = false }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.45.0", features = ["full"] }
