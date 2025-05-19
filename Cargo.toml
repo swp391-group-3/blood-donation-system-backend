@@ -10,6 +10,7 @@ axum-extra = { version = "0.10.1", features = ["typed-header", "cookie"] }
 config = { version = "0.15.11", default-features = false }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.45.0", features = ["full"] }
+tower-http = { version = "0.6.4", features = ["cors", "trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["fmt", "chrono", "env-filter"] }
 utoipa = { git = "https://github.com/juhaku/utoipa.git", features = ["chrono", "uuid"] }

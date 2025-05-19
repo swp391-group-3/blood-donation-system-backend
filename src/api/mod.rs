@@ -4,7 +4,7 @@ use anyhow::Result;
 use axum::{
     Router,
     http::{
-        HeaderName, Method,
+        HeaderName, HeaderValue, Method,
         header::{
             ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_METHODS,
             ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION, CONTENT_TYPE, ORIGIN,
@@ -15,6 +15,7 @@ use axum::{
 use axum_test::TestServer;
 use state::ApiState;
 use tokio::net::TcpListener;
+use tower_http::cors::CorsLayer;
 
 use crate::config::CONFIG;
 
@@ -40,11 +41,20 @@ const ALLOW_METHODS: [Method; 5] = [
 ];
 
 fn build_app() -> Router {
+    let allow_origins = [CONFIG.cors_domain.parse::<HeaderValue>().unwrap()];
+    let cors_layer = CorsLayer::new()
+        .allow_origin(allow_origins)
+        .allow_headers(ALLOW_HEADERS)
+        .expose_headers(ALLOW_HEADERS)
+        .allow_credentials(true)
+        .allow_methods(ALLOW_METHODS);
+
     let state = ApiState::new();
 
     Router::new()
         .merge(controller::build())
         .merge(doc::build())
+        .layer(cors_layer)
         .with_state(state)
 }
 
