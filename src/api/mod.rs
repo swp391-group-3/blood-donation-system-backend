@@ -64,6 +64,8 @@ pub async fn run() -> Result<()> {
 
     let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
 
+    tracing::info!("Listening on port {}", CONFIG.port);
+
     axum::serve(listener, app)
         .await
         .map_err(anyhow::Error::from)
