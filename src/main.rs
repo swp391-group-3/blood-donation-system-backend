@@ -1,3 +1,5 @@
+mod config;
+
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::{
     EnvFilter, fmt::time::ChronoLocal, layer::SubscriberExt, util::SubscriberInitExt,
