@@ -1,13 +1,14 @@
-mod config;
 mod api;
+mod config;
 
+use anyhow::Result;
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::{
     EnvFilter, fmt::time::ChronoLocal, layer::SubscriberExt, util::SubscriberInitExt,
 };
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::fmt::layer()
@@ -21,5 +22,5 @@ async fn main() {
         )
         .init();
 
-    println!("Hello, world!");
+    api::run().await
 }
