@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS blood_components(
     name varchar(32) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS blood_storages(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(32) UNIQUE NOT NULL,
+    blood_id uuid REFERENCES bloods(id),
+    component_id uuid REFERENCES blood_components(id),
+    amount int NOT NULL DEFAULT 0
+);
+
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     role int NOT NULL,
