@@ -74,3 +74,11 @@ CREATE TABLE IF NOT EXISTS health_histories(
     note text NOT NULL,
     created_at timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS donation_appointments(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    account_id uuid NOT NULL REFERENCES accounts(id),
+    time timestamp NOT NULL,
+    status int NOT NULL DEFAULT 0,
+    created_at timestamp NOT NULL DEFAULT now()
+);
