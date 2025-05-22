@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     role int NOT NULL,
     email varchar(128) UNIQUE NOT NULL,
     phone varchar(16) UNIQUE NOT NULL,
+    name varchar(64) NOT NULL,
     gender int NOT NULL,
     address text NOT NULL,
     birthday date NOT NULL,
