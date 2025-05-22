@@ -16,5 +16,12 @@ CREATE TABLE IF NOT EXISTS accounts(
     birthday date NOT NULL,
     blood_id uuid REFERENCES bloods(id),
     is_active boolean NOT NULL DEFAULT true,
-    update_at timestamp NOT NULL DEFAULT now()
+    created_at timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS blogs(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    account_id uuid NOT NULL REFERENCES accounts(id),
+    content text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now()
 );
