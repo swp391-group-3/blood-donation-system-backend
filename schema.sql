@@ -82,3 +82,16 @@ CREATE TABLE IF NOT EXISTS donation_appointments(
     status int NOT NULL DEFAULT 0,
     created_at timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS donation_kinds(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS donation_histories(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    appointment_id uuid NOT NULL REFERENCES donation_appointments(id),
+    kind_id uuid NOT NULL REFERENCES donation_kinds(id),
+    amount int NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now()
+);
