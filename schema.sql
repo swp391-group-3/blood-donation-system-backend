@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS blog_tags(
 
 CREATE TABLE IF NOT EXISTS health_statuses(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(32) NOT NULL
+    name varchar(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS health_histories(
