@@ -6,6 +6,11 @@ CREATE TABLE IF NOT EXISTS bloods(
     expired_time int NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS blood_components(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(32) UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     role int NOT NULL,
