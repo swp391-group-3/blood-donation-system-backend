@@ -45,3 +45,18 @@ CREATE TABLE IF NOT EXISTS blog_tags(
 
     PRIMARY KEY (blog_id, tag_id)
 );
+
+CREATE TABLE IF NOT EXISTS health_statuses(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(32) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS health_histories(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    account_id uuid NOT NULL REFERENCES accounts(id),
+    temperature real NOT NULL,
+    weight real NOT NULL,
+    status_id uuid NOT NULL REFERENCES health_statuses(id),
+    note text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now()
+);
