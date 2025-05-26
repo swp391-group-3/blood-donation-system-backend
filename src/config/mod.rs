@@ -1,8 +1,10 @@
 mod cors;
+mod jwt;
 
 use std::sync::LazyLock;
 
 use cors::CorsConfig;
+use jwt::JwtConfig;
 use serde::Deserialize;
 
 pub use cors::*;
@@ -19,6 +21,8 @@ pub struct Config {
     pub port: u16,
 
     pub cors: CorsConfig,
+
+    pub jwt: JwtConfig,
 }
 
 pub static CONFIG: LazyLock<Config> = LazyLock::new(|| {
