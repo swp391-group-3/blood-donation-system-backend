@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS bloods(
+CREATE TABLE IF NOT EXISTS blood_groups(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     name varchar(16) UNIQUE NOT NULL
 );
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     gender int NOT NULL,
     address text NOT NULL,
     birthday date NOT NULL,
-    blood_id uuid REFERENCES bloods(id),
+    blood_group_id uuid REFERENCES blood_groups(id),
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamp NOT NULL DEFAULT now()
 );
