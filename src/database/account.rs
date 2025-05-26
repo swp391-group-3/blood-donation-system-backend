@@ -1,7 +1,15 @@
 use sqlx::{PgExecutor, Result};
 use uuid::Uuid;
 
-pub async fn create(email: &str, password: &str, executor: impl PgExecutor<'_>) -> Result<Uuid> {
+use crate::util;
+
+pub async fn create(
+    email: &str,
+    password: Option<String>,
+    executor: impl PgExecutor<'_>,
+) -> Result<Uuid> {
+    let password = password.unwrap_or_else(util::auth::random_password);
+
     sqlx::query_scalar!(
         "INSERT INTO accounts(email, password) VALUES($1, $2) RETURNING id",
         email,
