@@ -11,7 +11,7 @@ pub struct ApiState {
 
 impl ApiState {
     pub async fn new() -> Arc<Self> {
-        let database_pool = PgPool::connect(&CONFIG.database_url).await.unwrap();
+        let database_pool = PgPool::connect(&CONFIG.server.database_url).await.unwrap();
 
         Arc::new(Self { database_pool })
     }

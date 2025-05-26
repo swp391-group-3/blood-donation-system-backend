@@ -1,11 +1,11 @@
 mod config;
 mod controller;
+mod database;
 mod doc;
+mod error;
 mod middleware;
 mod state;
-mod database;
 mod util;
-mod error;
 
 use std::net::SocketAddr;
 
@@ -50,9 +50,10 @@ async fn main() -> Result<()> {
 
     let app = build_app().await;
 
-    let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
+    let listener =
+        TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.server.port)).await?;
 
-    tracing::info!("Listening on port {}", CONFIG.port);
+    tracing::info!("Listening on port {}", CONFIG.server.port);
 
     axum::serve(listener, app)
         .await
