@@ -1,61 +1,29 @@
 use std::net::SocketAddr;
 
 use anyhow::Result;
-use axum::{
-    Router,
-    http::{
-        HeaderName, HeaderValue, Method,
-        header::{
-            ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_METHODS,
-            ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION, CONTENT_TYPE, ORIGIN,
-        },
-    },
-};
+use axum::Router;
 #[cfg(test)]
 use axum_test::TestServer;
+use layer::cors_layer;
 use state::ApiState;
 use tokio::net::TcpListener;
-use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tower_http::trace::TraceLayer;
 
 use crate::config::CONFIG;
 
 mod controller;
 mod doc;
+mod layer;
 mod state;
 
-const ALLOW_HEADERS: [HeaderName; 7] = [
-    ORIGIN,
-    AUTHORIZATION,
-    ACCESS_CONTROL_ALLOW_ORIGIN,
-    CONTENT_TYPE,
-    ACCEPT,
-    ACCESS_CONTROL_ALLOW_METHODS,
-    ACCESS_CONTROL_ALLOW_HEADERS,
-];
-const ALLOW_METHODS: [Method; 5] = [
-    Method::GET,
-    Method::POST,
-    Method::DELETE,
-    Method::PATCH,
-    Method::PUT,
-];
-
 async fn build_app() -> Router {
-    let allow_origins = [CONFIG.cors_domain.parse::<HeaderValue>().unwrap()];
-    let cors_layer = CorsLayer::new()
-        .allow_origin(allow_origins)
-        .allow_headers(ALLOW_HEADERS)
-        .expose_headers(ALLOW_HEADERS)
-        .allow_credentials(true)
-        .allow_methods(ALLOW_METHODS);
-
     let state = ApiState::new().await;
 
     Router::new()
         .merge(controller::build())
         .merge(doc::build())
         .layer(TraceLayer::new_for_http())
-        .layer(cors_layer)
+        .layer(cors_layer())
         .with_state(state)
 }
 
