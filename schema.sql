@@ -87,7 +87,8 @@ CREATE TABLE IF NOT EXISTS donations(
 );
 
 CREATE TABLE IF NOT EXISTS pre_donation_questions(
-    id serial PRIMARY KEY,
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    index int NOT NULL,
     content text NOT NULL
 );
 
