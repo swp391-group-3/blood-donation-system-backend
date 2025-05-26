@@ -1,11 +1,13 @@
+use std::str::FromStr;
+
 use sqlx::{PgExecutor, Result};
-use strum::AsRefStr;
+use strum::{AsRefStr, EnumString};
 use uuid::Uuid;
 
 use crate::util;
 
 #[allow(unused)]
-#[derive(Clone, Copy, AsRefStr)]
+#[derive(Clone, Copy, AsRefStr, EnumString)]
 #[strum(serialize_all = "snake_case")]
 pub enum Role {
     Member,
@@ -39,8 +41,8 @@ pub async fn create(
     .await
 }
 
-pub async fn check_role(id: Uuid, roles: &[Role], executor: impl PgExecutor<'_>) -> Result<bool> {
-    let account_role = sqlx::query_scalar!(
+pub async fn get_role(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<Role>> {
+    let role = sqlx::query_scalar!(
         r#"
             SELECT name
             FROM roles
@@ -48,16 +50,11 @@ pub async fn check_role(id: Uuid, roles: &[Role], executor: impl PgExecutor<'_>)
         "#,
         id
     )
-    .fetch_one(executor)
-    .await?;
+    .fetch_optional(executor)
+    .await?
+    .map(|raw| Role::from_str(&raw).unwrap());
 
-    let is_authorized = roles
-        .iter()
-        .filter(|role| role.as_ref() == account_role)
-        .count()
-        > 1;
-
-    Ok(is_authorized)
+    Ok(role)
 }
 
 pub struct Account {
