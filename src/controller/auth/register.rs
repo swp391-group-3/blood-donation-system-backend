@@ -43,7 +43,7 @@ pub async fn register(
     let id =
         database::account::create(&request.email, Some(password), &state.database_pool).await?;
 
-    let token = generate_token(id, false).map_err(|error| {
+    let token = generate_token(id).map_err(|error| {
         tracing::error!(error =? error);
         AuthError::InvalidAuthToken
     })?;
