@@ -12,6 +12,8 @@ fn default_cors_domain() -> String {
 
 #[derive(Deserialize)]
 pub struct Config {
+    pub database_url: String,
+
     #[serde(default = "default_port")]
     pub port: u16,
 

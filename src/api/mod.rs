@@ -40,7 +40,7 @@ const ALLOW_METHODS: [Method; 5] = [
     Method::PUT,
 ];
 
-fn build_app() -> Router {
+async fn build_app() -> Router {
     let allow_origins = [CONFIG.cors_domain.parse::<HeaderValue>().unwrap()];
     let cors_layer = CorsLayer::new()
         .allow_origin(allow_origins)
@@ -49,7 +49,7 @@ fn build_app() -> Router {
         .allow_credentials(true)
         .allow_methods(ALLOW_METHODS);
 
-    let state = ApiState::new();
+    let state = ApiState::new().await;
 
     Router::new()
         .merge(controller::build())
@@ -60,7 +60,7 @@ fn build_app() -> Router {
 }
 
 pub async fn run() -> Result<()> {
-    let app = build_app();
+    let app = build_app().await;
 
     let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
 
@@ -72,8 +72,9 @@ pub async fn run() -> Result<()> {
 }
 
 #[cfg(test)]
-fn build_test_server() -> TestServer {
-    let app = build_app();
+async fn build_test_server() -> TestServer {
+    let app = build_app().await;
+
     TestServer::builder()
         .save_cookies()
         .expect_success_by_default()

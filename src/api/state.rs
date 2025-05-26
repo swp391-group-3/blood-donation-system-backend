@@ -1,9 +1,18 @@
 use std::sync::Arc;
 
-pub struct ApiState {}
+use sqlx::PgPool;
+
+use crate::config::CONFIG;
+
+#[allow(unused)]
+pub struct ApiState {
+    pub database_pool: PgPool,
+}
 
 impl ApiState {
-    pub fn new() -> Arc<Self> {
-        Arc::new(Self {})
+    pub async fn new() -> Arc<Self> {
+        let database_pool = PgPool::connect(&CONFIG.database_url).await.unwrap();
+
+        Arc::new(Self { database_pool })
     }
 }
