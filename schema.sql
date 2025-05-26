@@ -19,13 +19,13 @@ CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     role uuid REFERENCES roles(id),
     email varchar(128) UNIQUE NOT NULL,
-    phone varchar(16) UNIQUE NOT NULL,
-    name varchar(64) NOT NULL,
-    gender int NOT NULL,
-    address text NOT NULL,
-    birthday date NOT NULL,
+    phone varchar(16) UNIQUE,
+    name varchar(64),
+    gender int,
+    address text,
+    birthday date,
     blood_group_id uuid REFERENCES blood_groups(id),
-    is_active boolean NOT NULL DEFAULT true,
+    is_active boolean NOT NULL DEFAULT false,
     created_at timestamp NOT NULL DEFAULT now()
 );
 
