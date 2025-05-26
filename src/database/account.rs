@@ -39,6 +39,27 @@ pub async fn create(
     .await
 }
 
+pub async fn check_role(id: Uuid, roles: &[Role], executor: impl PgExecutor<'_>) -> Result<bool> {
+    let account_role = sqlx::query_scalar!(
+        r#"
+            SELECT name
+            FROM roles
+            WHERE id = (SELECT role FROM accounts WHERE id = $1)
+        "#,
+        id
+    )
+    .fetch_one(executor)
+    .await?;
+
+    let is_authorized = roles
+        .iter()
+        .filter(|role| role.as_ref() == account_role)
+        .count()
+        > 1;
+
+    Ok(is_authorized)
+}
+
 pub struct Account {
     pub id: Uuid,
     pub password: String,
