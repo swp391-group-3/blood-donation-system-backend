@@ -71,6 +71,11 @@ CREATE TABLE IF NOT EXISTS donation_types(
     name varchar(16) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS donation_statuses(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS donation_appointments(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     account_id uuid NOT NULL REFERENCES accounts(id),
