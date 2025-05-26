@@ -31,5 +31,5 @@ fn default_cors_domain() -> String {
 #[derive(Deserialize)]
 pub struct CorsConfig {
     #[serde(default = "default_cors_domain")]
-    pub cors_domain: String,
+    pub domain: String,
 }
