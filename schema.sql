@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS blood_groups(
 
 CREATE TABLE IF NOT EXISTS blood_components(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(32) UNIQUE NOT NULL
+    name varchar(16) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS blood_storages(
