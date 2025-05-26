@@ -66,6 +66,11 @@ CREATE TABLE IF NOT EXISTS health_histories(
     created_at timestamp NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS pre_donation_questions(
+    id serial PRIMARY KEY,
+    content text NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS donation_appointments(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     account_id uuid NOT NULL REFERENCES accounts(id),
