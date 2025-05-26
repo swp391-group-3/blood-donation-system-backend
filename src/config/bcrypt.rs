@@ -16,3 +16,18 @@ pub struct BcryptConfig {
     #[serde(default = "default_salt")]
     pub salt: [u8; 16],
 }
+
+impl BcryptConfig {
+    pub fn new() -> Self {
+        ::config::Config::builder()
+            .add_source(
+                ::config::Environment::default()
+                    .prefix("BCRYPT")
+                    .try_parsing(true),
+            )
+            .build()
+            .unwrap()
+            .try_deserialize()
+            .unwrap()
+    }
+}

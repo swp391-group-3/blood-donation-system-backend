@@ -24,12 +24,27 @@ pub const CORS_ALLOW_METHODS: [Method; 5] = [
     Method::PUT,
 ];
 
-fn default_cors_domain() -> String {
+fn default_domain() -> String {
     "http://localhost:5173".to_string()
 }
 
 #[derive(Deserialize)]
 pub struct CorsConfig {
-    #[serde(default = "default_cors_domain")]
+    #[serde(default = "default_domain")]
     pub domain: String,
+}
+
+impl CorsConfig {
+    pub fn new() -> Self {
+        ::config::Config::builder()
+            .add_source(
+                ::config::Environment::default()
+                    .prefix("CORS")
+                    .try_parsing(true),
+            )
+            .build()
+            .unwrap()
+            .try_deserialize()
+            .unwrap()
+    }
 }
