@@ -1,9 +1,4 @@
-use std::sync::LazyLock;
-
-use jsonwebtoken::{DecodingKey, EncodingKey};
 use serde::Deserialize;
-
-use super::CONFIG;
 
 fn default_secret() -> String {
     "secret".to_string()
