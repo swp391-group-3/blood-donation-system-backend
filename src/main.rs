@@ -5,6 +5,7 @@ mod middleware;
 mod state;
 mod database;
 mod util;
+mod error;
 
 use std::net::SocketAddr;
 

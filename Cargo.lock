@@ -292,6 +292,7 @@ dependencies = [
  "rand 0.9.1",
  "serde",
  "sqlx",
+ "thiserror",
  "tokio",
  "tower-http",
  "tracing",
