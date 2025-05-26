@@ -1,3 +1,4 @@
+pub mod auth;
 mod ping;
 
 use std::sync::Arc;
