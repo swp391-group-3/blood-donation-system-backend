@@ -4,7 +4,9 @@ use uuid::Uuid;
 
 use crate::util;
 
+#[allow(unused)]
 #[derive(Clone, Copy, AsRefStr)]
+#[strum(serialize_all = "snake_case")]
 pub enum Role {
     Member,
     Staff,

@@ -9,7 +9,7 @@ use crate::{database, util};
 use crate::{error::Result, state::ApiState};
 
 #[derive(Deserialize, ToSchema)]
-#[schema(title = "Login Request")]
+#[schema(as = login::Request)]
 pub struct Request {
     pub email: String,
     pub password: String,
