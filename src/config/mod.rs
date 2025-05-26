@@ -10,7 +10,6 @@ use cors::CorsConfig;
 use jwt::JwtConfig;
 
 pub use cors::*;
-pub use jwt::*;
 use server::ServerConfig;
 
 pub struct Config {
