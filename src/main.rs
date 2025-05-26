@@ -1,17 +1,18 @@
 mod config;
 mod controller;
+mod database;
 mod doc;
-mod layer;
+mod error;
+mod middleware;
 mod state;
+mod util;
 
 use std::net::SocketAddr;
 
-use anyhow::Result;
 use axum::Router;
 #[cfg(test)]
 use axum_test::TestServer;
 use config::CONFIG;
-use layer::cors_layer;
 use state::ApiState;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
@@ -27,12 +28,12 @@ async fn build_app() -> Router {
         .merge(controller::build())
         .merge(doc::build())
         .layer(TraceLayer::new_for_http())
-        .layer(cors_layer())
+        .layer(middleware::cors())
         .with_state(state)
 }
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::fmt::layer()
@@ -48,9 +49,10 @@ async fn main() -> Result<()> {
 
     let app = build_app().await;
 
-    let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
+    let listener =
+        TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.server.port)).await?;
 
-    tracing::info!("Listening on port {}", CONFIG.port);
+    tracing::info!("Listening on port {}", CONFIG.server.port);
 
     axum::serve(listener, app)
         .await
