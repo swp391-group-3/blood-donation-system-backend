@@ -19,6 +19,12 @@ pub struct Request {
     pub password: String,
 }
 
+#[utoipa::path(
+    post,
+    tag = "Auth",
+    path = "/auth/register",
+    request_body = Request,
+)]
 pub async fn register(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
