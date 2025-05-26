@@ -4,6 +4,7 @@ use sqlx::PgPool;
 
 use crate::config::CONFIG;
 
+#[allow(unused)]
 pub struct ApiState {
     pub database_pool: PgPool,
 }
