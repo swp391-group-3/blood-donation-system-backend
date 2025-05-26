@@ -25,7 +25,7 @@ pub async fn create(
 
     sqlx::query_scalar!(
         r#"
-            INSERT INTO accounts(email, password, role)
+            INSERT INTO accounts(email, password, role_id)
             VALUES(
                 $1,
                 $2,
@@ -46,7 +46,7 @@ pub async fn get_role(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<
         r#"
             SELECT name
             FROM roles
-            WHERE id = (SELECT role FROM accounts WHERE id = $1)
+            WHERE id = (SELECT role_id FROM accounts WHERE id = $1)
         "#,
         id
     )
