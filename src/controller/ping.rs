@@ -11,7 +11,7 @@ pub async fn ping() -> &'static str {
 
 #[cfg(test)]
 mod test_route_put_user_todos {
-    use crate::api::build_test_server;
+    use crate::build_test_server;
 
     #[tokio::test]
     async fn it_should_output_pong() {
