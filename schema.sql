@@ -91,10 +91,9 @@ CREATE TABLE IF NOT EXISTS pre_donation_questions(
     content text NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS donation_histories(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    appointment_id uuid NOT NULL REFERENCES donation_appointments(id),
-    kind_id uuid NOT NULL REFERENCES donation_kinds(id),
-    amount int NOT NULL,
-    created_at timestamp NOT NULL DEFAULT now()
+CREATE TABLE IF NOT EXISTS pre_donation_answer(
+    question_id uuid NOT NULL REFERENCES pre_donation_questions(id),
+    donation_id uuid NOT NULL REFERENCES donations(id),
+    account_id uuid NOT NULL REFERENCES accounts(id),
+    content text NOT NULl
 );
