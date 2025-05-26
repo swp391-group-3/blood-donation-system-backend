@@ -76,11 +76,13 @@ CREATE TABLE IF NOT EXISTS donation_statuses(
     name varchar(16) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS donation_appointments(
+CREATE TABLE IF NOT EXISTS donations(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    account_id uuid NOT NULL REFERENCES accounts(id),
     time timestamp NOT NULL,
-    status int NOT NULL DEFAULT 0,
+    status_id uuid NOT NULL REFERENCES donation_statuses(id),
+    account_id uuid NOT NULL REFERENCES accounts(id),
+    type_id uuid NOT NULL REFERENCES donation_types(id),
+    amount int,
     created_at timestamp NOT NULL DEFAULT now()
 );
 
