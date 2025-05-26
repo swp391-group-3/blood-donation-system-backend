@@ -24,21 +24,21 @@ const fn default_secret_expired_in() -> u64 {
 #[derive(Deserialize)]
 pub struct JwtConfig {
     #[serde(default = "default_secret")]
-    secret: String,
+    pub secret: String,
 
     #[serde(default = "default_expired_in")]
-    expired_in: u64,
+    pub expired_in: u64,
 
     #[serde(default = "default_refresh_secret")]
-    refresh_secret: String,
+    pub refresh_secret: String,
 
     #[serde(default = "default_secret_expired_in")]
-    refresh_expired_in: u64,
+    pub refresh_expired_in: u64,
 }
 
 struct Keys {
-    encoding: EncodingKey,
-    decoding: DecodingKey,
+    pub encoding: EncodingKey,
+    pub decoding: DecodingKey,
 }
 
 impl Keys {
