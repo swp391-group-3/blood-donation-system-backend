@@ -2,7 +2,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS blood_groups(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(16) UNIQUE NOT NULL
+    name varchar(4) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS blood_components(
