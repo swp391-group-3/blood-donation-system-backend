@@ -1,16 +1,15 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-use jsonwebtoken::Header;
 use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    config::{CONFIG, KEYS},
+    config::CONFIG,
     database,
     error::{AuthError, Result},
     state::ApiState,
-    util::auth::Claims,
+    util::auth::generate_token,
 };
 
 #[derive(Deserialize, ToSchema)]
@@ -38,14 +37,10 @@ pub async fn register(
     let id =
         database::account::create(&request.email, Some(password), &state.database_pool).await?;
 
-    let token = jsonwebtoken::encode(
-        &Header::default(),
-        &Claims::new(id, CONFIG.jwt.expired_in),
-        &KEYS.encoding,
-    ).map_err(|error| {
-            tracing::error!(error =? error)
-            AuthError::InvalidLoginData
+    let token = generate_token(id).map_err(|error| {
+        tracing::error!(error =? error);
+        AuthError::InvalidAuthToken
     })?;
 
-    todo!()
+    Ok(token)
 }

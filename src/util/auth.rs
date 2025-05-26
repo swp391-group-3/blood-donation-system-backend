@@ -18,26 +18,15 @@ pub struct Claims {
     pub exp: u64,
 }
 
-pub fn generate_token(id: Uuid) -> jsonwebtoken::errors::Result<(String, String)> {
+pub fn generate_token(id: Uuid) -> jsonwebtoken::errors::Result<String> {
     let now = Local::now().timestamp() as u64;
 
-    let token = encode(
+    encode(
         &Header::default(),
         &Claims {
             sub: id,
             exp: now + CONFIG.jwt.expired_in,
         },
         &KEYS.encoding,
-    )?;
-
-    let refresh_token = encode(
-        &Header::default(),
-        &Claims {
-            sub: id,
-            exp: now + CONFIG.jwt.refresh_expired_in,
-        },
-        &KEYS.encoding,
-    )?;
-
-    Ok((token, refresh_token))
+    )
 }

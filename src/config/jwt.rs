@@ -13,14 +13,6 @@ const fn default_expired_in() -> u64 {
     24 * 60 * 60
 }
 
-fn default_refresh_secret() -> String {
-    "secret".to_string()
-}
-
-const fn default_secret_expired_in() -> u64 {
-    7 * 24 * 60 * 60
-}
-
 #[derive(Deserialize)]
 pub struct JwtConfig {
     #[serde(default = "default_secret")]
@@ -28,12 +20,6 @@ pub struct JwtConfig {
 
     #[serde(default = "default_expired_in")]
     pub expired_in: u64,
-
-    #[serde(default = "default_refresh_secret")]
-    pub refresh_secret: String,
-
-    #[serde(default = "default_secret_expired_in")]
-    pub refresh_expired_in: u64,
 }
 
 pub struct Keys {
@@ -51,5 +37,3 @@ impl Keys {
 }
 
 pub static KEYS: LazyLock<Keys> = LazyLock::new(|| Keys::from_secret(&CONFIG.jwt.secret));
-pub static REFRESH_KEYS: LazyLock<Keys> =
-    LazyLock::new(|| Keys::from_secret(&CONFIG.jwt.refresh_secret));
