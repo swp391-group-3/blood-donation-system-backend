@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS health_histories(
     created_at timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS pre_donation_questions(
-    id serial PRIMARY KEY,
-    content text NOT NULL
+CREATE TABLE IF NOT EXISTS donation_types(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS donation_appointments(
@@ -79,9 +79,9 @@ CREATE TABLE IF NOT EXISTS donation_appointments(
     created_at timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS donation_kinds(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(16) UNIQUE NOT NULL
+CREATE TABLE IF NOT EXISTS pre_donation_questions(
+    id serial PRIMARY KEY,
+    content text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS donation_histories(
