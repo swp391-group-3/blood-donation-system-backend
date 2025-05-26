@@ -1,10 +1,17 @@
+use std::sync::LazyLock;
+
 use chrono::Local;
-use jsonwebtoken::{Header, encode};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, encode};
 use rand::distr::{Alphanumeric, SampleString};
 use serde::Serialize;
 use uuid::Uuid;
 
-use crate::config::{CONFIG, KEYS};
+use crate::config::CONFIG;
+
+pub static ENCODING_KEY: LazyLock<EncodingKey> =
+    LazyLock::new(|| EncodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
+pub static DECODING_KEY: LazyLock<DecodingKey> =
+    LazyLock::new(|| DecodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
 
 const BCRYPT_LENGTH: usize = 72;
 
@@ -27,6 +34,6 @@ pub fn generate_token(id: Uuid) -> jsonwebtoken::errors::Result<String> {
             sub: id,
             exp: now + CONFIG.jwt.expired_in,
         },
-        &KEYS.encoding,
+        &ENCODING_KEY,
     )
 }

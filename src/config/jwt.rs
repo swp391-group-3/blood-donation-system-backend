@@ -21,19 +21,3 @@ pub struct JwtConfig {
     #[serde(default = "default_expired_in")]
     pub expired_in: u64,
 }
-
-pub struct Keys {
-    pub encoding: EncodingKey,
-    pub decoding: DecodingKey,
-}
-
-impl Keys {
-    fn from_secret(secret: &str) -> Self {
-        Keys {
-            encoding: EncodingKey::from_secret(secret.as_bytes()),
-            decoding: DecodingKey::from_secret(secret.as_bytes()),
-        }
-    }
-}
-
-pub static KEYS: LazyLock<Keys> = LazyLock::new(|| Keys::from_secret(&CONFIG.jwt.secret));
