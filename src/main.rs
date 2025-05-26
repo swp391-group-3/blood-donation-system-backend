@@ -4,6 +4,7 @@ mod doc;
 mod middleware;
 mod state;
 mod database;
+mod util;
 
 use std::net::SocketAddr;
 

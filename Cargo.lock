@@ -273,6 +273,7 @@ dependencies = [
  "axum-extra",
  "axum-test",
  "config",
+ "rand 0.9.1",
  "serde",
  "sqlx",
  "tokio",
