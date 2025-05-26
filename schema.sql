@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS roles(
 
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    role uuid REFERENCES roles(id),
+    role uuid NOT NULL REFERENCES roles(id),
     email varchar(128) UNIQUE NOT NULL,
     password varchar(72) NOT NULL,
     phone varchar(16) UNIQUE,
