@@ -1,4 +1,9 @@
+use std::sync::LazyLock;
+
+use jsonwebtoken::{DecodingKey, EncodingKey};
 use serde::Deserialize;
+
+use super::CONFIG;
 
 fn default_secret() -> String {
     "secret".to_string()
@@ -30,3 +35,21 @@ pub struct JwtConfig {
     #[serde(default = "default_secret_expired_in")]
     refresh_expired_in: u64,
 }
+
+struct Keys {
+    encoding: EncodingKey,
+    decoding: DecodingKey,
+}
+
+impl Keys {
+    fn from_secret(secret: &str) -> Self {
+        Keys {
+            encoding: EncodingKey::from_secret(secret.as_bytes()),
+            decoding: DecodingKey::from_secret(secret.as_bytes()),
+        }
+    }
+}
+
+pub static KEYS: LazyLock<Keys> = LazyLock::new(|| Keys::from_secret(&CONFIG.jwt.secret));
+pub static REFRESH_KEYS: LazyLock<Keys> =
+    LazyLock::new(|| Keys::from_secret(&CONFIG.jwt.refresh_secret));

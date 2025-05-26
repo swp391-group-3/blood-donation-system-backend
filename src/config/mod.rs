@@ -8,6 +8,7 @@ use jwt::JwtConfig;
 use serde::Deserialize;
 
 pub use cors::*;
+pub use jwt::*;
 
 const fn default_port() -> u16 {
     3000
