@@ -15,7 +15,7 @@ mod test_route_put_user_todos {
 
     #[tokio::test]
     async fn it_should_output_pong() {
-        let server = build_test_server();
+        let server = build_test_server().await;
 
         let response = server.get("/").await.text();
 
