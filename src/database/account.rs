@@ -19,9 +19,15 @@ pub async fn create(
     .await
 }
 
-pub async fn get_password(email: &str, executor: impl PgExecutor<'_>) -> Result<String> {
-    sqlx::query_scalar!(
-        "SELECT password FROM accounts WHERE email = $1 LIMIT 1",
+pub struct Account {
+    pub id: Uuid,
+    pub password: String,
+}
+
+pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<Account> {
+    sqlx::query_as!(
+        Account,
+        "SELECT id, password FROM accounts WHERE email = $1 LIMIT 1",
         email
     )
     .fetch_one(executor)
