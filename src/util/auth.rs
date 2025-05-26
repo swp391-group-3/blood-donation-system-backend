@@ -22,16 +22,18 @@ pub fn random_password() -> String {
 #[derive(Serialize)]
 pub struct Claims {
     pub sub: Uuid,
+    pub is_active: bool,
     pub exp: u64,
 }
 
-pub fn generate_token(id: Uuid) -> jsonwebtoken::errors::Result<String> {
+pub fn generate_token(id: Uuid, is_active: bool) -> jsonwebtoken::errors::Result<String> {
     let now = Local::now().timestamp() as u64;
 
     encode(
         &Header::default(),
         &Claims {
             sub: id,
+            is_active,
             exp: now + CONFIG.jwt.expired_in,
         },
         &ENCODING_KEY,
