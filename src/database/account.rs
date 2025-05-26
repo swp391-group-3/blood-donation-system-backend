@@ -1,19 +1,37 @@
 use sqlx::{PgExecutor, Result};
+use strum::AsRefStr;
 use uuid::Uuid;
 
 use crate::util;
 
+#[derive(Clone, Copy, AsRefStr)]
+pub enum Role {
+    Member,
+    Staff,
+    Admin,
+}
+
 pub async fn create(
     email: &str,
     password: Option<String>,
+    role: Role,
     executor: impl PgExecutor<'_>,
 ) -> Result<Uuid> {
     let password = password.unwrap_or_else(util::auth::random_password);
 
     sqlx::query_scalar!(
-        "INSERT INTO accounts(email, password) VALUES($1, $2) RETURNING id",
+        r#"
+            INSERT INTO accounts(email, password, role)
+            VALUES(
+                $1,
+                $2,
+                (SELECT id FROM roles WHERE name = $3)
+            )
+            RETURNING id
+        "#,
         email,
-        password
+        password,
+        role.as_ref()
     )
     .fetch_one(executor)
     .await
