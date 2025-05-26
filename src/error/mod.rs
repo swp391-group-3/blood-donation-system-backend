@@ -7,6 +7,8 @@ use axum_extra::typed_header::TypedHeaderRejection;
 use serde::Serialize;
 use utoipa::ToSchema;
 
+pub type Result<T> = std::result::Result<T, Error>;
+
 #[derive(Serialize, ToSchema)]
 pub struct ErrorResponse {
     pub message: String,
