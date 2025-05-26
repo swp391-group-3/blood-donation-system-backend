@@ -108,3 +108,12 @@ CREATE TABLE IF NOT EXISTS blood_bags(
     amount int NOT NULL,
     expired_time timestamp NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS blood_requests(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    account_id uuid  NOT NULL REFERENCES accounts(id),
+    blood_group_id uuid  NOT NULL REFERENCES blood_group_id(id),
+    title text NOT NULL,
+    content text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now()
+);
