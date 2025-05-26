@@ -10,9 +10,14 @@ CREATE TABLE IF NOT EXISTS blood_components(
     name varchar(16) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS roles(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    role int NOT NULL,
+    role uuid REFERENCES roles(id),
     email varchar(128) UNIQUE NOT NULL,
     phone varchar(16) UNIQUE NOT NULL,
     name varchar(64) NOT NULL,
