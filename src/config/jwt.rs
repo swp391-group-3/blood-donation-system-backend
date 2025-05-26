@@ -36,7 +36,7 @@ pub struct JwtConfig {
     pub refresh_expired_in: u64,
 }
 
-struct Keys {
+pub struct Keys {
     pub encoding: EncodingKey,
     pub decoding: DecodingKey,
 }

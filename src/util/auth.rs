@@ -1,7 +1,10 @@
 use chrono::Local;
+use jsonwebtoken::{Header, encode};
 use rand::distr::{Alphanumeric, SampleString};
 use serde::Serialize;
 use uuid::Uuid;
+
+use crate::config::{CONFIG, KEYS};
 
 const BCRYPT_LENGTH: usize = 72;
 
@@ -15,13 +18,26 @@ pub struct Claims {
     pub exp: u64,
 }
 
-impl Claims {
-    pub fn new(id: Uuid, expired_in: u64) -> Self {
-        let now = Local::now().timestamp() as u64;
+pub fn generate_token(id: Uuid) -> jsonwebtoken::errors::Result<(String, String)> {
+    let now = Local::now().timestamp() as u64;
 
-        Self {
+    let token = encode(
+        &Header::default(),
+        &Claims {
             sub: id,
-            exp: now + expired_in,
-        }
-    }
+            exp: now + CONFIG.jwt.expired_in,
+        },
+        &KEYS.encoding,
+    )?;
+
+    let refresh_token = encode(
+        &Header::default(),
+        &Claims {
+            sub: id,
+            exp: now + CONFIG.jwt.refresh_expired_in,
+        },
+        &KEYS.encoding,
+    )?;
+
+    Ok((token, refresh_token))
 }
