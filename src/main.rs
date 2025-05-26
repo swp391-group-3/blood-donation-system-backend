@@ -1,7 +1,7 @@
 mod config;
 mod controller;
 mod doc;
-mod layer;
+mod middleware;
 mod state;
 
 use std::net::SocketAddr;
@@ -11,7 +11,6 @@ use axum::Router;
 #[cfg(test)]
 use axum_test::TestServer;
 use config::CONFIG;
-use layer::cors_layer;
 use state::ApiState;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
@@ -27,7 +26,7 @@ async fn build_app() -> Router {
         .merge(controller::build())
         .merge(doc::build())
         .layer(TraceLayer::new_for_http())
-        .layer(cors_layer())
+        .layer(middleware::cors())
         .with_state(state)
 }
 
