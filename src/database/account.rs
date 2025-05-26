@@ -24,12 +24,12 @@ pub struct Account {
     pub password: String,
 }
 
-pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<Account> {
+pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<Option<Account>> {
     sqlx::query_as!(
         Account,
         "SELECT id, password FROM accounts WHERE email = $1 LIMIT 1",
         email
     )
-    .fetch_one(executor)
+    .fetch_optional(executor)
     .await
 }

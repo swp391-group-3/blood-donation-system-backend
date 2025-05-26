@@ -9,7 +9,6 @@ mod util;
 
 use std::net::SocketAddr;
 
-use anyhow::Result;
 use axum::Router;
 #[cfg(test)]
 use axum_test::TestServer;
@@ -34,7 +33,7 @@ async fn build_app() -> Router {
 }
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::fmt::layer()
