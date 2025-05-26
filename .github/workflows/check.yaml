@@ -64,7 +64,7 @@ jobs:
       - run: psql ${{ steps.postgres.outputs.connection-uri }} -a -f schema.sql
       - uses: Swatinem/rust-cache@v2
       - name: Test
-        shell: bash
+        env:
+          DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}
         run: |
-          export DATABASE_URL=${{ steps.postgres.outputs.connection-uri }}
           cargo test --target ${{ matrix.target }}
