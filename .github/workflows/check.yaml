@@ -59,40 +59,11 @@ jobs:
           target: ${{ matrix.target }}
           toolchain: ${{ matrix.toolchain }}
       - run: ${{ matrix.deps }}
-      - name: Add PostgreSQL binaries to PATH
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            echo "$PGBIN" >> $GITHUB_PATH
-          elif [ "$RUNNER_OS" == "Linux" ]; then
-            echo "$(pg_config --bindir)" >> $GITHUB_PATH
-          fi
-      - name: Start preinstalled PostgreSQL
-        shell: bash
-        run: |
-          echo "Initializing database cluster..."
-
-          # Convert backslashes to forward slashes in RUNNER_TEMP for Windows Git Bash
-          export PGHOST="${RUNNER_TEMP//\\//}/postgres"
-          export PGDATA="$PGHOST/pgdata"
-          mkdir -p "$PGDATA"
-
-          # initdb requires file for password in non-interactive mode
-          export PWFILE="$RUNNER_TEMP/pwfile"
-          echo "postgres" > $PWFILE
-          initdb --pgdata="$PGDATA" --username="postgres" --pwfile="$PWFILE"
-
-          echo "Starting PostgreSQL..."
-          echo "unix_socket_directories = '$PGHOST'" >> "$PGDATA/postgresql.conf"
-          pg_ctl start
-
-          echo "Creating user..."
-          psql --host "$PGHOST" --username="postgres" --dbname="postgres" --command="CREATE USER $PGUSERNAME PASSWORD '$PGPASSWORD'" --command="\du"
-
-          echo "Creating database..."
-          createdb --owner="$PGUSERNAME" --username="postgres" "$PGDATABASE"
-          psql -d blood-donation -a -f schema.sql
+      - uses: ikalnytskyi/action-setup-postgres@v7
+        id: postgres
+      - run: psql ${{ steps.postgres.outputs.connection-uri }} -a -f schema.sql
       - uses: Swatinem/rust-cache@v2
       - name: Test
         run: |
+          export DATABASE_URL=${{ steps.postgres.outputs.connection-uri }}
           cargo test --target ${{ matrix.target }}
