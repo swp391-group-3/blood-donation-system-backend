@@ -31,7 +31,7 @@ impl Modify for SecurityAddon {
 #[openapi(
     paths(
         controller::ping,
-        
+
         controller::auth::register,
         controller::auth::login,
         controller::auth::google::google,
