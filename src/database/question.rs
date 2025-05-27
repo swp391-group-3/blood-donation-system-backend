@@ -13,6 +13,20 @@ pub async fn create(content: &str, executor: impl PgExecutor<'_>) -> Result<i32>
     .await
 }
 
+pub struct Question {
+    id: i32,
+    content: String,
+}
+
+pub async fn get_all(executor: impl PgExecutor<'_>) -> Result<Vec<Question>> {
+    sqlx::query_as!(
+        Question,
+        "SELECT id, content FROM questions WHERE is_active = true"
+    )
+    .fetch_all(executor)
+    .await
+}
+
 pub async fn update(id: i32, new_content: &str, executor: impl PgExecutor<'_>) -> Result<()> {
     sqlx::query!(
         r#"
