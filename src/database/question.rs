@@ -1,4 +1,6 @@
+use serde::Serialize;
 use sqlx::{PgExecutor, Result};
+use utoipa::ToSchema;
 
 pub async fn create(content: &str, executor: impl PgExecutor<'_>) -> Result<i32> {
     sqlx::query_scalar!(
@@ -13,6 +15,7 @@ pub async fn create(content: &str, executor: impl PgExecutor<'_>) -> Result<i32>
     .await
 }
 
+#[derive(Serialize, ToSchema)]
 pub struct Question {
     id: i32,
     content: String,
@@ -21,7 +24,12 @@ pub struct Question {
 pub async fn get_all(executor: impl PgExecutor<'_>) -> Result<Vec<Question>> {
     sqlx::query_as!(
         Question,
-        "SELECT id, content FROM questions WHERE is_active = true"
+        r#"
+            SELECT id, content
+            FROM questions
+            WHERE is_active = true
+            ORDER BY id
+        "#
     )
     .fetch_all(executor)
     .await

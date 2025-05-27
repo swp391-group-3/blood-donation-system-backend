@@ -37,7 +37,10 @@ impl Modify for SecurityAddon {
         controller::auth::google::google,
         controller::auth::microsoft::microsoft,
 
-        controller::question::create
+        controller::question::create,
+        controller::question::get_all,
+        controller::question::update,
+        controller::question::delete,
     ),
     modifiers(&SecurityAddon),
 )]
