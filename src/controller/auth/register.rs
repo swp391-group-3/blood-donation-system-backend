@@ -46,7 +46,11 @@ pub async fn register(
         Role::Member,
         &state.database_pool,
     )
-    .await?;
+    .await
+    .map_err(|error| {
+        tracing::error!(error =? error);
+        AuthError::AccountExisted
+    })?;
 
     let token = generate_token(id).map_err(|error| {
         tracing::error!(error =? error);
