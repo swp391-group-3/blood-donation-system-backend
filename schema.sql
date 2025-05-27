@@ -81,3 +81,13 @@ CREATE TABLE IF NOT EXISTS answers(
     appointment_id uuid NOT NULL REFERENCES appointments(id),
     content text NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS healths(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    appointment_id uuid NOT NULL REFERENCES appointments(id),
+    temperature real NOT NULL,
+    weight real NOT NULL,
+    is_good_health bool NOT NULL,
+    note text,
+    created_at timestamp NOT NULL DEFAULT now()
+);
