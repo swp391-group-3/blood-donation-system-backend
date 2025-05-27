@@ -104,3 +104,17 @@ CREATE TABLE IF NOT EXISTS donations(
     amount int NOT NULL,
     created_at timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS blood_components(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS blood_bags(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    donation_id uuid NOT NULL REFERENCES donations(id),
+    component_id uuid NOT NULL REFERENCES blood_components(id),
+    is_used bool NOT NULL DEFAULT false,
+    amount int NOT NULL,
+    expired_time timestamp NOT NULL,
+);
