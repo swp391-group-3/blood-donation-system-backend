@@ -50,11 +50,11 @@ pub async fn authorized(
     .await
     .unwrap();
 
+    tracing::info!(claims =? microsoft_claims);
+
     let email = microsoft_claims
         .email()
         .expect("Microsoft account must have email");
-
-    tracing::info!(email =? email);
 
     database::account::create_if_not_existed(email, None, Role::Member, &state.database_pool)
         .await

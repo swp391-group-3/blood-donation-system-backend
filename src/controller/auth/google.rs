@@ -50,11 +50,11 @@ pub async fn authorized(
     .await
     .unwrap();
 
+    tracing::info!(claims =? google_claims);
+
     let email = google_claims
         .email()
         .expect("Google account must have email");
-
-    tracing::info!(email =? email);
 
     database::account::create_if_not_existed(email, None, Role::Member, &state.database_pool)
         .await
