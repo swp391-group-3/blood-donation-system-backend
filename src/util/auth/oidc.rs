@@ -37,7 +37,7 @@ pub async fn new(
     )
 }
 
-pub fn generate(client: Client) -> (Url, CsrfToken, Nonce) {
+pub fn generate(client: &Client) -> (Url, CsrfToken, Nonce) {
     client
         .authorize_url(
             AuthenticationFlow::<CoreResponseType>::AuthorizationCode,
@@ -54,7 +54,7 @@ pub async fn get_claims(
     state: CsrfToken,
     csrf: CsrfToken,
     nonce: Nonce,
-    client: Client,
+    client: &Client,
     http_client: &reqwest::Client,
 ) -> Result<CoreIdTokenClaims> {
     ensure!(state.secret() == csrf.secret(), "Invalid redirect");
