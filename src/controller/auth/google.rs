@@ -8,7 +8,12 @@ use openidconnect::{AuthorizationCode, CsrfToken, Nonce};
 use serde::Deserialize;
 use tower_sessions::Session;
 
-use crate::{error::Result, state::ApiState, util};
+use crate::{
+    database::{self, account::Role},
+    error::{AuthError, Result},
+    state::ApiState,
+    util::{self, auth::generate_token},
+};
 
 const KEY: &str = "google";
 
@@ -45,7 +50,23 @@ pub async fn authorized(
     .await
     .unwrap();
 
-    println!("{:?}", google_claims);
+    let email = google_claims
+        .email()
+        .expect("Google account must have email");
 
-    Ok("Test".to_string())
+    tracing::info!(email =? email);
+
+    let id = database::account::create(email, None, Role::Member, &state.database_pool)
+        .await
+        .map_err(|error| {
+            tracing::error!(error =? error);
+            AuthError::AccountExisted
+        })?;
+
+    let token = generate_token(id).map_err(|error| {
+        tracing::error!(error =? error);
+        AuthError::InvalidAuthToken
+    })?;
+
+    Ok(token)
 }
