@@ -25,7 +25,7 @@ async fn build_app() -> Router {
     let state = ApiState::new().await;
 
     Router::new()
-        .merge(controller::build())
+        .merge(controller::build(state.clone()))
         .merge(doc::build())
         .layer(TraceLayer::new_for_http())
         .layer(middleware::cors())
