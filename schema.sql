@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS blog_tags(
 CREATE TABLE IF NOT EXISTS blood_requests(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     staff_id uuid NOT NULL REFERENCES accounts(id),
-    blood_group_id uuid NOT NULL REFERENCES blood_groupd(id),
+    blood_group_id uuid NOT NULL REFERENCES blood_groups(id),
     title text NOT NULL,
     max_people int NOT NULL,
-    start timestamp NOT NULL,
-    end timestamp NOT NULL,
+    start_time timestamp NOT NULL,
+    end_time timestamp NOT NULL,
     created_at timestamp NOT NULL DEFAULT now()
 );
 
@@ -116,5 +116,5 @@ CREATE TABLE IF NOT EXISTS blood_bags(
     component_id uuid NOT NULL REFERENCES blood_components(id),
     is_used bool NOT NULL DEFAULT false,
     amount int NOT NULL,
-    expired_time timestamp NOT NULL,
+    expired_time timestamp NOT NULL
 );
