@@ -3,12 +3,13 @@ use std::sync::Arc;
 use openidconnect::reqwest;
 use sqlx::PgPool;
 
-use crate::config::CONFIG;
+use crate::{config::CONFIG, util};
 
 #[allow(unused)]
 pub struct ApiState {
     pub database_pool: PgPool,
     pub http_client: reqwest::Client,
+    pub google_client: util::auth::oidc::Client,
 }
 
 impl ApiState {
@@ -20,9 +21,20 @@ impl ApiState {
             .build()
             .unwrap();
 
+        let google_client = util::auth::oidc::new(
+            CONFIG.google.client_id.clone(),
+            CONFIG.google.client_secret.clone(),
+            CONFIG.google.issuer_url.clone(),
+            CONFIG.google.redirect_url.clone(),
+            &http_client,
+        )
+        .await
+        .unwrap();
+
         Arc::new(Self {
             database_pool,
             http_client,
+            google_client,
         })
     }
 }
