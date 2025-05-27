@@ -4,6 +4,9 @@ use super::ErrorResponse;
 
 #[derive(Debug, thiserror::Error)]
 pub enum AuthError {
+    #[error("Account with given email already existed")]
+    AccountExisted,
+
     #[error("Invalid login data")]
     InvalidLoginData,
 
@@ -20,6 +23,7 @@ pub enum AuthError {
 impl IntoResponse for AuthError {
     fn into_response(self) -> axum::response::Response {
         let status = match self {
+            AuthError::AccountExisted => StatusCode::BAD_REQUEST,
             AuthError::InvalidLoginData => StatusCode::UNAUTHORIZED,
             AuthError::MissingAuthToken => StatusCode::UNAUTHORIZED,
             AuthError::InvalidAuthToken => StatusCode::UNAUTHORIZED,
