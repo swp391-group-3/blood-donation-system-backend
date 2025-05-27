@@ -1,4 +1,4 @@
-mod google;
+pub mod google;
 mod login;
 mod register;
 

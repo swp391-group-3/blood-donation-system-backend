@@ -33,6 +33,7 @@ impl Modify for SecurityAddon {
         controller::ping,
         controller::auth::register,
         controller::auth::login,
+        controller::auth::google::google,
     ),
     modifiers(&SecurityAddon),
 )]
