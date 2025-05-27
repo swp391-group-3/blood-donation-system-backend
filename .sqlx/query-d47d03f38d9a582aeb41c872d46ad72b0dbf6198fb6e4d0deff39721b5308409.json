@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO accounts(email, password, role_id, is_active)\n            VALUES(\n                $1,\n                $2,\n                (SELECT id FROM roles WHERE name = $3),\n                true\n            )\n            RETURNING id\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d47d03f38d9a582aeb41c872d46ad72b0dbf6198fb6e4d0deff39721b5308409"
+}

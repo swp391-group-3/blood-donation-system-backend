@@ -35,6 +35,8 @@ impl Modify for SecurityAddon {
         controller::auth::login,
         controller::auth::google::google,
         controller::auth::microsoft::microsoft,
+        controller::staff::create,
+        controller::staff::list,
     ),
     modifiers(&SecurityAddon),
 )]

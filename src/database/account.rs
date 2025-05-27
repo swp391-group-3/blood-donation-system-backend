@@ -3,6 +3,7 @@ use std::str::FromStr;
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
 use uuid::Uuid;
+use serde::Serialize;
 
 use crate::util;
 
@@ -25,11 +26,12 @@ pub async fn create(
 
     sqlx::query_scalar!(
         r#"
-            INSERT INTO accounts(email, password, role_id)
+            INSERT INTO accounts(email, password, role_id, is_active)
             VALUES(
                 $1,
                 $2,
-                (SELECT id FROM roles WHERE name = $3)
+                (SELECT id FROM roles WHERE name = $3),
+                true
             )
             RETURNING id
         "#,
@@ -97,5 +99,28 @@ pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<
         email
     )
     .fetch_optional(executor)
+    .await
+}
+#[derive(Serialize)]
+pub struct AccountDetails{
+    pub id: Uuid,
+    pub email: String,
+    pub password: String,
+}
+
+pub async fn list_by_role(
+    role: Role,
+    executor: impl PgExecutor<'_>,
+) -> Result<Vec<AccountDetails>> {
+    sqlx::query_as!(
+        AccountDetails,
+        r#"
+            SELECT id, password, email
+            FROM accounts
+            WHERE role_id = (SELECT id FROM roles WHERE name = $1) AND is_active = true
+        "#,
+        role.as_ref()
+    )
+    .fetch_all(executor)
     .await
 }
