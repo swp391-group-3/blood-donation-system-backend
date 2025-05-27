@@ -2,6 +2,7 @@ mod bcrypt;
 mod cors;
 mod google;
 mod jwt;
+mod microsoft;
 mod server;
 
 use std::sync::LazyLock;
@@ -12,6 +13,7 @@ use google::GoogleConfig;
 use jwt::JwtConfig;
 
 pub use cors::*;
+use microsoft::MicrosoftConfig;
 use server::ServerConfig;
 
 pub struct Config {
@@ -20,6 +22,7 @@ pub struct Config {
     pub jwt: JwtConfig,
     pub bcrypt: BcryptConfig,
     pub google: GoogleConfig,
+    pub microsoft: MicrosoftConfig,
 }
 
 pub static CONFIG: LazyLock<Config> = LazyLock::new(|| Config {
@@ -28,4 +31,5 @@ pub static CONFIG: LazyLock<Config> = LazyLock::new(|| Config {
     jwt: JwtConfig::new(),
     bcrypt: BcryptConfig::new(),
     google: GoogleConfig::new(),
+    microsoft: MicrosoftConfig::new(),
 });
