@@ -96,3 +96,11 @@ CREATE TABLE IF NOT EXISTS donation_types(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     name varchar(16) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS donations(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    appointment_id uuid NOT NULL REFERENCES appointments(id),
+    type_id uuid NOT NULL REFERENCES donation_types(id),
+    amount int NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now()
+);
