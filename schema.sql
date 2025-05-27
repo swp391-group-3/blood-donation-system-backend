@@ -75,3 +75,9 @@ CREATE TABLE IF NOT EXISTS questions(
     content text NOT NULL,
     is_active bool NOT NULL DEFAULT true
 );
+
+CREATE TABLE IF NOT EXISTS answers(
+    question_id int NOT NULL REFERENCES questions(id),
+    appointment_id uuid NOT NULL REFERENCES appointments(id),
+    content text NOT NULL
+);
