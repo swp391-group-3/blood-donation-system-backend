@@ -1,1 +1,4 @@
--- Add up migration script here
+INSERT INTO roles(name) VALUES
+    ('member'),
+    ('staff'),
+    ('admin');

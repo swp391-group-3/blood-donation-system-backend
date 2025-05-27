@@ -1,5 +1,5 @@
 INSERT INTO donation_types(name) VALUES
-    ('whole blood'),
-    ('power red'),
+    ('whole_blood'),
+    ('power_red'),
     ('platelet'),
     ('plasma');
