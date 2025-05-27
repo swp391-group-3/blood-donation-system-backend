@@ -1,5 +1,6 @@
 pub mod auth;
 mod ping;
+pub mod question;
 
 use std::sync::Arc;
 
