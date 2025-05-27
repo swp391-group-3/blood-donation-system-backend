@@ -13,4 +13,5 @@ pub fn build() -> Router<Arc<ApiState>> {
     Router::new()
         .route("/", routing::get(ping))
         .merge(auth::build())
+        .merge(question::build())
 }
