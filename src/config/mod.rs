@@ -2,6 +2,7 @@ mod bcrypt;
 mod cors;
 mod jwt;
 mod server;
+mod google;
 
 use std::sync::LazyLock;
 
