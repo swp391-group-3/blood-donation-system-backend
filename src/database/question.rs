@@ -42,3 +42,18 @@ pub async fn update(id: i32, new_content: &str, executor: impl PgExecutor<'_>) -
 
     Ok(())
 }
+
+pub async fn delete(id: i32, executor: impl PgExecutor<'_>) -> Result<()> {
+    sqlx::query!(
+        r#"
+            UPDATE questions
+            SET is_active = false
+            WHERE id = $1
+        "#,
+        id,
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
+}
