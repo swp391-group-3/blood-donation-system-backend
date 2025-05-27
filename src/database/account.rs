@@ -41,6 +41,34 @@ pub async fn create(
     .await
 }
 
+pub async fn create_if_not_existed(
+    email: &str,
+    password: Option<String>,
+    role: Role,
+    executor: impl PgExecutor<'_>,
+) -> Result<()> {
+    let password = password.unwrap_or_else(util::auth::random_password);
+
+    sqlx::query!(
+        r#"
+            INSERT INTO accounts(email, password, role_id)
+            VALUES(
+                $1,
+                $2,
+                (SELECT id FROM roles WHERE name = $3)
+            )
+            ON CONFLICT DO NOTHING
+        "#,
+        email,
+        password,
+        role.as_ref()
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
+}
+
 pub async fn get_role(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<Role>> {
     let role = sqlx::query_scalar!(
         r#"

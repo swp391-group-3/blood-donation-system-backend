@@ -11,6 +11,7 @@ bcrypt = "0.17.0"
 chrono = "0.4.41"
 config = { version = "0.15.11", default-features = false }
 jsonwebtoken = "9.3.1"
+openidconnect = "4.0.0"
 rand = "0.9.1"
 serde = { version = "1.0.219", features = ["derive"] }
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "chrono", "uuid"] }
@@ -18,6 +19,7 @@ strum = { version = "0.27.1", features = ["derive"] }
 thiserror = "2.0.12"
 tokio = { version = "1.45.0", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["cors", "trace"] }
+tower-sessions = "0.14.0"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["fmt", "chrono", "env-filter"] }
 utoipa = { git = "https://github.com/juhaku/utoipa.git", features = ["chrono", "uuid"] }

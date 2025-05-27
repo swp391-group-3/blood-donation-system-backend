@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO accounts(email, password, role_id)\n            VALUES(\n                $1,\n                $2,\n                (SELECT id FROM roles WHERE name = $3)\n            )\n            ON CONFLICT DO NOTHING\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "46fce523159a3cecad6f20b352929cc55c243bc586619e961df587070c97ace2"
+}

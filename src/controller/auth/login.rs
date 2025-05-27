@@ -29,7 +29,10 @@ pub async fn login(
         .await?
         .ok_or(AuthError::InvalidLoginData)?;
 
-    if !bcrypt::verify(request.password, &account.password).map_err(anyhow::Error::from)? {
+    let is_password_correct = !bcrypt::verify(request.password, &account.password)
+        .map_err(|_| AuthError::InvalidLoginData)?;
+
+    if !is_password_correct {
         return Err(AuthError::InvalidLoginData.into());
     }
 

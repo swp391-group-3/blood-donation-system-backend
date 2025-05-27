@@ -1,3 +1,5 @@
+pub mod oidc;
+
 use std::sync::{Arc, LazyLock};
 
 use axum::{RequestPartsExt, extract::FromRequestParts, http::request::Parts};
