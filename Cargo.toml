@@ -19,6 +19,7 @@ strum = { version = "0.27.1", features = ["derive"] }
 thiserror = "2.0.12"
 tokio = { version = "1.45.0", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["cors", "trace"] }
+tower-sessions = "0.14.0"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["fmt", "chrono", "env-filter"] }
 utoipa = { git = "https://github.com/juhaku/utoipa.git", features = ["chrono", "uuid"] }

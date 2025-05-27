@@ -29,6 +29,7 @@ async fn build_app() -> Router {
         .merge(doc::build())
         .layer(TraceLayer::new_for_http())
         .layer(middleware::cors())
+        .layer(middleware::session())
         .with_state(state)
 }
 
