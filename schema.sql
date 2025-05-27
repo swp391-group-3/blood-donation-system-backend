@@ -91,3 +91,8 @@ CREATE TABLE IF NOT EXISTS healths(
     note text,
     created_at timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS donation_types(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name varchar(16) NOT NULL
+);
