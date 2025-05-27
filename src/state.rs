@@ -10,6 +10,7 @@ pub struct ApiState {
     pub database_pool: PgPool,
     pub http_client: reqwest::Client,
     pub google_client: util::auth::oidc::Client,
+    pub microsoft_client: util::auth::oidc::Client,
 }
 
 impl ApiState {
@@ -31,10 +32,21 @@ impl ApiState {
         .await
         .unwrap();
 
+        let microsoft_client = util::auth::oidc::new(
+            CONFIG.microsoft.client_id.clone(),
+            CONFIG.microsoft.client_secret.clone(),
+            CONFIG.microsoft.issuer_url.clone(),
+            CONFIG.microsoft.redirect_url.clone(),
+            &http_client,
+        )
+        .await
+        .unwrap();
+
         Arc::new(Self {
             database_pool,
             http_client,
             google_client,
+            microsoft_client,
         })
     }
 }
