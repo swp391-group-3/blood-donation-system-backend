@@ -69,3 +69,9 @@ CREATE TABLE IF NOT EXISTS appointments(
     request_id uuid NOT NULL REFERENCES blood_requests(id),
     member_id uuid NOT NULL REFERENCES accounts(id)
 );
+
+CREATE TABLE IF NOT EXISTS questions(
+    id serial PRIMARY KEY,
+    content text NOT NULL,
+    is_active bool NOT NULL DEFAULT true
+);
