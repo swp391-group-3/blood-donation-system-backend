@@ -63,3 +63,9 @@ CREATE TABLE IF NOT EXISTS blood_requests(
     end timestamp NOT NULL,
     created_at timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS appointments(
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    request_id uuid NOT NULL REFERENCES blood_requests(id),
+    member_id uuid NOT NULL REFERENCES accounts(id)
+);
