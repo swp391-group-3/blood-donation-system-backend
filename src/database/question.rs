@@ -1,6 +1,6 @@
 use sqlx::{PgExecutor, Result};
 
-pub async fn create(content: String, executor: impl PgExecutor<'_>) -> Result<i32> {
+pub async fn create(content: &str, executor: impl PgExecutor<'_>) -> Result<i32> {
     sqlx::query_scalar!(
         r#"
             INSERT INTO questions(content)
@@ -11,4 +11,20 @@ pub async fn create(content: String, executor: impl PgExecutor<'_>) -> Result<i3
     )
     .fetch_one(executor)
     .await
+}
+
+pub async fn update(id: i32, new_content: &str, executor: impl PgExecutor<'_>) -> Result<()> {
+    sqlx::query!(
+        r#"
+            UPDATE questions
+            SET content = $2
+            WHERE id = $1
+        "#,
+        id,
+        new_content
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
 }
