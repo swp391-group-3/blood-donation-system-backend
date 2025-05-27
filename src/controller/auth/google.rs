@@ -56,12 +56,17 @@ pub async fn authorized(
 
     tracing::info!(email =? email);
 
-    let id = database::account::create(email, None, Role::Member, &state.database_pool)
+    database::account::create_if_not_existed(email, None, Role::Member, &state.database_pool)
         .await
         .map_err(|error| {
             tracing::error!(error =? error);
             AuthError::AccountExisted
         })?;
+
+    let id = database::account::get_by_email(email, &state.database_pool)
+        .await?
+        .expect("Account must be created in previous step to get here")
+        .id;
 
     let token = generate_token(id).map_err(|error| {
         tracing::error!(error =? error);
