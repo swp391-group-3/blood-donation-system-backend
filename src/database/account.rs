@@ -3,7 +3,9 @@ use std::str::FromStr;
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
 use uuid::Uuid;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use chrono::NaiveDate;
+use utoipa::ToSchema;
 
 use crate::util;
 
@@ -16,6 +18,27 @@ pub enum Role {
     Admin,
 }
 
+#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Serialize, Deserialize, ToSchema)]
+#[schema(example = "APlus")]
+pub enum BloodGroup{
+    #[strum(serialize = "A+")]
+    APlus,
+    #[strum(serialize = "A-")]
+    AMinus,
+    #[strum(serialize = "B+")]
+    BPlus,
+    #[strum(serialize = "B-")]
+    BMinus,
+    #[strum(serialize = "AB+")]
+    ABPlus,
+    #[strum(serialize = "AB-")]   
+    ABMinus,
+    #[strum(serialize = "O+")]
+    OPlus,
+    #[strum(serialize = "O-")]
+    OMinus,
+}
+
 pub async fn create(
     email: &str,
     password: Option<String>,
@@ -26,18 +49,60 @@ pub async fn create(
 
     sqlx::query_scalar!(
         r#"
-            INSERT INTO accounts(email, password, role_id, is_active)
+            INSERT INTO accounts(email, password, role_id)
             VALUES(
                 $1,
                 $2,
-                (SELECT id FROM roles WHERE name = $3),
-                true
+                (SELECT id FROM roles WHERE name = $3)
             )
             RETURNING id
         "#,
         email,
         password,
         role.as_ref()
+    )
+    .fetch_one(executor)
+    .await
+}
+
+pub async fn create_staff(
+    email: &str,
+    password: Option<String>,
+    phone: &str,
+    name: &str,
+    gender: i32,
+    address: &str,
+    birthday: NaiveDate,
+    blood_group: BloodGroup,
+    executor: impl PgExecutor<'_>,
+) -> Result<Uuid> {
+    let password = password.unwrap_or_else(util::auth::random_password);
+
+    sqlx::query_scalar!(
+        r#"
+            INSERT INTO accounts(role_id, email, password, phone, name, gender, address, birthday, blood_group_id, is_active)
+            VALUES(
+                (SELECT id FROM roles WHERE name = 'staff'),
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                (SELECT id FROM blood_groups WHERE name = $8),
+                true
+            )
+            RETURNING id
+        "#,
+        email,
+        password,
+        phone,
+        name,
+        gender,
+        address,
+        birthday,
+        blood_group.as_ref()
     )
     .fetch_one(executor)
     .await
@@ -102,21 +167,24 @@ pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<
     .await
 }
 #[derive(Serialize)]
-pub struct AccountDetails{
-    pub id: Uuid,
-    pub email: String,
-    pub password: String,
+pub struct AccountOverview {
+    pub email: Option<String>,
+    pub phone: Option<String>,
+    pub name: Option<String>,
+    pub gender: Option<i32>,
+    pub birthday: Option<NaiveDate>,
+    pub blood_group: Option<String>,
 }
 
 pub async fn list_by_role(
     role: Role,
     executor: impl PgExecutor<'_>,
-) -> Result<Vec<AccountDetails>> {
+) -> Result<Vec<AccountOverview>> {
     sqlx::query_as!(
-        AccountDetails,
+        AccountOverview,
         r#"
-            SELECT id, password, email
-            FROM accounts
+            SELECT email, phone, accounts.name, gender, birthday, blood_groups.name AS blood_group
+            FROM accounts INNER JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
             WHERE role_id = (SELECT id FROM roles WHERE name = $1) AND is_active = true
         "#,
         role.as_ref()

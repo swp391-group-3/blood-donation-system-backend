@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::{Json, extract::State};
 
 use crate::{
-    database::{self, account::{Role, AccountDetails}},
+    database::{self, account::*},
     error::Result,
     state::ApiState,
 };
@@ -15,7 +15,7 @@ use crate::{
 )]
 pub async fn list(
     State(state): State<Arc<ApiState>>,
-) -> Result<Json<Vec<AccountDetails>>> {
+) -> Result<Json<Vec<AccountOverview>>> {
     let accounts = database::account::list_by_role(Role::Staff, &state.database_pool)
         .await?;
 

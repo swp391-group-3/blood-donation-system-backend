@@ -3,10 +3,11 @@ use std::sync::Arc;
 use axum::{Json, extract::State};
 use serde::Deserialize;
 use utoipa::ToSchema;
+use chrono::NaiveDate;
 
 use crate::{
     config::CONFIG,
-    database::{self, account::Role},
+    database::{self, account::*},
     error::{AuthError, Result},
     state::ApiState,
     util::auth::generate_token,
@@ -17,6 +18,13 @@ use crate::{
 pub struct Request {
     pub email: String,
     pub password: String,
+    pub phone: String,
+    pub name: String,
+    #[schema(example = 0)]
+    pub gender: i32,
+    pub address: String,
+    pub birthday: NaiveDate,
+    pub blood_group: BloodGroup,
 }
 
 #[utoipa::path(
@@ -40,10 +48,15 @@ pub async fn create(
     })?
     .to_string();
 
-    let id = database::account::create(
+    let id = database::account::create_staff(
         &request.email,
         Some(password),
-        Role::Staff,
+        &request.phone,
+        &request.name,
+        request.gender,
+        &request.address,
+        request.birthday,
+        request.blood_group,
         &state.database_pool,
     )
     .await?;
