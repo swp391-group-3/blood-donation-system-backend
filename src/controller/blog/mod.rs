@@ -1,16 +1,19 @@
 // do routing here
 pub mod create;
-mod list;
-mod get_by_id;
+pub mod get_by_id;
+pub mod list;
 use std::sync::Arc;
 
-use axum::{routing, Router};
+use axum::{
+    Router,
+    routing::{get, post},
+};
 
 use crate::state::ApiState;
 
-pub use create::*;
+pub use create::create_blog;
+pub use list::get_list_of_blog;
 
 pub fn build() -> Router<Arc<ApiState>> {
-    Router::new()
-        .route("/blog/create", routing::post(create_blog))
+    Router::new().route("/blog/create", post(create_blog))
 }

@@ -1,16 +1,8 @@
-// do database operations here
 
-use sqlx::{PgExecutor, Result};
+use sqlx::{query_as, PgExecutor, Result};
 use uuid::Uuid;
-
-// #[derive(Debug)]
-// pub struct Blog {
-//     pub id: Uuid,
-//     pub account_id: Uuid,
-//     pub title: String,
-//     pub content: String,
-// }
-
+use serde::Serialize;
+// Create Blog
 pub async fn create_blog(
     account_id: &Uuid,
     title: &str,
@@ -32,3 +24,28 @@ pub async fn create_blog(
 
     Ok(id)
 }
+
+#[derive(Debug, Serialize)]
+pub struct BlogResponse{
+    pub id: Uuid,
+    pub account_id: Uuid,
+    pub title: String,
+    pub content: String
+}
+
+// get list of blogs
+pub async fn get_list_of_blog(executor: impl PgExecutor<'_>) -> Result<Vec<BlogResponse>>{
+    let blogs: Vec<BlogResponse> = query_as!(
+        BlogResponse,
+        r#"
+            SELECT id, account_id, title, content
+            FROM blogs
+            ORDER BY created_at DESC
+        "#
+    ).fetch_all(executor)
+    .await?;
+
+    Ok(blogs)
+}
+
+
