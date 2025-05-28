@@ -45,6 +45,7 @@ impl Modify for SecurityAddon {
         controller::staff::create,
         controller::staff::list,
         controller::staff::get_details_by_id,
+        controller::staff::get_details_by_name,
     ),
     modifiers(&SecurityAddon),
 )]

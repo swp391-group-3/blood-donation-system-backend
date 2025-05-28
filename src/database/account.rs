@@ -227,3 +227,25 @@ pub async fn get_detailes_by_id(
     .fetch_optional(executor)
     .await
 }
+
+pub async fn get_detailes_by_name(
+    name: &str,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<AccountDetails>> {
+    let pattern = format!("%{}%", name);
+    sqlx::query_as!(
+        AccountDetails,
+        r#"
+            SELECT accounts.id, roles.name AS role, email, password, phone, accounts.name, gender, address, birthday, blood_groups.name AS blood_group
+            FROM accounts
+                LEFT JOIN roles ON accounts.role_id = roles.id
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            WHERE
+                accounts.name LIKE $1
+            LIMIT 1
+        "#,
+        pattern
+    )
+    .fetch_optional(executor)
+    .await
+}
