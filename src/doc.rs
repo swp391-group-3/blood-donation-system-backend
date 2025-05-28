@@ -42,7 +42,7 @@ impl Modify for SecurityAddon {
         controller::question::update,
         controller::question::delete,
 
-        controller::staff::create,
+        controller::staff::create_staff,
         controller::staff::list,
         controller::staff::get_details_by_id,
         controller::staff::get_details_by_name,

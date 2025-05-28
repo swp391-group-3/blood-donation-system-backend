@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[derive(Deserialize, ToSchema)]
-#[schema(as = staff::create::Request)]
+#[schema(as = staff::create_staff::Request)]
 pub struct Request {
     pub email: String,
     pub password: String,
@@ -30,10 +30,10 @@ pub struct Request {
 #[utoipa::path(
     post,
     tag = "Staff",
-    path = "/staff/create",
+    path = "/staff/create_staff",
     request_body = Request,
 )]
-pub async fn create(
+pub async fn create_staff(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
 ) -> Result<String> {
