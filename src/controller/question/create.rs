@@ -9,6 +9,7 @@ use crate::{database, error::Result, state::ApiState};
     tag = "Question",
     path = "/question",
     request_body = String,
+    security(("jwt_token" = []))
 )]
 #[axum::debug_handler]
 pub async fn create(State(state): State<Arc<ApiState>>, content: String) -> Result<Json<i32>> {

@@ -11,7 +11,8 @@ use crate::{database, error::Result, state::ApiState};
     params(
         ("id" = i32, Path, description = "Question id")
     ),
-    request_body = String
+    request_body = String,
+    security(("jwt_token" = []))
 )]
 #[axum::debug_handler]
 pub async fn update(
