@@ -15,5 +15,7 @@ pub use create::create_blog;
 pub use list::get_list_of_blog;
 
 pub fn build() -> Router<Arc<ApiState>> {
-    Router::new().route("/blog/create", post(create_blog))
+    Router::new()
+        .route("/blog/create", post(create_blog))
+        .route("/blog/getList", get(get_list_of_blog))
 }
