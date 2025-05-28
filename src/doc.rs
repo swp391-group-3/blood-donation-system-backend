@@ -41,9 +41,10 @@ impl Modify for SecurityAddon {
         controller::question::get_all,
         controller::question::update,
         controller::question::delete,
-        
+
         controller::staff::create,
         controller::staff::list,
+        controller::staff::get_details_by_id,
     ),
     modifiers(&SecurityAddon),
 )]

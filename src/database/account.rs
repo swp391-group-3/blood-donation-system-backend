@@ -166,9 +166,10 @@ pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<
     .fetch_optional(executor)
     .await
 }
+
 #[derive(Serialize)]
 pub struct AccountOverview {
-    pub email: Option<String>,
+    pub email: String,
     pub phone: Option<String>,
     pub name: Option<String>,
     pub gender: Option<i32>,
@@ -184,11 +185,45 @@ pub async fn list_by_role(
         AccountOverview,
         r#"
             SELECT email, phone, accounts.name, gender, birthday, blood_groups.name AS blood_group
-            FROM accounts INNER JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            FROM accounts LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
             WHERE role_id = (SELECT id FROM roles WHERE name = $1) AND is_active = true
         "#,
         role.as_ref()
     )
     .fetch_all(executor)
+    .await
+}
+
+#[derive(Serialize)]
+pub struct AccountDetails {
+    pub id: Uuid,
+    pub role: String,
+    pub email: String,
+    pub password: String,
+    pub phone: Option<String>,
+    pub name: Option<String>,
+    pub gender: Option<i32>,
+    pub address: Option<String>,
+    pub birthday: Option<NaiveDate>,
+    pub blood_group: Option<String>,
+}
+
+pub async fn get_detailes_by_id(
+    id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<AccountDetails>> {
+    sqlx::query_as!(
+        AccountDetails,
+        r#"
+            SELECT accounts.id, roles.name AS role, email, password, phone, accounts.name, gender, address, birthday, blood_groups.name AS blood_group
+            FROM accounts
+                LEFT JOIN roles ON accounts.role_id = roles.id
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            WHERE
+                accounts.id = $1
+        "#,
+        id
+    )
+    .fetch_optional(executor)
     .await
 }
