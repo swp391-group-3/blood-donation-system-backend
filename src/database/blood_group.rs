@@ -1,6 +1,7 @@
+use serde::Deserialize;
 use strum::{AsRefStr, EnumString};
 
-#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString)]
+#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Deserialize)]
 pub enum BloodGroup {
     #[strum(serialize = "O+")]
     OPlus,

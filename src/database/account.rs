@@ -1,10 +1,14 @@
 use std::str::FromStr;
 
+use chrono::NaiveDate;
+use serde::Deserialize;
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
 use uuid::Uuid;
 
 use crate::util;
+
+use super::blood_group::BloodGroup;
 
 #[allow(unused)]
 #[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString)]
@@ -62,6 +66,55 @@ pub async fn create_if_not_existed(
         email,
         password,
         role.as_ref()
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
+}
+
+#[derive(Clone, Copy, Deserialize)]
+#[repr(i32)]
+pub enum Gender {
+    Male,
+    Female,
+}
+
+#[derive(Deserialize)]
+pub struct AccountDetail {
+    pub phone: String,
+    pub name: String,
+    pub gender: Gender,
+    pub address: String,
+    pub birthday: NaiveDate,
+    pub blood_group: BloodGroup,
+}
+
+pub async fn activate(
+    id: Uuid,
+    detail: &AccountDetail,
+    executor: impl PgExecutor<'_>,
+) -> Result<()> {
+    sqlx::query!(
+        r#"
+            UPDATE accounts
+            SET
+                phone = $2,
+                name = $3,
+                gender = $4,
+                address = $5,
+                birthday = $6,
+                blood_group_id = (SELECT id FROM blood_groups WHERE name = $7),
+                is_active = true
+            WHERE id = $1
+        "#,
+        id,
+        detail.phone,
+        detail.name,
+        detail.gender as i32,
+        detail.address,
+        detail.birthday,
+        detail.blood_group.as_ref(),
     )
     .execute(executor)
     .await?;
