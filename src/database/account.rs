@@ -1,5 +1,4 @@
 use std::str::FromStr;
-
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
 use uuid::Uuid;
