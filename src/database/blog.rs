@@ -48,4 +48,20 @@ pub async fn get_list_of_blog(executor: impl PgExecutor<'_>) -> Result<Vec<BlogR
     Ok(blogs)
 }
 
+// get blog by id
+pub async fn get_blog_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<BlogResponse>> {
+    let blog: Option<BlogResponse> = query_as!(
+        BlogResponse,
+        r#"
+            SELECT id, account_id, title, content
+            FROM blogs
+            WHERE id = $1
+        "#,
+        id
+    ).fetch_optional(executor)
+    .await?;
+
+    Ok(blog)
+}
+
 

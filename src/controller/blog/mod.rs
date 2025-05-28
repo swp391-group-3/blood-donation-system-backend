@@ -8,6 +8,7 @@ use axum::{
     Router,
     routing::{get, post},
 };
+use get_by_id::get_by_id;
 
 use crate::state::ApiState;
 
@@ -18,4 +19,5 @@ pub fn build() -> Router<Arc<ApiState>> {
     Router::new()
         .route("/blog/create", post(create_blog))
         .route("/blog/getList", get(get_list_of_blog))
+        .route("/blog/{id}", get(get_by_id))
 }
