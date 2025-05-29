@@ -43,6 +43,11 @@ impl Modify for SecurityAddon {
         controller::question::get_all,
         controller::question::update,
         controller::question::delete,
+
+        controller::blood_request::create,
+        controller::blood_request::get_all,
+        controller::blood_request::update,
+        controller::blood_request::delete,
     ),
     modifiers(&SecurityAddon),
 )]
