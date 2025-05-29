@@ -2,6 +2,7 @@ pub mod auth;
 pub mod blood_request;
 mod ping;
 pub mod question;
+pub mod appointment;
 
 use std::sync::Arc;
 
