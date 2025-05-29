@@ -19,10 +19,14 @@ pub async fn create(
     .await
 }
 
-pub async fn delete(id: Uuid, executor: impl PgExecutor<'_>) -> Result<()> {
-    sqlx::query!("DELETE FROM appointments WHERE id = $1", id)
-        .execute(executor)
-        .await?;
+pub async fn delete(id: Uuid, member_id: Uuid, executor: impl PgExecutor<'_>) -> Result<()> {
+    sqlx::query!(
+        "DELETE FROM appointments WHERE id = $1 AND member_id = $2",
+        id,
+        member_id
+    )
+    .execute(executor)
+    .await?;
 
     Ok(())
 }
