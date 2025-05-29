@@ -1,7 +1,9 @@
+mod activate;
 pub mod google;
 mod login;
 pub mod microsoft;
 mod register;
+mod status;
 
 use std::sync::Arc;
 
@@ -9,8 +11,10 @@ use axum::{Router, routing};
 
 use crate::state::ApiState;
 
+pub use activate::*;
 pub use login::*;
 pub use register::*;
+pub use status::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
     Router::new()
@@ -23,4 +27,6 @@ pub fn build() -> Router<Arc<ApiState>> {
             "/auth/microsoft/authorized",
             routing::get(microsoft::authorized),
         )
+        .route("/auth/activate", routing::post(activate))
+        .route("/auth/status", routing::get(status))
 }

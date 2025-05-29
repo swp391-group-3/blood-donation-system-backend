@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS blogs(
     account_id uuid NOT NULL REFERENCES accounts(id),
     title text NOT NULL,
     content text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS comments(
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS comments(
     blog_id uuid NOT NULL REFERENCES blogs(id),
     account_id uuid NOT NULL REFERENCES accounts(id),
     content text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS tags(

@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS accounts(
     birthday date,
     blood_group_id uuid REFERENCES blood_groups(id),
     is_active boolean NOT NULL DEFAULT false,
-    created_at timestamp NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL DEFAULT now()
 );

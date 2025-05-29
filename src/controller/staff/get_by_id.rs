@@ -12,7 +12,7 @@ use crate::{
 };
 
 #[derive(Deserialize, ToSchema)]
-#[schema(as = staff::get_detailes_by_id::Request)]
+#[schema(as = staff::get_by_id::Request)]
 pub struct Request{
     pub id: Uuid,
 }
@@ -20,14 +20,14 @@ pub struct Request{
 #[utoipa::path(
     post,
     tag = "Staff",
-    path = "/staff/get_details_by_id",
+    path = "/staff/get_by_id",
     request_body = Request,
 )]
-pub async fn get_details_by_id(
+pub async fn get_by_id(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
-) -> Result<Json<Option<AccountDetails>>> {
-    let account_details = database::account::get_detailes_by_id(request.id, &state.database_pool)
+) -> Result<Json<Option<StaffDetail>>> {
+    let account_details = database::account::get_staff_by_id(request.id, &state.database_pool)
         .await?;
 
     Ok(Json(account_details))

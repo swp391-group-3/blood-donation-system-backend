@@ -7,21 +7,20 @@ use chrono::NaiveDate;
 
 use crate::{
     config::CONFIG,
-    database::{self, account::*},
+    database::{self, blood_group::*, account::*},
     error::{AuthError, Result},
     state::ApiState,
     util::auth::generate_token,
 };
 
 #[derive(Deserialize, ToSchema)]
-#[schema(as = staff::create_staff::Request)]
+#[schema(as = staff::create::Request)]
 pub struct Request {
     pub email: String,
     pub password: String,
     pub phone: String,
     pub name: String,
-    #[schema(example = 0)]
-    pub gender: i32,
+    pub gender: Gender,
     pub address: String,
     pub birthday: NaiveDate,
     pub blood_group: BloodGroup,
@@ -30,10 +29,10 @@ pub struct Request {
 #[utoipa::path(
     post,
     tag = "Staff",
-    path = "/staff/create_staff",
+    path = "/staff/create",
     request_body = Request,
 )]
-pub async fn create_staff(
+pub async fn create(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
 ) -> Result<String> {

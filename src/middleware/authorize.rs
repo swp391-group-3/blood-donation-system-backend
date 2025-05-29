@@ -13,7 +13,6 @@ use crate::{
     util::auth::Claims,
 };
 
-#[allow(unused)]
 pub async fn authorize(
     roles: &[Role],
     claims: Claims,
@@ -21,11 +20,15 @@ pub async fn authorize(
     request: Request,
     next: Next,
 ) -> Result<Response> {
-    let role = database::account::get_role(claims.sub, &state.database_pool)
+    let auth_status = database::account::get_auth_status(claims.sub, &state.database_pool)
         .await?
         .ok_or(AuthError::InvalidAuthToken)?;
 
-    if !roles.contains(&role) {
+    if !auth_status.is_active {
+        return Err(AuthError::ActivationRequired.into());
+    }
+
+    if !roles.contains(&auth_status.role) {
         return Err(AuthError::MissingPermission.into());
     }
 

@@ -36,16 +36,23 @@ impl Modify for SecurityAddon {
         controller::auth::login,
         controller::auth::google::google,
         controller::auth::microsoft::microsoft,
+        controller::auth::activate,
+        controller::auth::status,
 
         controller::question::create,
         controller::question::get_all,
         controller::question::update,
         controller::question::delete,
 
-        controller::staff::create_staff,
-        controller::staff::list,
-        controller::staff::get_details_by_id,
-        controller::staff::get_details_by_name,
+        controller::staff::create,
+        controller::staff::get_all,
+        controller::staff::get_by_id,
+        controller::staff::get_by_name,
+
+        controller::blood_request::create,
+        controller::blood_request::get_all,
+        controller::blood_request::update,
+        controller::blood_request::delete,
     ),
     modifiers(&SecurityAddon),
 )]

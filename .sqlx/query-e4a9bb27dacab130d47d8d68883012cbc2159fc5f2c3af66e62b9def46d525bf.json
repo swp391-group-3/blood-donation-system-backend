@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE blood_requests\n            SET\n                priority_id = COALESCE(\n                    (SELECT id FROM request_priorities WHERE name = $2),\n                    priority_id\n                ),\n                title = COALESCE($3, title),\n                max_people = COALESCE($4, max_people)\n            WHERE id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text",
+        "Text",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "e4a9bb27dacab130d47d8d68883012cbc2159fc5f2c3af66e62b9def46d525bf"
+}

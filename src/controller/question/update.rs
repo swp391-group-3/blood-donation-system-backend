@@ -8,13 +8,13 @@ use crate::{database, error::Result, state::ApiState};
     put,
     tag = "Question",
     path = "/question/{id}",
+    operation_id = "question::update",
     params(
         ("id" = i32, Path, description = "Question id")
     ),
     request_body = String,
     security(("jwt_token" = []))
 )]
-#[axum::debug_handler]
 pub async fn update(
     State(state): State<Arc<ApiState>>,
     Path(id): Path<i32>,

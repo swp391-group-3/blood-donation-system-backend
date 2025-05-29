@@ -19,14 +19,14 @@ pub struct Request{
 #[utoipa::path(
     post,
     tag = "Staff",
-    path = "/staff/get_details_by_name",
+    path = "/staff/get_by_name",
     request_body = Request,
 )]
-pub async fn get_details_by_name(
+pub async fn get_by_name(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
-) -> Result<Json<Option<AccountDetails>>> {
-    let account_details = database::account::get_detailes_by_name(&request.name, &state.database_pool)
+) -> Result<Json<Option<StaffDetail>>> {
+    let account_details = database::account::get_staff_by_name(&request.name, &state.database_pool)
         .await?;
 
     Ok(Json(account_details))
