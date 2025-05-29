@@ -14,7 +14,7 @@ use crate::{database, error::Result, state::ApiState, util::auth::Claims};
 #[derive(Deserialize, ToSchema)]
 pub struct Answer {
     pub question_id: i32,
-    pub content: String,
+    pub answer: String,
 }
 
 #[derive(Deserialize, ToSchema)]
@@ -60,7 +60,7 @@ pub async fn create_appointment(
         database::answer::create(
             answer.question_id,
             appointment_id,
-            &answer.content,
+            &answer.answer,
             &mut *transaction,
         )
         .await?;
