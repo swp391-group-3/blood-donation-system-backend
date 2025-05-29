@@ -1,8 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Json, extract::State};
-use serde::Deserialize;
-use utoipa::ToSchema;
+use axum::{Json, extract::{Path, State}};
 use uuid::Uuid;
 
 use crate::{
@@ -11,23 +9,20 @@ use crate::{
     state::ApiState,
 };
 
-#[derive(Deserialize, ToSchema)]
-#[schema(as = staff::get_by_id::Request)]
-pub struct Request{
-    pub id: Uuid,
-}
-
 #[utoipa::path(
-    post,
+    get,
     tag = "Staff",
-    path = "/staff/get_by_id",
-    request_body = Request,
+    path = "/staff/get_by_id/{id}",
+    operation_id = "staff::get_by_id",
+    params(
+        ("id" = Uuid, Path, description = "The UUID of the staff member")
+    )
 )]
 pub async fn get_by_id(
     State(state): State<Arc<ApiState>>,
-    Json(request): Json<Request>,
+    Path(id): Path<Uuid>,
 ) -> Result<Json<Option<StaffDetail>>> {
-    let account_details = database::account::get_staff_by_id(request.id, &state.database_pool)
+    let account_details = database::account::get_staff_by_id(id, &state.database_pool)
         .await?;
 
     Ok(Json(account_details))

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Json, extract::State};
+use axum::{Json, extract::{Query, State}};
 use serde::Deserialize;
 use utoipa::ToSchema;
 
@@ -11,20 +11,23 @@ use crate::{
 };
 
 #[derive(Deserialize, ToSchema)]
-#[schema(as = staff::get_detailes_by_name::Request)]
-pub struct Request{
+#[schema(as = staff::get_by_name::Request)]
+pub struct Request {
     pub name: String,
 }
 
 #[utoipa::path(
-    post,
+    get,
     tag = "Staff",
     path = "/staff/get_by_name",
-    request_body = Request,
+    operation_id = "staff::get_by_name",
+    params(
+        ("name" = String, Query, description = "Name of the staff to search for")
+    )
 )]
 pub async fn get_by_name(
     State(state): State<Arc<ApiState>>,
-    Json(request): Json<Request>,
+    Query(request): Query<Request>,
 ) -> Result<Json<Option<StaffDetail>>> {
     let account_details = database::account::get_staff_by_name(&request.name, &state.database_pool)
         .await?;

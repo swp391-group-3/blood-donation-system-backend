@@ -30,6 +30,7 @@ pub struct Request {
     post,
     tag = "Staff",
     path = "/staff/create",
+    operation_id = "staff::create",
     request_body = Request,
 )]
 pub async fn create(

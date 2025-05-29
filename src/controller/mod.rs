@@ -1,3 +1,4 @@
+pub mod appointment;
 pub mod auth;
 pub mod staff;
 pub mod blood_request;
@@ -17,5 +18,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .merge(auth::build())
         .merge(staff::build())
         .merge(question::build(state.clone()))
-        .merge(blood_request::build(state))
+        .merge(blood_request::build(state.clone()))
+        .merge(appointment::build(state))
 }

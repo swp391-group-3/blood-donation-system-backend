@@ -10,6 +10,7 @@ axum-extra = { version = "0.10.1", features = ["typed-header", "cookie"] }
 bcrypt = "0.17.0"
 chrono = "0.4.41"
 config = { version = "0.15.11", default-features = false }
+futures = "0.3.31"
 jsonwebtoken = "9.3.1"
 openidconnect = "4.0.0"
 rand = "0.9.1"

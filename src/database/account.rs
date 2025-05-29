@@ -298,3 +298,21 @@ pub async fn get_staff_by_name(
     .fetch_optional(executor)
     .await
 }
+
+pub async fn delete(
+    id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<()> {
+    sqlx::query!(
+        r#"
+            UPDATE accounts
+            SET is_active = false
+            WHERE id = $1
+        "#,
+        id
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
+}

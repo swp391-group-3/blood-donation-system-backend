@@ -5,7 +5,6 @@ use strum::{AsRefStr, EnumString};
 use utoipa::ToSchema;
 
 #[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Serialize, Deserialize, ToSchema)]
-#[schema(example = "OPlus")]
 pub enum BloodGroup {
     #[strum(serialize = "O+")]
     OPlus,
