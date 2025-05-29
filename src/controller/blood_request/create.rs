@@ -28,6 +28,7 @@ pub struct Request {
     post,
     tag = "Blood Request",
     path = "/blood-request",
+    operation_id = "blood_request::create",
     request_body = Request,
     security(("jwt_token" = []))
 )]
