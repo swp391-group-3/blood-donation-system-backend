@@ -18,6 +18,9 @@ pub enum AuthError {
 
     #[error("Missing required permission")]
     MissingPermission,
+
+    #[error("Account is not activated")]
+    ActivationRequired,
 }
 
 impl IntoResponse for AuthError {
@@ -28,6 +31,7 @@ impl IntoResponse for AuthError {
             AuthError::MissingAuthToken => StatusCode::UNAUTHORIZED,
             AuthError::InvalidAuthToken => StatusCode::UNAUTHORIZED,
             AuthError::MissingPermission => StatusCode::FORBIDDEN,
+            AuthError::ActivationRequired => StatusCode::FORBIDDEN,
         };
 
         let response = ErrorResponse {

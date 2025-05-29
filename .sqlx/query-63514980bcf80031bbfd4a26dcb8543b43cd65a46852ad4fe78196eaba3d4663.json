@@ -1,0 +1,20 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE accounts\n            SET\n                phone = $2,\n                name = $3,\n                gender = $4,\n                address = $5,\n                birthday = $6,\n                blood_group_id = (SELECT id FROM blood_groups WHERE name = $7),\n                is_active = true\n            WHERE id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Varchar",
+        "Varchar",
+        "Int4",
+        "Text",
+        "Date",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "63514980bcf80031bbfd4a26dcb8543b43cd65a46852ad4fe78196eaba3d4663"
+}
