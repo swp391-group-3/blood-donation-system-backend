@@ -1,4 +1,5 @@
-use serde::Deserialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
@@ -27,6 +28,51 @@ pub async fn create(
         note
     )
     .fetch_one(executor)
+    .await
+}
+
+#[derive(Serialize, ToSchema)]
+pub struct Health {
+    pub id: Uuid,
+    pub temperature: f32,
+    pub weight: f32,
+    pub height: f32,
+    pub is_good_health: bool,
+    pub note: Option<String>,
+    pub created_at: DateTime<Utc>,
+}
+
+pub async fn get_by_appoinment_id(
+    appointment_id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<Health>> {
+    sqlx::query_as!(
+        Health,
+        r#"
+            SELECT id, temperature, weight, height, is_good_health, note, created_at
+            FROM healths
+            WHERE appointment_id = $1
+        "#,
+        appointment_id
+    )
+    .fetch_optional(executor)
+    .await
+}
+
+pub async fn get_by_member_id(
+    member_id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Vec<Health>> {
+    sqlx::query_as!(
+        Health,
+        r#"
+            SELECT id, temperature, weight, height, is_good_health, note, created_at
+            FROM healths
+            WHERE appointment_id IN (SELECT id FROM appointments WHERE member_id = $1)
+        "#,
+        member_id
+    )
+    .fetch_all(executor)
     .await
 }
 
