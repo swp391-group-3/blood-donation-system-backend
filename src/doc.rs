@@ -31,11 +31,36 @@ impl Modify for SecurityAddon {
 #[openapi(
     paths(
         controller::ping,
+
         controller::auth::register,
         controller::auth::login,
         controller::auth::google::google,
         controller::auth::microsoft::microsoft,
-        //controller::blog::create,
+        controller::auth::activate,
+        controller::auth::status,
+
+        controller::question::create,
+        controller::question::get_all,
+        controller::question::update,
+        controller::question::delete,
+
+        controller::staff::create,
+        controller::staff::get_all,
+        controller::staff::get_by_id,
+        controller::staff::get_by_name,
+        controller::staff::delete,
+
+        controller::blood_request::create,
+        controller::blood_request::get_all,
+        controller::blood_request::update,
+        controller::blood_request::delete,
+        controller::blood_request::create_appointment,
+
+        controller::appointment::delete,
+
+        controller::blog::create,
+        controller::blog::get_by_id,
+        controller::blog::get_list,
     ),
     modifiers(&SecurityAddon),
 )]

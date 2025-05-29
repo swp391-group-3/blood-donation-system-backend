@@ -4,9 +4,9 @@ CREATE TABLE IF NOT EXISTS blood_requests(
     blood_group_id uuid NOT NULL REFERENCES blood_groups(id),
     title text NOT NULL,
     max_people int NOT NULL,
-    start_time timestamp NOT NULL,
-    end_time timestamp NOT NULL,
-    created_at timestamp NOT NULL DEFAULT now()
+    start_time timestamptz NOT NULL,
+    end_time timestamptz NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS appointments(
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS healths(
     weight real NOT NULL,
     is_good_health bool NOT NULL,
     note text,
-    created_at timestamp NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS donation_types(
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS donations(
     appointment_id uuid NOT NULL REFERENCES appointments(id),
     type_id uuid NOT NULL REFERENCES donation_types(id),
     amount int NOT NULL,
-    created_at timestamp NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS blood_components(
@@ -61,5 +61,5 @@ CREATE TABLE IF NOT EXISTS blood_bags(
     component_id uuid NOT NULL REFERENCES blood_components(id),
     is_used bool NOT NULL DEFAULT false,
     amount int NOT NULL,
-    expired_time timestamp NOT NULL
+    expired_time timestamptz NOT NULL
 );

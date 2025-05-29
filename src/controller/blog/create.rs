@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-use serde::Deserialize;
-// use utoipa::{ schema, ToSchema};
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+use uuid::Uuid;
 
 use crate::{
     database::{self},
@@ -10,21 +11,29 @@ use crate::{
     state::ApiState,
 };
 
-use uuid::Uuid;
 
-#[derive(Deserialize)]
-//#[schema(as = blog::create::Request)]
-pub struct Request{
+#[derive(Deserialize, Serialize, ToSchema)]
+pub struct Request{ 
     pub account_id: Uuid,
     pub title: String,
     pub content: String,
 }
-
-pub async fn create_blog(
+#[utoipa::path(
+    post,
+    tag = "Blog",
+    path = "/blog/create",
+    params(
+        ("request" = Request, description = "Request Object")
+    ),
+    responses(
+        (status = 200, description = "Create blog successfully", body = String)
+    )
+)]
+pub async fn create(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
 ) -> Result<String> {
-    let id = database::blog::create_blog(
+    let id = database::blog::create(
         &request.account_id,
         &request.title,
         &request.content,

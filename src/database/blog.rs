@@ -1,9 +1,10 @@
 
 use sqlx::{query_as, PgExecutor, Result};
+use utoipa::ToSchema;
 use uuid::Uuid;
 use serde::Serialize;
 // Create Blog
-pub async fn create_blog(
+pub async fn create(
     account_id: &Uuid,
     title: &str,
     content: &str,
@@ -25,7 +26,7 @@ pub async fn create_blog(
     Ok(id)
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct BlogResponse{
     pub id: Uuid,
     pub account_id: Uuid,
@@ -34,7 +35,7 @@ pub struct BlogResponse{
 }
 
 // get list of blogs
-pub async fn get_list_of_blog(executor: impl PgExecutor<'_>) -> Result<Vec<BlogResponse>>{
+pub async fn get_list(executor: impl PgExecutor<'_>) -> Result<Vec<BlogResponse>>{
     let blogs: Vec<BlogResponse> = query_as!(
         BlogResponse,
         r#"
@@ -49,7 +50,7 @@ pub async fn get_list_of_blog(executor: impl PgExecutor<'_>) -> Result<Vec<BlogR
 }
 
 // get blog by id
-pub async fn get_blog_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<BlogResponse>> {
+pub async fn get_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<BlogResponse>> {
     let blog: Option<BlogResponse> = query_as!(
         BlogResponse,
         r#"

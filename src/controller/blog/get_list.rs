@@ -5,11 +5,18 @@ use crate::{
     database::{self, blog::*},
     state::ApiState,
 };
-
-pub async fn get_list_of_blog(
+#[utoipa::path(
+    post,
+    tag = "Blog",
+    path = "/blog/getList",
+    responses(
+        (status = 200, description = "Get Blog Successfully", body = BlogResponse)
+    )
+)]
+pub async fn get_list(
     State(state): State<Arc<ApiState>>,
 ) -> Result<Json<Vec<BlogResponse>>, (StatusCode, String)> {
-    let blogs: Vec<BlogResponse> = database::blog::get_list_of_blog(&state.database_pool)
+    let blogs: Vec<BlogResponse> = database::blog::get_list(&state.database_pool)
         .await
         .map_err(|e| {
             (
