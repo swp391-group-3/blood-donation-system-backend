@@ -12,7 +12,7 @@ use crate::{
 #[utoipa::path(
     post,
     tag = "Auth",
-    path = "/auth/register",
+    path = "/auth/activate",
     request_body = AccountDetail,
 )]
 pub async fn activate(

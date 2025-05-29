@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use chrono::NaiveDate;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
 use utoipa::ToSchema;
@@ -12,7 +12,7 @@ use crate::util;
 use super::blood_group::BloodGroup;
 
 #[allow(unused)]
-#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString)]
+#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Serialize, ToSchema)]
 #[strum(serialize_all = "snake_case")]
 pub enum Role {
     Member,
@@ -123,6 +123,7 @@ pub async fn activate(
     Ok(())
 }
 
+#[derive(Serialize, ToSchema)]
 pub struct AuthStatus {
     pub is_active: bool,
     pub role: Role,
