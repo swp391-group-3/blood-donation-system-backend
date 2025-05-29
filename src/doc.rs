@@ -49,6 +49,8 @@ impl Modify for SecurityAddon {
         controller::blood_request::update,
         controller::blood_request::delete,
         controller::blood_request::create_appointment,
+
+        controller::appointment::delete
     ),
     modifiers(&SecurityAddon),
 )]
