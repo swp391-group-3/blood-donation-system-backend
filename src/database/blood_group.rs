@@ -1,8 +1,10 @@
-use serde::Deserialize;
+use std::str::FromStr;
+
+use serde::{Deserialize, Serialize};
 use strum::{AsRefStr, EnumString};
 use utoipa::ToSchema;
 
-#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Deserialize, ToSchema)]
+#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Serialize, Deserialize, ToSchema)]
 pub enum BloodGroup {
     #[strum(serialize = "O+")]
     OPlus,
@@ -20,4 +22,10 @@ pub enum BloodGroup {
     ABPlus,
     #[strum(serialize = "AB-")]
     ABMinus,
+}
+
+impl From<String> for BloodGroup {
+    fn from(value: String) -> Self {
+        Self::from_str(&value).unwrap()
+    }
 }

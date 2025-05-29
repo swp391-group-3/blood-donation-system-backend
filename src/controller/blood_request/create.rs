@@ -7,7 +7,11 @@ use utoipa::ToSchema;
 use uuid::Uuid;
 
 use crate::{
-    database::{self, blood_group::BloodGroup, blood_request::Priority},
+    database::{
+        self,
+        blood_group::BloodGroup,
+        blood_request::{CreateBloodRequest, Priority},
+    },
     error::Result,
     state::ApiState,
     util::auth::Claims,
@@ -38,7 +42,7 @@ pub async fn create(
     Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
     let id = database::blood_request::create(
-        &database::blood_request::Create {
+        &CreateBloodRequest {
             staff_id: claims.sub,
             blood_group: request.blood_group,
             priority: request.priority,

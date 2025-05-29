@@ -1,5 +1,5 @@
 pub mod auth;
-mod blood_request;
+pub mod blood_request;
 mod ping;
 pub mod question;
 
