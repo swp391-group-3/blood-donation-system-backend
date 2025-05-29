@@ -13,7 +13,6 @@ use crate::{
     util::auth::Claims,
 };
 
-#[allow(unused)]
 pub async fn authorize(
     roles: &[Role],
     claims: Claims,
@@ -21,6 +20,10 @@ pub async fn authorize(
     request: Request,
     next: Next,
 ) -> Result<Response> {
+    if !database::account::is_active(claims.sub, &state.database_pool).await? {
+        return Err(AuthError::ActivationRequired.into());
+    }
+
     let role = database::account::get_role(claims.sub, &state.database_pool)
         .await?
         .ok_or(AuthError::InvalidAuthToken)?;

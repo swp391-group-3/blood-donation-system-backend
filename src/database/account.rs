@@ -123,6 +123,13 @@ pub async fn activate(
     Ok(())
 }
 
+pub async fn is_active(id: Uuid, executor: impl PgExecutor<'_>) -> Result<bool> {
+    sqlx::query_scalar!("SELECT is_active FROM accounts WHERE id = $1", id)
+        .fetch_optional(executor)
+        .await
+        .map(|is_active| is_active.unwrap_or(false))
+}
+
 pub async fn get_role(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<Role>> {
     let role = sqlx::query_scalar!(
         r#"
