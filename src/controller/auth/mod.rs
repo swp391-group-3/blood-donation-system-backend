@@ -1,3 +1,4 @@
+mod activate;
 pub mod google;
 mod login;
 pub mod microsoft;
@@ -9,6 +10,7 @@ use axum::{Router, routing};
 
 use crate::state::ApiState;
 
+pub use activate::*;
 pub use login::*;
 pub use register::*;
 
@@ -23,4 +25,5 @@ pub fn build() -> Router<Arc<ApiState>> {
             "/auth/microsoft/authorized",
             routing::get(microsoft::authorized),
         )
+        .route("/auth/activate", routing::get(activate))
 }
