@@ -2,6 +2,7 @@ mod create;
 mod create_appointment;
 mod delete;
 mod get_all;
+mod get_booked;
 mod update;
 
 use std::sync::Arc;
@@ -19,6 +20,7 @@ pub use create::*;
 pub use create_appointment::*;
 pub use delete::*;
 pub use get_all::*;
+pub use get_booked::*;
 pub use update::*;
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
@@ -32,7 +34,11 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
                 middleware::authorize(&[Role::Staff], claims, state, request, next)
             },
         ))
-        .route("/blood-request/{id}/create-appointment", routing::post(create_appointment))
+        .route(
+            "/blood-request/{id}/create-appointment",
+            routing::post(create_appointment),
+        )
+        .route("/blood-request/get-booked", routing::get(get_booked))
         .layer(axum::middleware::from_fn_with_state(
             state,
             |state: State<Arc<ApiState>>, claims: Claims, request: Request, next: Next| {
