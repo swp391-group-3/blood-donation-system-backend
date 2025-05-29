@@ -80,6 +80,16 @@ pub async fn create(params: &CreateBloodRequest, executor: impl PgExecutor<'_>) 
     .await
 }
 
+pub async fn count_appointment(id: Uuid, executor: impl PgExecutor<'_>) -> Result<i64> {
+    sqlx::query_scalar!(
+        "SELECT COUNT(id) FROM appointments WHERE request_id = $1",
+        id,
+    )
+    .fetch_one(executor)
+    .await
+    .map(|count| count.unwrap_or(0))
+}
+
 #[derive(Serialize, ToSchema)]
 pub struct BloodRequest {
     pub blood_group: BloodGroup,

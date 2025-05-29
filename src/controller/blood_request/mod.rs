@@ -1,3 +1,4 @@
+mod count_appointment;
 mod create;
 mod create_appointment;
 mod delete;
@@ -16,6 +17,7 @@ use axum::{
 
 use crate::{database::account::Role, middleware, state::ApiState, util::auth::Claims};
 
+pub use count_appointment::*;
 pub use create::*;
 pub use create_appointment::*;
 pub use delete::*;
@@ -46,4 +48,8 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
             },
         ))
         .route("/blood-request", routing::get(get_all))
+        .route(
+            "/blood-request/{id}/count-appointment",
+            routing::get(count_appointment),
+        )
 }
