@@ -1,10 +1,6 @@
 use std::sync::Arc;
 
-use axum::{
-    Json,
-    extract::{Path, State},
-};
-use uuid::Uuid;
+use axum::{Json, extract::State};
 
 use crate::{
     database::{self, health::Health},
