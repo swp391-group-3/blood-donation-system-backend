@@ -1,10 +1,13 @@
 use chrono::{DateTime, Utc};
+use serde::Deserialize;
 use sqlx::{PgExecutor, Result};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use super::blood_group::BloodGroup;
 
 #[repr(i32)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, ToSchema)]
 pub enum Priority {
     Low,
     Medium,
