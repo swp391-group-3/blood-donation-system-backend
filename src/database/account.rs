@@ -4,6 +4,7 @@ use chrono::NaiveDate;
 use serde::Deserialize;
 use sqlx::{PgExecutor, Result};
 use strum::{AsRefStr, EnumString};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use crate::util;
@@ -73,14 +74,14 @@ pub async fn create_if_not_existed(
     Ok(())
 }
 
-#[derive(Clone, Copy, Deserialize)]
+#[derive(Clone, Copy, Deserialize, ToSchema)]
 #[repr(i32)]
 pub enum Gender {
     Male,
     Female,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, ToSchema)]
 pub struct AccountDetail {
     pub phone: String,
     pub name: String,

@@ -1,7 +1,8 @@
 use serde::Deserialize;
 use strum::{AsRefStr, EnumString};
+use utoipa::ToSchema;
 
-#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Deserialize)]
+#[derive(PartialEq, Eq, Clone, Copy, AsRefStr, EnumString, Deserialize, ToSchema)]
 pub enum BloodGroup {
     #[strum(serialize = "O+")]
     OPlus,
