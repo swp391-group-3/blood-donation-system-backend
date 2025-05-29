@@ -1,3 +1,4 @@
+pub mod appointment;
 pub mod auth;
 pub mod blood_request;
 mod ping;
@@ -15,5 +16,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/", routing::get(ping))
         .merge(auth::build())
         .merge(question::build(state.clone()))
-        .merge(blood_request::build(state))
+        .merge(blood_request::build(state.clone()))
+        .merge(appointment::build(state))
 }

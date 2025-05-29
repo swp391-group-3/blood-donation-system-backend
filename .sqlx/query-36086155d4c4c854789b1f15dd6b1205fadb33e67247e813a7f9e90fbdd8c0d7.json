@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                blood_groups.name as blood_group,\n                request_priorities.name as priority,\n                title,\n                max_people,\n                start_time,\n                end_time\n            FROM blood_requests\n            INNER JOIN blood_groups ON blood_groups.id = blood_group_id\n            INNER JOIN request_priorities ON request_priorities.id = priority_id\n            WHERE now() < end_time AND is_active = true\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "blood_group",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "priority",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "title",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "max_people",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "start_time",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 5,
+        "name": "end_time",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "36086155d4c4c854789b1f15dd6b1205fadb33e67247e813a7f9e90fbdd8c0d7"
+}

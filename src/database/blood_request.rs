@@ -80,13 +80,22 @@ pub async fn create(params: &CreateBloodRequest, executor: impl PgExecutor<'_>) 
     .await
 }
 
+pub async fn count_appointment(id: Uuid, executor: impl PgExecutor<'_>) -> Result<i64> {
+    sqlx::query_scalar!(
+        "SELECT COUNT(id) FROM appointments WHERE request_id = $1",
+        id,
+    )
+    .fetch_one(executor)
+    .await
+    .map(|count| count.unwrap_or(0))
+}
+
 #[derive(Serialize, ToSchema)]
 pub struct BloodRequest {
     pub blood_group: BloodGroup,
     pub priority: Priority,
     pub title: String,
     pub max_people: i32,
-    pub current_people: i64,
     pub start_time: DateTime<Utc>,
     pub end_time: DateTime<Utc>,
 }
@@ -100,19 +109,42 @@ pub async fn get_all(executor: impl PgExecutor<'_>) -> Result<Vec<BloodRequest>>
                 request_priorities.name as priority,
                 title,
                 max_people,
-                COALESCE(current_people, 0) as "current_people!",
                 start_time,
                 end_time
             FROM blood_requests
             INNER JOIN blood_groups ON blood_groups.id = blood_group_id
             INNER JOIN request_priorities ON request_priorities.id = priority_id
-            LEFT JOIN (
-                SELECT request_id, COUNT(id) as current_people
-                FROM appointments
-                GROUP BY request_id
-            ) t ON t.request_id = blood_requests.id
             WHERE now() < end_time AND is_active = true
         "#
+    )
+    .fetch_all(executor)
+    .await
+}
+
+pub async fn get_booked(
+    member_id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Vec<BloodRequest>> {
+    sqlx::query_as!(
+        BloodRequest,
+        r#"
+            SELECT
+                blood_groups.name as blood_group,
+                request_priorities.name as priority,
+                title,
+                max_people,
+                start_time,
+                end_time
+            FROM blood_requests
+            INNER JOIN blood_groups ON blood_groups.id = blood_group_id
+            INNER JOIN request_priorities ON request_priorities.id = priority_id
+            WHERE blood_requests.id IN (
+                SELECT request_id
+                FROM appointments
+                WHERE member_id = $1
+            )
+        "#,
+        member_id
     )
     .fetch_all(executor)
     .await

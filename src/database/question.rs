@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+
+use futures::TryStreamExt;
 use serde::Serialize;
 use sqlx::{PgExecutor, Result};
 use utoipa::ToSchema;
@@ -33,6 +36,13 @@ pub async fn get_all(executor: impl PgExecutor<'_>) -> Result<Vec<Question>> {
     )
     .fetch_all(executor)
     .await
+}
+
+pub async fn get_all_id(executor: impl PgExecutor<'_>) -> Result<HashSet<i32>> {
+    sqlx::query_scalar!("SELECT id FROM questions WHERE is_active = true")
+        .fetch(executor)
+        .try_collect()
+        .await
 }
 
 pub async fn update(id: i32, new_content: &str, executor: impl PgExecutor<'_>) -> Result<()> {
