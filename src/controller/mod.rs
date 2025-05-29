@@ -14,6 +14,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()
         .route("/", routing::get(ping))
         .merge(auth::build())
-        .merge(question::build(state))
+        .merge(question::build(state.clone()))
         .merge(blood_request::build(state))
 }
