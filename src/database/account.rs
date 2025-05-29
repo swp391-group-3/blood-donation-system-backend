@@ -123,27 +123,37 @@ pub async fn activate(
     Ok(())
 }
 
-pub async fn is_active(id: Uuid, executor: impl PgExecutor<'_>) -> Result<bool> {
-    sqlx::query_scalar!("SELECT is_active FROM accounts WHERE id = $1", id)
-        .fetch_optional(executor)
-        .await
-        .map(|is_active| is_active.unwrap_or(false))
+pub struct AuthStatus {
+    pub is_active: bool,
+    pub role: Role,
 }
 
-pub async fn get_role(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<Role>> {
-    let role = sqlx::query_scalar!(
+pub async fn get_auth_status(
+    id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<AuthStatus>> {
+    match sqlx::query!(
         r#"
-            SELECT name
-            FROM roles
-            WHERE id = (SELECT role_id FROM accounts WHERE id = $1)
+            SELECT is_active, roles.name as role
+            FROM accounts
+            INNER JOIN roles ON roles.id = role_id
+            WHERE accounts.id = $1
         "#,
         id
     )
     .fetch_optional(executor)
     .await?
-    .map(|raw| Role::from_str(&raw).unwrap());
+    {
+        Some(raw) => {
+            let role = Role::from_str(&raw.role).expect("Role from database must be valid");
 
-    Ok(role)
+            Ok(Some(AuthStatus {
+                is_active: raw.is_active,
+                role,
+            }))
+        }
+        None => Ok(None),
+    }
 }
 
 pub struct Account {
