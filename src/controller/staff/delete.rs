@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{extract::{Path, State}};
+use axum::extract::{Path, State};
 use uuid::Uuid;
 
 use crate::{
@@ -19,10 +19,7 @@ use crate::{
     ),
     security(("jwt_token" = []))
 )]
-pub async fn delete(
-    State(state): State<Arc<ApiState>>,
-    Path(id): Path<Uuid>
-) -> Result<()> {
+pub async fn delete(State(state): State<Arc<ApiState>>, Path(id): Path<Uuid>) -> Result<()> {
     database::account::delete(id, &state.database_pool).await?;
 
     Ok(())

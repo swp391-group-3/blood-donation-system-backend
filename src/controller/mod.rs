@@ -1,10 +1,10 @@
 pub mod appointment;
 pub mod auth;
-pub mod staff;
 pub mod blood_request;
 pub mod health;
 mod ping;
 pub mod question;
+pub mod staff;
 
 use std::sync::Arc;
 

@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use chrono::NaiveDate;
 use serde::Deserialize;
 use utoipa::ToSchema;
-use chrono::NaiveDate;
 
 use crate::{
     config::CONFIG,
-    database::{self, blood_group::*, account::*},
+    database::{self, account::*, blood_group::*},
     error::{AuthError, Result},
     state::ApiState,
     util::auth::generate_token,

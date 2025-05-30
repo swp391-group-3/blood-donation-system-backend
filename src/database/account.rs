@@ -228,10 +228,7 @@ pub struct StaffDetail {
     pub blood_group: Option<String>,
 }
 
-pub async fn list_by_role(
-    role: Role,
-    executor: impl PgExecutor<'_>,
-) -> Result<Vec<StaffDetail>> {
+pub async fn list_by_role(role: Role, executor: impl PgExecutor<'_>) -> Result<Vec<StaffDetail>> {
     sqlx::query_as!(
         StaffDetail,
         r#"
@@ -300,10 +297,7 @@ pub async fn get_staff_by_name(
     .await
 }
 
-pub async fn delete(
-    id: Uuid,
-    executor: impl PgExecutor<'_>,
-) -> Result<()> {
+pub async fn delete(id: Uuid, executor: impl PgExecutor<'_>) -> Result<()> {
     sqlx::query!(
         r#"
             UPDATE accounts
