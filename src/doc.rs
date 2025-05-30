@@ -54,7 +54,10 @@ impl Modify for SecurityAddon {
 
         controller::health::create,
         controller::health::update,
-        controller::health::get_by_appointment_id
+        controller::health::get_by_appointment_id,
+        controller::health::get_by_member_id,
+
+        controller::donation::create
     ),
     modifiers(&SecurityAddon),
 )]
