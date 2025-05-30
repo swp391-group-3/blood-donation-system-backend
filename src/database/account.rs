@@ -46,6 +46,7 @@ pub async fn create(
     .await
 }
 
+#[allow(clippy::too_many_arguments)]
 pub async fn create_staff(
     email: &str,
     password: &str,
