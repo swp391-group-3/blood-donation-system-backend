@@ -5,10 +5,7 @@ mod update;
 
 use std::sync::Arc;
 
-use axum::{
-    Router,
-    routing,
-};
+use axum::{Router, routing};
 
 use crate::{database::account::Role, middleware, state::ApiState};
 
