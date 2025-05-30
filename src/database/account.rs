@@ -48,7 +48,7 @@ pub async fn create(
 
 pub async fn create_staff(
     email: &str,
-    password: Option<String>,
+    password: &str,
     phone: &str,
     name: &str,
     gender: Gender,
@@ -57,8 +57,6 @@ pub async fn create_staff(
     blood_group: BloodGroup,
     executor: impl PgExecutor<'_>,
 ) -> Result<Uuid> {
-    let password = password.unwrap_or_else(util::auth::random_password);
-
     sqlx::query_scalar!(
         r#"
             INSERT INTO accounts(role_id, email, password, phone, name, gender, address, birthday, blood_group_id, is_active)
@@ -216,11 +214,15 @@ pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<
 }
 
 #[derive(Serialize)]
-pub struct AccountOverview {
-    pub email: String,
+pub struct StaffDetail {
+    pub id: Uuid,
+    pub role: Option<String>,
+    pub email: Option<String>,
+    pub password: Option<String>,
     pub phone: Option<String>,
     pub name: Option<String>,
     pub gender: Option<i32>,
+    pub address: Option<String>,
     pub birthday: Option<NaiveDate>,
     pub blood_group: Option<String>,
 }
@@ -228,32 +230,30 @@ pub struct AccountOverview {
 pub async fn list_by_role(
     role: Role,
     executor: impl PgExecutor<'_>,
-) -> Result<Vec<AccountOverview>> {
+) -> Result<Vec<StaffDetail>> {
     sqlx::query_as!(
-        AccountOverview,
+        StaffDetail,
         r#"
-            SELECT email, phone, accounts.name, gender, birthday, blood_groups.name AS blood_group
-            FROM accounts LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            SELECT 
+                accounts.id, 
+                roles.name AS role,
+                email,
+                password,
+                phone,
+                accounts.name,
+                gender,
+                address,
+                birthday,
+                blood_groups.name AS blood_group
+            FROM accounts 
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+                LEFT JOIN roles ON accounts.role_id = roles.id
             WHERE role_id = (SELECT id FROM roles WHERE name = $1) AND is_active = true
         "#,
         role.as_ref()
     )
     .fetch_all(executor)
     .await
-}
-
-#[derive(Serialize)]
-pub struct StaffDetail {
-    pub id: Uuid,
-    pub role: String,
-    pub email: String,
-    pub password: String,
-    pub phone: Option<String>,
-    pub name: Option<String>,
-    pub gender: Option<i32>,
-    pub address: Option<String>,
-    pub birthday: Option<NaiveDate>,
-    pub blood_group: Option<String>,
 }
 
 pub async fn get_staff_by_id(

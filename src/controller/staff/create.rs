@@ -32,6 +32,7 @@ pub struct Request {
     path = "/staff/create",
     operation_id = "staff::create",
     request_body = Request,
+    security(("jwt_token" = []))
 )]
 pub async fn create(
     State(state): State<Arc<ApiState>>,
@@ -50,7 +51,7 @@ pub async fn create(
 
     let id = database::account::create_staff(
         &request.email,
-        Some(password),
+        &password,
         &request.phone,
         &request.name,
         request.gender,

@@ -12,11 +12,12 @@ use crate::{
 #[utoipa::path(
     get,
     tag = "Staff",
-    path = "/staff/get_by_id/{id}",
+    path = "/staff/{id}",
     operation_id = "staff::get_by_id",
     params(
         ("id" = Uuid, Path, description = "The UUID of the staff member")
-    )
+    ),
+    security(("jwt_token" = []))
 )]
 pub async fn get_by_id(
     State(state): State<Arc<ApiState>>,

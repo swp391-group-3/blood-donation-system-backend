@@ -19,11 +19,12 @@ pub struct Request {
 #[utoipa::path(
     get,
     tag = "Staff",
-    path = "/staff/get_by_name",
-    operation_id = "staff::get_by_name",
+    path = "/staff/search",
+    operation_id = "staff::search",
     params(
         ("name" = String, Query, description = "Name of the staff to search for")
-    )
+    ),
+    security(("jwt_token" = []))
 )]
 pub async fn get_by_name(
     State(state): State<Arc<ApiState>>,

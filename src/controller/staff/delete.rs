@@ -12,11 +12,12 @@ use crate::{
 #[utoipa::path(
     delete,
     tag = "Staff",
-    path = "/staff/delete/{id}",
+    path = "/staff/{id}",
     operation_id = "staff::delete",
     params(
         ("id" = Uuid, Path, description = "The UUID of the staff member")
-    )
+    ),
+    security(("jwt_token" = []))
 )]
 pub async fn delete(
     State(state): State<Arc<ApiState>>,
