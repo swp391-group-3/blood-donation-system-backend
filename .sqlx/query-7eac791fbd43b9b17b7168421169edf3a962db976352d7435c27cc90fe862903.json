@@ -1,0 +1,76 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT accounts.id, roles.name AS role, email, password, phone, accounts.name, gender, address, birthday, blood_groups.name AS blood_group\n            FROM accounts\n                LEFT JOIN roles ON accounts.role_id = roles.id\n                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id\n            WHERE\n                accounts.id = $1 AND roles.name = 'staff' AND is_active = true\n            LIMIT 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "role",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "email",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "password",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "phone",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "gender",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 7,
+        "name": "address",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 8,
+        "name": "birthday",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 9,
+        "name": "blood_group",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "7eac791fbd43b9b17b7168421169edf3a962db976352d7435c27cc90fe862903"
+}

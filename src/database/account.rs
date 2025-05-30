@@ -46,6 +46,48 @@ pub async fn create(
     .await
 }
 
+#[allow(clippy::too_many_arguments)]
+pub async fn create_staff(
+    email: &str,
+    password: &str,
+    phone: &str,
+    name: &str,
+    gender: Gender,
+    address: &str,
+    birthday: NaiveDate,
+    blood_group: BloodGroup,
+    executor: impl PgExecutor<'_>,
+) -> Result<Uuid> {
+    sqlx::query_scalar!(
+        r#"
+            INSERT INTO accounts(role_id, email, password, phone, name, gender, address, birthday, blood_group_id, is_active)
+            VALUES(
+                (SELECT id FROM roles WHERE name = 'staff'),
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                (SELECT id FROM blood_groups WHERE name = $8),
+                true
+            )
+            RETURNING id
+        "#,
+        email,
+        password,
+        phone,
+        name,
+        gender as i32,
+        address,
+        birthday,
+        blood_group.as_ref()
+    )
+    .fetch_one(executor)
+    .await
+}
+
 pub async fn create_if_not_existed(
     email: &str,
     password: Option<String>,
@@ -170,4 +212,102 @@ pub async fn get_by_email(email: &str, executor: impl PgExecutor<'_>) -> Result<
     )
     .fetch_optional(executor)
     .await
+}
+
+#[derive(Serialize)]
+pub struct StaffDetail {
+    pub id: Uuid,
+    pub role: Option<String>,
+    pub email: Option<String>,
+    pub password: Option<String>,
+    pub phone: Option<String>,
+    pub name: Option<String>,
+    pub gender: Option<i32>,
+    pub address: Option<String>,
+    pub birthday: Option<NaiveDate>,
+    pub blood_group: Option<String>,
+}
+
+pub async fn list_by_role(role: Role, executor: impl PgExecutor<'_>) -> Result<Vec<StaffDetail>> {
+    sqlx::query_as!(
+        StaffDetail,
+        r#"
+            SELECT 
+                accounts.id, 
+                roles.name AS role,
+                email,
+                password,
+                phone,
+                accounts.name,
+                gender,
+                address,
+                birthday,
+                blood_groups.name AS blood_group
+            FROM accounts 
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+                LEFT JOIN roles ON accounts.role_id = roles.id
+            WHERE role_id = (SELECT id FROM roles WHERE name = $1) AND is_active = true
+        "#,
+        role.as_ref()
+    )
+    .fetch_all(executor)
+    .await
+}
+
+pub async fn get_staff_by_id(
+    id: Uuid,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<StaffDetail>> {
+    sqlx::query_as!(
+        StaffDetail,
+        r#"
+            SELECT accounts.id, roles.name AS role, email, password, phone, accounts.name, gender, address, birthday, blood_groups.name AS blood_group
+            FROM accounts
+                LEFT JOIN roles ON accounts.role_id = roles.id
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            WHERE
+                accounts.id = $1 AND roles.name = 'staff' AND is_active = true
+            LIMIT 1
+        "#,
+        id
+    )
+    .fetch_optional(executor)
+    .await
+}
+
+pub async fn get_staff_by_name(
+    name: &str,
+    executor: impl PgExecutor<'_>,
+) -> Result<Option<StaffDetail>> {
+    let pattern = format!("%{}%", name);
+    sqlx::query_as!(
+        StaffDetail,
+        r#"
+            SELECT accounts.id, roles.name AS role, email, password, phone, accounts.name, gender, address, birthday, blood_groups.name AS blood_group
+            FROM accounts
+                LEFT JOIN roles ON accounts.role_id = roles.id
+                LEFT JOIN blood_groups ON accounts.blood_group_id = blood_groups.id
+            WHERE
+                accounts.name LIKE $1 AND roles.name = 'staff' AND is_active = true
+            LIMIT 1
+        "#,
+        pattern
+    )
+    .fetch_optional(executor)
+    .await
+}
+
+pub async fn delete(id: Uuid, executor: impl PgExecutor<'_>) -> Result<()> {
+    sqlx::query!(
+        r#"
+            UPDATE accounts
+            SET is_active = false
+            WHERE id = $1
+        "#,
+        id
+    )
+    .execute(executor)
+    .await?;
+
+    Ok(())
 }
