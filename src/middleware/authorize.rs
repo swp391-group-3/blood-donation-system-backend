@@ -3,7 +3,7 @@ macro_rules! authorize {
     ($($role:expr),+) => {
         async |
             claims: $crate::util::auth::Claims,
-            State(state): axum::extract::State<std::sync::Arc<$crate::state::ApiState>>,
+            state: axum::extract::State<std::sync::Arc<$crate::state::ApiState>>,
             request: axum::extract::Request,
             next: axum::middleware::Next,
         | -> $crate::error::Result<axum::response::Response> {
