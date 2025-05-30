@@ -6,3 +6,4 @@ pub mod blood_request;
 pub mod health;
 pub mod question;
 pub mod donation_type;
+pub mod donation;

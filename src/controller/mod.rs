@@ -4,6 +4,7 @@ pub mod blood_request;
 pub mod health;
 mod ping;
 pub mod question;
+pub mod donation;
 
 use std::sync::Arc;
 
