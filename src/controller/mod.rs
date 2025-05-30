@@ -2,8 +2,9 @@ pub mod appointment;
 pub mod auth;
 pub mod staff;
 pub mod blood_request;
-pub mod question;
+pub mod health;
 mod ping;
+pub mod question;
 
 use std::sync::Arc;
 
@@ -19,5 +20,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .merge(staff::build(state.clone()))
         .merge(question::build(state.clone()))
         .merge(blood_request::build(state.clone()))
-        .merge(appointment::build(state))
+        .merge(appointment::build(state.clone()))
+        .merge(health::build(state))
 }
