@@ -1,9 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::{
-    PgExecutor, Postgres, Result,
-    postgres::{PgArguments, PgRow},
-    query::Map,
+    PgExecutor, Result,
 };
 use utoipa::ToSchema;
 use uuid::Uuid;
