@@ -6,14 +6,9 @@ mod get_by_name;
 
 use std::sync::Arc;
 
-use axum::{
-    Router,
-    extract::{Request, State},
-    middleware::Next,
-    routing,
-};
+use axum::{Router, routing};
 
-use crate::{database::account::Role, middleware, state::ApiState, util::auth::Claims};
+use crate::{database::account::Role, middleware, state::ApiState};
 
 pub use create::*;
 pub use delete::*;
@@ -30,8 +25,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/staff/{id}", routing::delete(delete))
         .layer(axum::middleware::from_fn_with_state(
             state,
-            |state: State<Arc<ApiState>>, claims: Claims, request: Request, next: Next| {
-                middleware::authorize(&[Role::Admin], claims, state, request, next)
-            },
+            middleware::authorize!(Role::Admin),
         ))
 }
