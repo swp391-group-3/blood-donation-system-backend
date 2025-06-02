@@ -22,17 +22,17 @@ pub struct Request{
     post,
     tag = "Blog",
     path = "/blog/create",
-    params(
-        ("request" = Request, description = "Request Object")
-    ),
+    request_body = Request,
     responses(
-        (status = 200, description = "Create blog successfully", body = String)
+        (status = 201, description = "Create blog successfully", body = Uuid),
+        (status = 400, description = "Invalid data"),
+        (status = 500, description = "Internal server error")
     )
 )]
 pub async fn create(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<Request>,
-) -> Result<String> {
+) -> Result<Json<Uuid>> {
     let id = database::blog::create(
         &request.account_id,
         &request.title,
@@ -41,5 +41,5 @@ pub async fn create(
     )
     .await?;
 
-    Ok(id.to_string())
+    Ok(Json(id))
 }
