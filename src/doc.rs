@@ -61,6 +61,16 @@ impl Modify for SecurityAddon {
         controller::blog::create,
         controller::blog::get_by_id,
         controller::blog::get_list,
+        controller::health::create,
+        controller::health::update,
+        controller::health::get_by_appointment_id,
+        controller::health::get_by_member_id,
+
+        controller::donation::create,
+        controller::donation::get,
+        controller::donation::get_all,
+        controller::donation::get_by_member_id,
+        controller::donation::update,
     ),
     modifiers(&SecurityAddon),
 )]

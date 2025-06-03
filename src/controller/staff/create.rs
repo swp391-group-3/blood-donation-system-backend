@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use chrono::NaiveDate;
 use serde::Deserialize;
 use utoipa::ToSchema;
-use chrono::NaiveDate;
 
 use crate::{
     config::CONFIG,
-    database::{self, blood_group::*, account::*},
+    database::{self, account::*, blood_group::*},
     error::{AuthError, Result},
     state::ApiState,
     util::auth::generate_token,
@@ -32,6 +32,7 @@ pub struct Request {
     path = "/staff/create",
     operation_id = "staff::create",
     request_body = Request,
+    security(("jwt_token" = []))
 )]
 pub async fn create(
     State(state): State<Arc<ApiState>>,
@@ -50,7 +51,7 @@ pub async fn create(
 
     let id = database::account::create_staff(
         &request.email,
-        Some(password),
+        &password,
         &request.phone,
         &request.name,
         request.gender,

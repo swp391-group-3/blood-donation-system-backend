@@ -8,14 +8,9 @@ mod update;
 
 use std::sync::Arc;
 
-use axum::{
-    Router,
-    extract::{Request, State},
-    middleware::Next,
-    routing,
-};
+use axum::{Router, routing};
 
-use crate::{database::account::Role, middleware, state::ApiState, util::auth::Claims};
+use crate::{database::account::Role, middleware, state::ApiState};
 
 pub use count_appointment::*;
 pub use create::*;
@@ -32,9 +27,7 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/blood-request/{id}", routing::delete(delete))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
-            |state: State<Arc<ApiState>>, claims: Claims, request: Request, next: Next| {
-                middleware::authorize(&[Role::Staff], claims, state, request, next)
-            },
+            middleware::authorize!(Role::Staff),
         ))
         .route(
             "/blood-request/{id}/create-appointment",
@@ -43,9 +36,7 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/blood-request/get-booked", routing::get(get_booked))
         .layer(axum::middleware::from_fn_with_state(
             state,
-            |state: State<Arc<ApiState>>, claims: Claims, request: Request, next: Next| {
-                middleware::authorize(&[Role::Member], claims, state, request, next)
-            },
+            middleware::authorize!(Role::Member),
         ))
         .route("/blood-request", routing::get(get_all))
         .route(

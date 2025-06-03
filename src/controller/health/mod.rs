@@ -1,5 +1,7 @@
-mod delete;
-mod get_answer;
+mod create;
+mod get_by_appointment_id;
+mod get_by_member_id;
+mod update;
 
 use std::sync::Arc;
 
@@ -7,17 +9,24 @@ use axum::{Router, routing};
 
 use crate::{database::account::Role, middleware, state::ApiState};
 
-pub use delete::*;
-pub use get_answer::*;
+pub use create::*;
+pub use get_by_appointment_id::*;
+pub use get_by_member_id::*;
+pub use update::*;
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()
-        .route("/appointment/{id}/answer", routing::get(get_answer))
+        .route("/appointment/{id}/health", routing::post(create))
+        .route(
+            "/appointment/{id}/health",
+            routing::get(get_by_appointment_id),
+        )
+        .route("/health", routing::patch(update))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::authorize!(Role::Staff),
         ))
-        .route("/appointment/{id}", routing::delete(delete))
+        .route("/health", routing::get(get_by_member_id))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Member),
