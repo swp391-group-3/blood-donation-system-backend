@@ -42,13 +42,15 @@ SELECT role, email, phone, name, gender, address, birthday, blood_group, created
 FROM accounts;
 
 --! activate
+--- Naive way to implement 2 stage registering
 UPDATE accounts
 SET phone = :phone,
     name = :name,
     gender = :gender,
     address = :address,
     birthday = :birthday,
-    blood_group = :blood_group
+    blood_group = :blood_group,
+    is_active = true
 WHERE id = :id AND is_active = false;
 
 --! update (phone?, name?, gender?, address?, birthday?)
@@ -59,3 +61,6 @@ SET phone = COALESCE(:phone, phone),
     address = COALESCE(:address, address),
     birthday = COALESCE(:birthday, birthday)
 WHERE id = :id;
+
+--! delete
+UPDATE accounts SET is_active = false WHERE id = :id;
