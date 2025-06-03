@@ -51,6 +51,16 @@ pub enum RequestPriority {
 
 #[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
+#[postgres(name = "donation_type", rename_all = "snake_case")]
+pub enum DonationType {
+    WholeBlood,
+    PowerRed,
+    Platelet,
+    Plasma,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 #[postgres(name = "blood_component", rename_all = "snake_case")]
 pub enum BloodComponent {
     RedCell,
