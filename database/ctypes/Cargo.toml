@@ -7,3 +7,4 @@ edition = "2024"
 bytes = "1.10.1"
 postgres-types = { version = "0.2.9", features = ["derive"] }
 serde = { version = "1.0.219", features = ["derive"] }
+utoipa = "5.3.1"

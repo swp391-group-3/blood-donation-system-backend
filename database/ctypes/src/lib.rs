@@ -1,2 +1,41 @@
-pub mod blood_component;
+use postgres_types::{FromSql, ToSql};
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[postgres(name = "blood_group")]
+pub enum BloodGroup {
+    #[serde(rename = "O+")]
+    #[postgres(name = "O+")]
+    OPlus,
+    #[serde(rename = "O-")]
+    #[postgres(name = "O-")]
+    OMinus,
+    #[serde(rename = "A+")]
+    #[postgres(name = "A+")]
+    APlus,
+    #[serde(rename = "A-")]
+    #[postgres(name = "A-")]
+    AMinus,
+    #[serde(rename = "B+")]
+    #[postgres(name = "B+")]
+    BPlus,
+    #[serde(rename = "B-")]
+    #[postgres(name = "B-")]
+    BMinus,
+    #[serde(rename = "AB+")]
+    #[postgres(name = "AB+")]
+    ABPlus,
+    #[serde(rename = "AB-")]
+    #[postgres(name = "AB-")]
+    ABMinus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+#[postgres(name = "blood_component", rename_all = "snake_case")]
+pub enum BloodComponent {
+    RedCell,
+    Platelet,
+    Plasma,
+}
