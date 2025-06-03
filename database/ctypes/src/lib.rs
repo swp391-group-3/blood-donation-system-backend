@@ -33,6 +33,15 @@ pub enum BloodGroup {
 
 #[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
+#[postgres(name = "role", rename_all = "snake_case")]
+pub enum Role {
+    Member,
+    Staff,
+    Admin,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 #[postgres(name = "blood_component", rename_all = "snake_case")]
 pub enum BloodComponent {
     RedCell,
