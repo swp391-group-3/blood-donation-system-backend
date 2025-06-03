@@ -42,6 +42,15 @@ pub enum Role {
 
 #[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
+#[postgres(name = "request_priority", rename_all = "snake_case")]
+pub enum RequestPriority {
+    Low,
+    Medium,
+    High,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 #[postgres(name = "blood_component", rename_all = "snake_case")]
 pub enum BloodComponent {
     RedCell,
