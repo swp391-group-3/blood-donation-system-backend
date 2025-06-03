@@ -58,6 +58,9 @@ impl Modify for SecurityAddon {
 
         controller::appointment::delete,
 
+        controller::blog::create,
+        controller::blog::get_by_id,
+        controller::blog::get_list,
         controller::health::create,
         controller::health::update,
         controller::health::get_by_appointment_id,
