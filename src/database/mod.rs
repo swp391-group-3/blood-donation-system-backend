@@ -1,6 +1,7 @@
 pub mod account;
 pub mod answer;
 pub mod appointment;
+pub mod blog;
 pub mod blood_bag;
 pub mod blood_component;
 pub mod blood_group;

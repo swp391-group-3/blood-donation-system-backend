@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT blood_bags.id, donation_id, blood_components.name AS blood_component, is_used, amount, expired_time\n            FROM blood_bags \n                LEFT JOIN blood_components ON blood_bags.component_id = blood_components.id\n            WHERE blood_bags.id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "donation_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "blood_component",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "is_used",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "amount",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "expired_time",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e330102746948369fd5fa6aee05bf31b714f9981c12da102a93298fd60fe3f96"
+}
