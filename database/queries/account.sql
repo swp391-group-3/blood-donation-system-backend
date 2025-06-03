@@ -1,8 +1,8 @@
 --! register
-INSERT INTO accounts(email, password, role_id)
+INSERT INTO accounts(email, password, role)
 VALUES(
-    $1,
-    $2,
-    (SELECT id FROM roles WHERE name = 'member')
+    :email,
+    :password,
+    :role
 )
 RETURNING id;
