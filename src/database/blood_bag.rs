@@ -24,3 +24,21 @@ pub async fn list(executor: impl sqlx::PgExecutor<'_>) -> sqlx::Result<Vec<Blood
     .fetch_all(executor)
     .await
 }
+
+pub async fn get_by_id(
+    id: Uuid,
+    executor: impl sqlx::PgExecutor<'_>,
+) -> sqlx::Result<Option<BloodBag>> {
+    sqlx::query_as!(
+        BloodBag,
+        r#"
+            SELECT blood_bags.id, donation_id, blood_components.name AS blood_component, is_used, amount, expired_time
+            FROM blood_bags 
+                LEFT JOIN blood_components ON blood_bags.component_id = blood_components.id
+            WHERE blood_bags.id = $1
+        "#,
+        id
+    )
+    .fetch_optional(executor)
+    .await
+}
