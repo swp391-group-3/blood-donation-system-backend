@@ -1,18 +1,25 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS blood_groups(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(4) UNIQUE NOT NULL
+CREATE TYPE blood_group AS ENUM (
+    'O+',
+    'O-',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-'
 );
 
-CREATE TABLE IF NOT EXISTS roles(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(16) UNIQUE NOT NULL
+CREATE TYPE role AS ENUM (
+    'member',
+    'staff',
+    'admin'
 );
 
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    role_id uuid NOT NULL REFERENCES roles(id),
+    role role NOT NULL,
     email varchar(128) UNIQUE NOT NULL,
     password varchar(72) NOT NULL,
     phone varchar(16) UNIQUE,
@@ -20,7 +27,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     gender int,
     address text,
     birthday date,
-    blood_group_id uuid REFERENCES blood_groups(id),
+    blood_group blood_group NOT NULL,
     is_active boolean NOT NULL DEFAULT false,
     created_at timestamptz NOT NULL DEFAULT now()
 );
@@ -53,16 +60,17 @@ CREATE TABLE IF NOT EXISTS blog_tags(
     PRIMARY KEY (blog_id, tag_id)
 );
 
-CREATE TABLE IF NOT EXISTS request_priorities(
-    id serial PRIMARY KEY,
-    name varchar(16) UNIQUE NOT NULL
+CREATE TYPE request_priority AS ENUM (
+    'low',
+    'medium',
+    'high'
 );
 
 CREATE TABLE IF NOT EXISTS blood_requests(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     staff_id uuid NOT NULL REFERENCES accounts(id),
-    priority_id int NOT NULL REFERENCES request_priorities(id),
-    blood_group_id uuid NOT NULL REFERENCES blood_groups(id),
+    priority request_priority NOT NULL,
+    blood_group blood_group NOT NULL,
     title text NOT NULL,
     max_people int NOT NULL,
     start_time timestamptz NOT NULL,
@@ -105,28 +113,31 @@ CREATE TABLE IF NOT EXISTS healths(
     created_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS donation_types(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(16) NOT NULL
+CREATE TYPE donation_type AS ENUM (
+    'whole_blood',
+    'power_red',
+    'platelet',
+    'plasma'
 );
 
 CREATE TABLE IF NOT EXISTS donations(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     appointment_id uuid NOT NULL REFERENCES appointments(id),
-    type_id uuid NOT NULL REFERENCES donation_types(id),
+    type donation_type NOT NULL,
     amount int NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS blood_components(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name varchar(16) NOT NULL
+CREATE TYPE blood_component AS ENUM (
+    'red_cell',
+    'platelet',
+    'plasma'
 );
 
 CREATE TABLE IF NOT EXISTS blood_bags(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     donation_id uuid NOT NULL REFERENCES donations(id),
-    component_id uuid NOT NULL REFERENCES blood_components(id),
+    component blood_component NOT NULL,
     is_used bool NOT NULL DEFAULT false,
     amount int NOT NULL,
     expired_time timestamptz NOT NULL
