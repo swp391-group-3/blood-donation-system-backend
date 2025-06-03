@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE healths\n            SET\n                temperature = COALESCE($2, temperature),\n                weight = COALESCE($3, weight),\n                is_good_health = COALESCE($4, is_good_health),\n                note = COALESCE($5, note)\n            WHERE id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Float4",
+        "Float4",
+        "Bool",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "0977a4a721e562d3ecdc66e483a524af561b704a59f388d72c4de07f25a98dc8"
+}
