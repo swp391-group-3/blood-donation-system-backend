@@ -111,6 +111,7 @@ pub async fn get_by_member_id(
     .await
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize, ToSchema)]
 pub struct UpdateParams {
     pub temperature: Option<f32>,
