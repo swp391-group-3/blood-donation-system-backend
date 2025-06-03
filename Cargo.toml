@@ -9,9 +9,8 @@ axum = { version = "0.8.4", features = ["macros"] }
 axum-extra = { version = "0.10.1", features = ["typed-header", "cookie"] }
 bcrypt = "0.17.0"
 chrono = "0.4.41"
-clorinde = "0.15.2"
 config = { version = "0.15.11", default-features = false }
-dev = "0.1.0"
+database = { path = "./database/generated" }
 futures = "0.3.31"
 jsonwebtoken = "9.3.1"
 openidconnect = "4.0.0"
@@ -25,9 +24,12 @@ tower-http = { version = "0.6.4", features = ["cors", "trace"] }
 tower-sessions = "0.14.0"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["fmt", "chrono", "env-filter"] }
-utoipa = { git = "https://github.com/juhaku/utoipa.git", features = ["chrono", "uuid"] }
-utoipa-swagger-ui = { git = "https://github.com/juhaku/utoipa.git", features = ["axum"]  }
+utoipa = { version = "5.3.1", features = ["chrono", "uuid"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["axum"]  }
 uuid = { version = "1.17.0", features = ["v4", "fast-rng", "serde"] }
 
 [dev-dependencies]
 axum-test = "17.3.0"
+
+[build-dependencies]
+clorinde = "0.15.2"
