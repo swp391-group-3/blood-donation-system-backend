@@ -7,13 +7,12 @@ use uuid::Uuid;
 
 use crate::{
     database::{self},
-    error::{ Result},
+    error::Result,
     state::ApiState,
 };
 
-
 #[derive(Deserialize, Serialize, ToSchema)]
-pub struct Request{ 
+pub struct Request {
     pub account_id: Uuid,
     pub title: String,
     pub content: String,
@@ -37,7 +36,7 @@ pub async fn create(
         &request.account_id,
         &request.title,
         &request.content,
-        &state.database_pool
+        &state.database_pool,
     )
     .await?;
 

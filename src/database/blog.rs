@@ -29,7 +29,7 @@ pub async fn create(
 }
 
 #[derive(Debug, Serialize, ToSchema)]
-pub struct BlogResponse{
+pub struct Blog{
     pub id: Uuid,
     pub account_id: Uuid,
     pub title: String,
@@ -37,9 +37,9 @@ pub struct BlogResponse{
 }
 
 // get list of blogs
-pub async fn get_list(executor: impl PgExecutor<'_>) -> Result<Vec<BlogResponse>>{
-    let blogs: Vec<BlogResponse> = query_as!(
-        BlogResponse,
+pub async fn get_list(executor: impl PgExecutor<'_>) -> Result<Vec<Blog>>{
+    let blogs: Vec<Blog> = query_as!(
+        Blog,
         r#"
             SELECT id, account_id, title, content
             FROM blogs
@@ -52,9 +52,9 @@ pub async fn get_list(executor: impl PgExecutor<'_>) -> Result<Vec<BlogResponse>
 }
 
 // get blog by id
-pub async fn get_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<BlogResponse>> {
-    let blog: Option<BlogResponse> = query_as!(
-        BlogResponse,
+pub async fn get_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option<Blog>> {
+    let blog: Option<Blog> = query_as!(
+        Blog,
         r#"
             SELECT id, account_id, title, content
             FROM blogs
@@ -68,3 +68,4 @@ pub async fn get_by_id(id: Uuid, executor: impl PgExecutor<'_>) -> Result<Option
 }
 
 
+// search blog
