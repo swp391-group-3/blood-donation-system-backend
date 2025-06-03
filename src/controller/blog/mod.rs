@@ -2,15 +2,15 @@ mod create;
 mod get_by_id;
 mod get_list;
 
+use crate::state::ApiState;
 use axum::{
     Router,
     routing::{get, post},
 };
 use std::sync::Arc;
-use crate::state::ApiState;
 
-pub use get_by_id::*;
 pub use create::*;
+pub use get_by_id::*;
 pub use get_list::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
