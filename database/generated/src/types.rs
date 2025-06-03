@@ -94,3 +94,108 @@ impl<'a> postgres_types::FromSql<'a> for Role {
         }
     }
 }
+#[derive(serde::Serialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(non_camel_case_types)]
+pub enum BloodGroup {
+    O_,
+    O_,
+    A_,
+    A_,
+    B_,
+    B_,
+    AB_,
+    AB_,
+}
+impl<'a> postgres_types::ToSql for BloodGroup {
+    fn to_sql(
+        &self,
+        ty: &postgres_types::Type,
+        buf: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        let s = match *self {
+            BloodGroup::O_ => "O+",
+            BloodGroup::O_ => "O-",
+            BloodGroup::A_ => "A+",
+            BloodGroup::A_ => "A-",
+            BloodGroup::B_ => "B+",
+            BloodGroup::B_ => "B-",
+            BloodGroup::AB_ => "AB+",
+            BloodGroup::AB_ => "AB-",
+        };
+        buf.extend_from_slice(s.as_bytes());
+        std::result::Result::Ok(postgres_types::IsNull::No)
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "blood_group" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 8 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "O+" => true,
+                    "O-" => true,
+                    "A+" => true,
+                    "A-" => true,
+                    "B+" => true,
+                    "B-" => true,
+                    "AB+" => true,
+                    "AB-" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+    fn to_sql_checked(
+        &self,
+        ty: &postgres_types::Type,
+        out: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        postgres_types::__to_sql_checked(self, ty, out)
+    }
+}
+impl<'a> postgres_types::FromSql<'a> for BloodGroup {
+    fn from_sql(
+        ty: &postgres_types::Type,
+        buf: &'a [u8],
+    ) -> Result<BloodGroup, Box<dyn std::error::Error + Sync + Send>> {
+        match std::str::from_utf8(buf)? {
+            "O+" => Ok(BloodGroup::O_),
+            "O-" => Ok(BloodGroup::O_),
+            "A+" => Ok(BloodGroup::A_),
+            "A-" => Ok(BloodGroup::A_),
+            "B+" => Ok(BloodGroup::B_),
+            "B-" => Ok(BloodGroup::B_),
+            "AB+" => Ok(BloodGroup::AB_),
+            "AB-" => Ok(BloodGroup::AB_),
+            s => Result::Err(Into::into(format!("invalid variant `{}`", s))),
+        }
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "blood_group" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 8 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "O+" => true,
+                    "O-" => true,
+                    "A+" => true,
+                    "A-" => true,
+                    "B+" => true,
+                    "B-" => true,
+                    "AB+" => true,
+                    "AB-" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+}
