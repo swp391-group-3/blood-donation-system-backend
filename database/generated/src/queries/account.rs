@@ -18,6 +18,16 @@ pub struct CreateStaffParams<
     pub name: T4,
 }
 #[derive(Debug)]
+pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
+    pub phone: T1,
+    pub name: T2,
+    pub gender: i32,
+    pub address: T3,
+    pub birthday: crate::types::time::Date,
+    pub blood_group: crate::types::BloodGroup,
+    pub id: uuid::Uuid,
+}
+#[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
     pub phone: Option<T1>,
     pub name: Option<T2>,
@@ -682,6 +692,79 @@ impl GetAllStmt {
         }
     }
 }
+/// Naive way to implement 2 stage registering
+pub fn activate() -> ActivateStmt {
+    ActivateStmt(crate::client::async_::Stmt::new(
+        "UPDATE accounts SET phone = $1, name = $2, gender = $3, address = $4, birthday = $5, blood_group = $6, is_active = true WHERE id = $7 AND is_active = false",
+    ))
+}
+pub struct ActivateStmt(crate::client::async_::Stmt);
+impl ActivateStmt {
+    pub async fn bind<
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+    >(
+        &'s mut self,
+        client: &'c C,
+        phone: &'a T1,
+        name: &'a T2,
+        gender: &'a i32,
+        address: &'a T3,
+        birthday: &'a crate::types::time::Date,
+        blood_group: &'a crate::types::BloodGroup,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client
+            .execute(
+                stmt,
+                &[phone, name, gender, address, birthday, blood_group, id],
+            )
+            .await
+    }
+}
+impl<
+    'a,
+    C: GenericClient + Send + Sync,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+>
+    crate::client::async_::Params<
+        'a,
+        'a,
+        'a,
+        ActivateParams<T1, T2, T3>,
+        std::pin::Pin<
+            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+        >,
+        C,
+    > for ActivateStmt
+{
+    fn params(
+        &'a mut self,
+        client: &'a C,
+        params: &'a ActivateParams<T1, T2, T3>,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+    > {
+        Box::pin(self.bind(
+            client,
+            &params.phone,
+            &params.name,
+            &params.gender,
+            &params.address,
+            &params.birthday,
+            &params.blood_group,
+            &params.id,
+        ))
+    }
+}
 pub fn update() -> UpdateStmt {
     UpdateStmt(crate::client::async_::Stmt::new(
         "UPDATE accounts SET phone = COALESCE($1, phone), name = COALESCE($2, name), gender = COALESCE($3, gender), address = COALESCE($4, address), birthday = COALESCE($5, birthday) WHERE id = $6",
@@ -747,5 +830,21 @@ impl<
             &params.birthday,
             &params.id,
         ))
+    }
+}
+pub fn delete() -> DeleteStmt {
+    DeleteStmt(crate::client::async_::Stmt::new(
+        "UPDATE accounts SET is_active = false WHERE id = $1",
+    ))
+}
+pub struct DeleteStmt(crate::client::async_::Stmt);
+impl DeleteStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient>(
+        &'s mut self,
+        client: &'c C,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[id]).await
     }
 }

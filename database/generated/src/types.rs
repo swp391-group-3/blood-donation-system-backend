@@ -199,3 +199,168 @@ impl<'a> postgres_types::FromSql<'a> for BloodGroup {
         }
     }
 }
+#[derive(serde::Serialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(non_camel_case_types)]
+pub enum RequestPriority {
+    low,
+    medium,
+    high,
+}
+impl<'a> postgres_types::ToSql for RequestPriority {
+    fn to_sql(
+        &self,
+        ty: &postgres_types::Type,
+        buf: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        let s = match *self {
+            RequestPriority::low => "low",
+            RequestPriority::medium => "medium",
+            RequestPriority::high => "high",
+        };
+        buf.extend_from_slice(s.as_bytes());
+        std::result::Result::Ok(postgres_types::IsNull::No)
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "request_priority" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 3 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "low" => true,
+                    "medium" => true,
+                    "high" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+    fn to_sql_checked(
+        &self,
+        ty: &postgres_types::Type,
+        out: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        postgres_types::__to_sql_checked(self, ty, out)
+    }
+}
+impl<'a> postgres_types::FromSql<'a> for RequestPriority {
+    fn from_sql(
+        ty: &postgres_types::Type,
+        buf: &'a [u8],
+    ) -> Result<RequestPriority, Box<dyn std::error::Error + Sync + Send>> {
+        match std::str::from_utf8(buf)? {
+            "low" => Ok(RequestPriority::low),
+            "medium" => Ok(RequestPriority::medium),
+            "high" => Ok(RequestPriority::high),
+            s => Result::Err(Into::into(format!("invalid variant `{}`", s))),
+        }
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "request_priority" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 3 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "low" => true,
+                    "medium" => true,
+                    "high" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+}
+#[derive(serde::Serialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(non_camel_case_types)]
+pub enum DonationType {
+    whole_blood,
+    power_red,
+    platelet,
+    plasma,
+}
+impl<'a> postgres_types::ToSql for DonationType {
+    fn to_sql(
+        &self,
+        ty: &postgres_types::Type,
+        buf: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        let s = match *self {
+            DonationType::whole_blood => "whole_blood",
+            DonationType::power_red => "power_red",
+            DonationType::platelet => "platelet",
+            DonationType::plasma => "plasma",
+        };
+        buf.extend_from_slice(s.as_bytes());
+        std::result::Result::Ok(postgres_types::IsNull::No)
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "donation_type" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 4 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "whole_blood" => true,
+                    "power_red" => true,
+                    "platelet" => true,
+                    "plasma" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+    fn to_sql_checked(
+        &self,
+        ty: &postgres_types::Type,
+        out: &mut postgres_types::private::BytesMut,
+    ) -> Result<postgres_types::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        postgres_types::__to_sql_checked(self, ty, out)
+    }
+}
+impl<'a> postgres_types::FromSql<'a> for DonationType {
+    fn from_sql(
+        ty: &postgres_types::Type,
+        buf: &'a [u8],
+    ) -> Result<DonationType, Box<dyn std::error::Error + Sync + Send>> {
+        match std::str::from_utf8(buf)? {
+            "whole_blood" => Ok(DonationType::whole_blood),
+            "power_red" => Ok(DonationType::power_red),
+            "platelet" => Ok(DonationType::platelet),
+            "plasma" => Ok(DonationType::plasma),
+            s => Result::Err(Into::into(format!("invalid variant `{}`", s))),
+        }
+    }
+    fn accepts(ty: &postgres_types::Type) -> bool {
+        if ty.name() != "donation_type" {
+            return false;
+        }
+        match *ty.kind() {
+            postgres_types::Kind::Enum(ref variants) => {
+                if variants.len() != 4 {
+                    return false;
+                }
+                variants.iter().all(|v| match &**v {
+                    "whole_blood" => true,
+                    "power_red" => true,
+                    "platelet" => true,
+                    "plasma" => true,
+                    _ => false,
+                })
+            }
+            _ => false,
+        }
+    }
+}
