@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
+use database::{deadpool_postgres, tokio_postgres::NoTls};
 use openidconnect::reqwest;
-use sqlx::PgPool;
 
 use crate::{config::CONFIG, util};
 
 #[allow(unused)]
 pub struct ApiState {
-    pub database_pool: PgPool,
+    pub database_pool: deadpool_postgres::Client,
     pub http_client: reqwest::Client,
     pub google_client: util::auth::oidc::Client,
     pub microsoft_client: util::auth::oidc::Client,
@@ -15,7 +15,10 @@ pub struct ApiState {
 
 impl ApiState {
     pub async fn new() -> Arc<Self> {
-        let database_pool = PgPool::connect(&CONFIG.server.database_url).await.unwrap();
+        let mut database_config = deadpool_postgres::Config::new();
+        database_config.url = Some(CONFIG.server.database_url.clone());
+        let database_pool =
+            database_config.create_pool(Some(deadpool_postgres::Runtime::Tokio1), NoTls)?;
 
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
