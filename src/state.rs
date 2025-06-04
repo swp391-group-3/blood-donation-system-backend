@@ -7,7 +7,7 @@ use crate::{config::CONFIG, util};
 
 #[allow(unused)]
 pub struct ApiState {
-    pub database_pool: deadpool_postgres::Client,
+    pub database_pool: deadpool_postgres::Pool,
     pub http_client: reqwest::Client,
     pub google_client: util::auth::oidc::Client,
     pub microsoft_client: util::auth::oidc::Client,
