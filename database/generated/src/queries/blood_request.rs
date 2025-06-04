@@ -3,8 +3,8 @@
 #[derive(Debug)]
 pub struct CreateParams<T1: crate::StringSql> {
     pub staff_id: uuid::Uuid,
-    pub blood_group: crate::types::BloodGroup,
-    pub priority: crate::types::RequestPriority,
+    pub blood_group: ctypes::BloodGroup,
+    pub priority: ctypes::RequestPriority,
     pub title: T1,
     pub max_people: i32,
     pub start_time: crate::types::time::TimestampTz,
@@ -12,23 +12,23 @@ pub struct CreateParams<T1: crate::StringSql> {
 }
 #[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql> {
-    pub priority: Option<crate::types::RequestPriority>,
+    pub priority: Option<ctypes::RequestPriority>,
     pub title: Option<T1>,
     pub max_people: Option<i32>,
     pub id: uuid::Uuid,
 }
 #[derive(serde::Serialize, Debug, Clone, PartialEq)]
 pub struct GetAll {
-    pub blood_group: crate::types::BloodGroup,
-    pub priority: crate::types::RequestPriority,
+    pub blood_group: ctypes::BloodGroup,
+    pub priority: ctypes::RequestPriority,
     pub title: String,
     pub max_people: i32,
     pub start_time: crate::types::time::TimestampTz,
     pub end_time: crate::types::time::TimestampTz,
 }
 pub struct GetAllBorrowed<'a> {
-    pub blood_group: crate::types::BloodGroup,
-    pub priority: crate::types::RequestPriority,
+    pub blood_group: ctypes::BloodGroup,
+    pub priority: ctypes::RequestPriority,
     pub title: &'a str,
     pub max_people: i32,
     pub start_time: crate::types::time::TimestampTz,
@@ -57,16 +57,16 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
 }
 #[derive(serde::Serialize, Debug, Clone, PartialEq)]
 pub struct GetBooked {
-    pub blood_group: crate::types::BloodGroup,
-    pub priority: crate::types::RequestPriority,
+    pub blood_group: ctypes::BloodGroup,
+    pub priority: ctypes::RequestPriority,
     pub title: String,
     pub max_people: i32,
     pub start_time: crate::types::time::TimestampTz,
     pub end_time: crate::types::time::TimestampTz,
 }
 pub struct GetBookedBorrowed<'a> {
-    pub blood_group: crate::types::BloodGroup,
-    pub priority: crate::types::RequestPriority,
+    pub blood_group: ctypes::BloodGroup,
+    pub priority: ctypes::RequestPriority,
     pub title: &'a str,
     pub max_people: i32,
     pub start_time: crate::types::time::TimestampTz,
@@ -350,8 +350,8 @@ impl CreateStmt {
         &'s mut self,
         client: &'c C,
         staff_id: &'a uuid::Uuid,
-        blood_group: &'a crate::types::BloodGroup,
-        priority: &'a crate::types::RequestPriority,
+        blood_group: &'a ctypes::BloodGroup,
+        priority: &'a ctypes::RequestPriority,
         title: &'a T1,
         max_people: &'a i32,
         start_time: &'a crate::types::time::TimestampTz,
@@ -493,7 +493,7 @@ impl UpdateStmt {
     pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
-        priority: &'a Option<crate::types::RequestPriority>,
+        priority: &'a Option<ctypes::RequestPriority>,
         title: &'a Option<T1>,
         max_people: &'a Option<i32>,
         id: &'a uuid::Uuid,

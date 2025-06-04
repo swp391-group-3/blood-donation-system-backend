@@ -3,12 +3,12 @@
 #[derive(Clone, Copy, Debug)]
 pub struct CreateParams {
     pub appointment_id: uuid::Uuid,
-    pub r#type: crate::types::DonationType,
+    pub r#type: ctypes::DonationType,
     pub amount: i32,
 }
 #[derive(Clone, Copy, Debug)]
 pub struct UpdateParams {
-    pub r#type: Option<crate::types::DonationType>,
+    pub r#type: Option<ctypes::DonationType>,
     pub amount: Option<i32>,
     pub id: uuid::Uuid,
 }
@@ -16,7 +16,7 @@ pub struct UpdateParams {
 pub struct Get {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
-    pub r#type: crate::types::DonationType,
+    pub r#type: ctypes::DonationType,
     pub amount: i32,
     pub created_at: crate::types::time::TimestampTz,
 }
@@ -24,7 +24,7 @@ pub struct Get {
 pub struct GetAll {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
-    pub r#type: crate::types::DonationType,
+    pub r#type: ctypes::DonationType,
     pub amount: i32,
     pub created_at: crate::types::time::TimestampTz,
 }
@@ -32,7 +32,7 @@ pub struct GetAll {
 pub struct GetByMemberId {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
-    pub r#type: crate::types::DonationType,
+    pub r#type: ctypes::DonationType,
     pub amount: i32,
     pub created_at: crate::types::time::TimestampTz,
 }
@@ -293,7 +293,7 @@ impl CreateStmt {
         &'s mut self,
         client: &'c C,
         appointment_id: &'a uuid::Uuid,
-        r#type: &'a crate::types::DonationType,
+        r#type: &'a ctypes::DonationType,
         amount: &'a i32,
     ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 3> {
         UuidUuidQuery {
@@ -424,7 +424,7 @@ impl UpdateStmt {
     pub async fn bind<'c, 'a, 's, C: GenericClient>(
         &'s mut self,
         client: &'c C,
-        r#type: &'a Option<crate::types::DonationType>,
+        r#type: &'a Option<ctypes::DonationType>,
         amount: &'a Option<i32>,
         id: &'a uuid::Uuid,
     ) -> Result<u64, tokio_postgres::Error> {

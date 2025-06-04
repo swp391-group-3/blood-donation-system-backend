@@ -40,7 +40,7 @@ pub enum Role {
     Admin,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
 #[postgres(name = "request_priority", rename_all = "snake_case")]
 pub enum RequestPriority {
@@ -49,7 +49,7 @@ pub enum RequestPriority {
     High,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
 #[postgres(name = "donation_type", rename_all = "snake_case")]
 pub enum DonationType {
@@ -59,7 +59,7 @@ pub enum DonationType {
     Plasma,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
 #[postgres(name = "blood_component", rename_all = "snake_case")]
 pub enum BloodComponent {

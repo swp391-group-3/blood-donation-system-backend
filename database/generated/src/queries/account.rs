@@ -24,7 +24,7 @@ pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate:
     pub gender: i32,
     pub address: T3,
     pub birthday: crate::types::time::Date,
-    pub blood_group: crate::types::BloodGroup,
+    pub blood_group: ctypes::BloodGroup,
     pub id: uuid::Uuid,
 }
 #[derive(Debug)]
@@ -39,7 +39,7 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
 #[derive(serde::Serialize, Debug, Clone, PartialEq, Copy)]
 pub struct GetAuthStatus {
     pub is_active: bool,
-    pub role: crate::types::Role,
+    pub role: ctypes::Role,
 }
 #[derive(serde::Serialize, Debug, Clone, PartialEq)]
 pub struct GetIdAndPassword {
@@ -60,25 +60,25 @@ impl<'a> From<GetIdAndPasswordBorrowed<'a>> for GetIdAndPassword {
 }
 #[derive(serde::Serialize, Debug, Clone, PartialEq)]
 pub struct Get {
-    pub role: crate::types::Role,
+    pub role: ctypes::Role,
     pub email: String,
     pub phone: String,
     pub name: String,
     pub gender: Option<i32>,
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
-    pub blood_group: Option<crate::types::BloodGroup>,
+    pub blood_group: Option<ctypes::BloodGroup>,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetBorrowed<'a> {
-    pub role: crate::types::Role,
+    pub role: ctypes::Role,
     pub email: &'a str,
     pub phone: &'a str,
     pub name: &'a str,
     pub gender: Option<i32>,
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
-    pub blood_group: Option<crate::types::BloodGroup>,
+    pub blood_group: Option<ctypes::BloodGroup>,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetBorrowed<'a>> for Get {
@@ -110,25 +110,25 @@ impl<'a> From<GetBorrowed<'a>> for Get {
 }
 #[derive(serde::Serialize, Debug, Clone, PartialEq)]
 pub struct GetAll {
-    pub role: crate::types::Role,
+    pub role: ctypes::Role,
     pub email: String,
     pub phone: String,
     pub name: String,
     pub gender: Option<i32>,
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
-    pub blood_group: Option<crate::types::BloodGroup>,
+    pub blood_group: Option<ctypes::BloodGroup>,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetAllBorrowed<'a> {
-    pub role: crate::types::Role,
+    pub role: ctypes::Role,
     pub email: &'a str,
     pub phone: &'a str,
     pub name: &'a str,
     pub gender: Option<i32>,
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
-    pub blood_group: Option<crate::types::BloodGroup>,
+    pub blood_group: Option<ctypes::BloodGroup>,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetAllBorrowed<'a>> for GetAll {
@@ -716,7 +716,7 @@ impl ActivateStmt {
         gender: &'a i32,
         address: &'a T3,
         birthday: &'a crate::types::time::Date,
-        blood_group: &'a crate::types::BloodGroup,
+        blood_group: &'a ctypes::BloodGroup,
         id: &'a uuid::Uuid,
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
