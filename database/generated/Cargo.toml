@@ -1,6 +1,6 @@
 # This file was generated with `clorinde`. Do not modify.
 [package]
-name = "database/generated"
+name = "database"
 version = "0.1.0"
 edition = "2021"
 publish = false
@@ -43,4 +43,4 @@ futures = "0.3.31"
 deadpool-postgres = { version = "0.14.1", optional = true }
 
 ## Custom type dependencies
-ctypes = { path = "./database/ctypes" }
+ctypes = { path = "../ctypes" }

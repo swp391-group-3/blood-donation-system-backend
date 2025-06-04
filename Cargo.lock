@@ -661,6 +661,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ctypes"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "postgres-types",
+ "serde",
+ "utoipa",
+]
+
+[[package]]
 name = "curve25519-dalek"
 version = "4.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -726,11 +736,14 @@ dependencies = [
 name = "database"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "ctypes",
  "deadpool-postgres",
  "futures",
  "postgres",
  "postgres-protocol",
  "postgres-types",
+ "serde",
  "tokio-postgres",
  "uuid",
 ]
@@ -2138,9 +2151,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613283563cd90e1dfc3518d548caee47e0e725455ed619881f5cf21f36de4b48"
 dependencies = [
  "bytes",
+ "chrono",
  "fallible-iterator",
  "postgres-derive",
  "postgres-protocol",
+ "serde",
+ "serde_json",
+ "time",
  "uuid",
 ]
 

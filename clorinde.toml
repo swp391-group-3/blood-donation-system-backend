@@ -2,10 +2,10 @@ serialize = true
 use-workspace-deps = "../../Cargo.toml"
 
 [package]
-name = "database/generated"
+name = "database"
 
 [types.crates]
-ctypes = { path = "./database/ctypes" }
+ctypes = { path = "../ctypes" }
 
 [types.mapping]
 "public.blood_group" = "ctypes::BloodGroup"
