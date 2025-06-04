@@ -24,7 +24,7 @@ pub struct UpdateParams<T1: crate::StringSql> {
     pub note: T1,
     pub id: uuid::Uuid,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
 pub struct GetByAppoinmentId {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
@@ -82,7 +82,7 @@ impl<'a> From<GetByAppoinmentIdBorrowed<'a>> for GetByAppoinmentId {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
 pub struct GetByMemberId {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,

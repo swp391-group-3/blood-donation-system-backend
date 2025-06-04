@@ -36,12 +36,12 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
     pub birthday: Option<crate::types::time::Date>,
     pub id: uuid::Uuid,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy, serde::Deserialize, utoipa::ToSchema)]
 pub struct GetAuthStatus {
     pub is_active: bool,
     pub role: ctypes::Role,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
 pub struct GetIdAndPassword {
     pub id: uuid::Uuid,
     pub password: String,
@@ -58,7 +58,7 @@ impl<'a> From<GetIdAndPasswordBorrowed<'a>> for GetIdAndPassword {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
 pub struct Get {
     pub role: ctypes::Role,
     pub email: String,
@@ -108,7 +108,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq)]
+#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
 pub struct GetAll {
     pub role: ctypes::Role,
     pub email: String,
