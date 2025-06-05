@@ -1,15 +1,18 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use database::queries;
 use serde::Deserialize;
 use utoipa::ToSchema;
 
-use crate::error::AuthError;
-use crate::{database, util};
-use crate::{error::Result, state::ApiState};
+use crate::{
+    error::{AuthError, Result},
+    state::ApiState,
+    util,
+};
 
 #[derive(Deserialize, ToSchema)]
-#[schema(as = login::Request)]
+#[schema(as = auth::login::Request)]
 pub struct Request {
     pub email: String,
     pub password: String,
@@ -21,11 +24,12 @@ pub struct Request {
     path = "/auth/login",
     request_body = Request,
 )]
-pub async fn login(
-    State(state): State<Arc<ApiState>>,
-    Json(request): Json<Request>,
-) -> Result<String> {
-    let account = database::account::get_by_email(&request.email, &state.database_pool)
+pub async fn login(state: State<Arc<ApiState>>, Json(request): Json<Request>) -> Result<String> {
+    let database = state.database_pool.get().await?;
+
+    let account = queries::account::get_id_and_password()
+        .bind(&database, &request.email)
+        .opt()
         .await?
         .ok_or(AuthError::InvalidLoginData)?;
 

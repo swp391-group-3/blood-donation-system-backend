@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use database::queries;
 
-use crate::{database, error::Result, state::ApiState};
+use crate::{error::Result, state::ApiState};
 
 #[utoipa::path(
     post,
@@ -10,10 +11,18 @@ use crate::{database, error::Result, state::ApiState};
     path = "/question",
     operation_id = "question::create",
     request_body = String,
+    responses(
+        (status = Status::OK, body = i32)
+    ),
     security(("jwt_token" = []))
 )]
-pub async fn create(State(state): State<Arc<ApiState>>, content: String) -> Result<Json<i32>> {
-    let id = database::question::create(&content, &state.database_pool).await?;
+pub async fn create(state: State<Arc<ApiState>>, content: String) -> Result<Json<i32>> {
+    let database = state.database_pool.get().await?;
+
+    let id = queries::question::create()
+        .bind(&database, &content)
+        .one()
+        .await?;
 
     Ok(Json(id))
 }

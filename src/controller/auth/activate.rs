@@ -1,26 +1,52 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-
-use crate::{
-    database::{self, account::AccountDetail},
-    error::Result,
-    state::ApiState,
-    util::auth::Claims,
+use chrono::NaiveDate;
+use ctypes::{BloodGroup, Gender};
+use database::{
+    client::Params,
+    queries::{self, account::ActivateParams},
 };
+use model_mapper::Mapper;
+use serde::Deserialize;
+use utoipa::ToSchema;
+use uuid::Uuid;
+
+use crate::{error::Result, state::ApiState, util::auth::Claims};
+
+#[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = auth::activate::Request)]
+#[mapper(
+    into(custom = "with_account_id"),
+    ty = ActivateParams::<String, String, String>,
+    add(field = id, ty = Uuid),
+)]
+pub struct Request {
+    pub phone: String,
+    pub name: String,
+    pub gender: Gender,
+    pub address: String,
+    pub birthday: NaiveDate,
+    pub blood_group: BloodGroup,
+}
 
 #[utoipa::path(
     post,
     tag = "Auth",
     path = "/auth/activate",
-    request_body = AccountDetail,
+    request_body = Request,
 )]
 pub async fn activate(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     claims: Claims,
-    Json(detail): Json<AccountDetail>,
+    Json(req): Json<Request>,
 ) -> Result<()> {
-    database::account::activate(claims.sub, &detail, &state.database_pool).await?;
+    queries::account::activate()
+        .params(
+            &state.database_pool.get().await?,
+            &req.with_account_id(claims.sub),
+        )
+        .await?;
 
     Ok(())
 }

@@ -1,9 +1,0 @@
-DROP TABLE answers;
-DROP TABLE questions;
-DROP TABLE healths;
-DROP TABLE blood_bags;
-DROP TABLE blood_components;
-DROP TABLE donations;
-DROP TABLE donation_types;
-DROP TABLE appointments;
-DROP TABLE blood_requests;

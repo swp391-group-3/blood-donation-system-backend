@@ -2,26 +2,28 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 use chrono::{DateTime, Utc};
+use ctypes::{BloodGroup, RequestPriority};
+use database::{
+    client::Params,
+    queries::{self, blood_request::CreateParams},
+};
+use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{
-    database::{
-        self,
-        blood_group::BloodGroup,
-        blood_request::{CreateBloodRequest, Priority},
-    },
-    error::Result,
-    state::ApiState,
-    util::auth::Claims,
-};
+use crate::{error::Result, state::ApiState, util::auth::Claims};
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Mapper)]
 #[schema(as = blood_request::create::Request)]
+#[mapper(
+    into(custom = "with_staff_id"),
+    ty = CreateParams::<String>,
+    add(field = staff_id, ty = Uuid),
+)]
 pub struct Request {
     pub blood_group: BloodGroup,
-    pub priority: Priority,
+    pub priority: RequestPriority,
     pub title: String,
     pub max_people: i32,
     pub start_time: DateTime<Utc>,
@@ -34,26 +36,22 @@ pub struct Request {
     path = "/blood-request",
     operation_id = "blood_request::create",
     request_body = Request,
+    responses(
+        (status = Status::OK, body = Uuid)
+    ),
     security(("jwt_token" = []))
 )]
 pub async fn create(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     claims: Claims,
     Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
-    let id = database::blood_request::create(
-        &CreateBloodRequest {
-            staff_id: claims.sub,
-            blood_group: request.blood_group,
-            priority: request.priority,
-            title: request.title,
-            max_people: request.max_people,
-            start_time: request.start_time,
-            end_time: request.end_time,
-        },
-        &state.database_pool,
-    )
-    .await?;
+    let database = state.database_pool.get().await?;
+
+    let id = queries::blood_request::create()
+        .params(&database, &request.with_staff_id(claims.sub))
+        .one()
+        .await?;
 
     Ok(Json(id))
 }

@@ -6,8 +6,9 @@ mod update;
 use std::sync::Arc;
 
 use axum::{Router, routing};
+use ctypes::Role;
 
-use crate::{database::account::Role, middleware, state::ApiState};
+use crate::{middleware, state::ApiState};
 
 pub use create::*;
 pub use delete::*;

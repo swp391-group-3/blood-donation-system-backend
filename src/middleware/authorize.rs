@@ -7,7 +7,8 @@ macro_rules! authorize {
             request: axum::extract::Request,
             next: axum::middleware::Next,
         | -> $crate::error::Result<axum::response::Response> {
-            let auth_status = $crate::database::account::get_auth_status(claims.sub, &state.database_pool)
+            let auth_status = database::queries::account::get_auth_status().bind(&state.database_pool.get().await?, &claims.sub)
+                .opt()
                 .await?
                 .ok_or($crate::error::AuthError::InvalidAuthToken)?;
 

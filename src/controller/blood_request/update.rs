@@ -4,31 +4,52 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use ctypes::RequestPriority;
+use database::{
+    client::Params,
+    queries::{self, blood_request::UpdateParams},
+};
+use model_mapper::Mapper;
+use serde::Deserialize;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{
-    database::{self, blood_request::UpdateBloodRequest},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState};
+
+#[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = blood_request::update::Request)]
+#[mapper(
+    into(custom = "with_id"),
+    ty = UpdateParams::<String>,
+    add(field = id, ty = Uuid)
+)]
+pub struct Request {
+    pub priority: Option<RequestPriority>,
+    pub title: Option<String>,
+    pub max_people: Option<i32>,
+}
 
 #[utoipa::path(
     put,
     tag = "Blood Request",
-    path = "/blood-quest/{id}",
+    path = "/blood-request/{id}",
     operation_id = "blood_request::update",
     params(
         ("id" = Uuid, Path, description = "Blood request id")
     ),
-    request_body = UpdateBloodRequest,
+    request_body = Request,
     security(("jwt_token" = []))
 )]
 pub async fn update(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
-    Json(request): Json<UpdateBloodRequest>,
+    Json(request): Json<Request>,
 ) -> Result<()> {
-    database::blood_request::update(id, &request, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    queries::blood_request::update()
+        .params(&database, &request.with_id(id))
+        .await?;
 
     Ok(())
 }

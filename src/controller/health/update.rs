@@ -4,19 +4,34 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use database::{
+    client::Params,
+    queries::{self, health::UpdateParams},
+};
+use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{
-    database::{self, health::UpdateParams},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState};
 
-#[derive(Deserialize, ToSchema)]
-#[schema(as = health::create::Request)]
-pub struct Request(UpdateParams);
+#[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = health::update::Request)]
+#[mapper(
+    into(custom = "with_id"),
+    ty = UpdateParams::<String>,
+    add(field = id, ty = Uuid)
+)]
+pub struct Request {
+    pub temperature: Option<f32>,
+    pub weight: Option<f32>,
+    pub upper_blood_pressure: Option<i32>,
+    pub lower_blood_pressure: Option<i32>,
+    pub heart_pulse: Option<i32>,
+    pub hemoglobin: Option<f32>,
+    pub is_good_health: Option<bool>,
+    pub note: Option<String>,
+}
 
 #[utoipa::path(
     patch,
@@ -32,9 +47,13 @@ pub struct Request(UpdateParams);
 pub async fn update(
     State(state): State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
-    Json(Request(params)): Json<Request>,
+    Json(request): Json<Request>,
 ) -> Result<()> {
-    database::health::update(id, &params, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    queries::health::update()
+        .params(&database, &request.with_id(id))
+        .await?;
 
     Ok(())
 }

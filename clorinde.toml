@@ -1,0 +1,14 @@
+use-workspace-deps = "../../Cargo.toml"
+
+[package]
+name = "database"
+
+[types.crates]
+ctypes = { path = "../ctypes" }
+
+[types.mapping]
+"public.blood_group" = "ctypes::BloodGroup"
+"public.role" = "ctypes::Role"
+"public.request_priority" = "ctypes::RequestPriority"
+"public.donation_type" = "ctypes::DonationType"
+"public.gender" = "ctypes::Gender"

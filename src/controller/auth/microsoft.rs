@@ -4,12 +4,15 @@ use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect},
 };
+use database::{
+    client::Params,
+    queries::{self, account::RegisterParams},
+};
 use openidconnect::{AuthorizationCode, CsrfToken, Nonce};
 use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::{
-    database::{self, account::Role},
     error::{AuthError, Result},
     state::ApiState,
     util::{self, auth::generate_token},
@@ -18,7 +21,7 @@ use crate::{
 const KEY: &str = "microsoft";
 
 #[utoipa::path(get, tag = "Auth", path = "/auth/microsoft")]
-pub async fn microsoft(State(state): State<Arc<ApiState>>, session: Session) -> impl IntoResponse {
+pub async fn microsoft(state: State<Arc<ApiState>>, session: Session) -> impl IntoResponse {
     let (auth_url, csrf, nonce) = util::auth::oidc::generate(&state.microsoft_client);
 
     session.insert(KEY, (csrf, nonce)).await.unwrap();
@@ -33,10 +36,12 @@ pub struct AuthRequest {
 }
 
 pub async fn authorized(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     session: Session,
     Query(query): Query<AuthRequest>,
 ) -> Result<String> {
+    let database = state.database_pool.get().await?;
+
     let (csrf, nonce): (CsrfToken, Nonce) = session.get(KEY).await.unwrap().unwrap();
 
     let microsoft_claims = util::auth::oidc::get_claims(
@@ -54,17 +59,28 @@ pub async fn authorized(
 
     let email = microsoft_claims
         .email()
-        .expect("Microsoft account must have email");
+        .expect("Microsoft account must have email")
+        .as_str();
 
-    database::account::create_if_not_existed(email, None, Role::Member, &state.database_pool)
+    queries::account::register()
+        .params(
+            &database,
+            &RegisterParams {
+                email,
+                password: None::<String>,
+            },
+        )
+        .one()
         .await
         .map_err(|error| {
             tracing::error!(error =? error);
             AuthError::AccountExisted
         })?;
 
-    let id = database::account::get_by_email(email, &state.database_pool)
-        .await?
+    let id = queries::account::get_id_and_password()
+        .bind(&database, &email)
+        .one()
+        .await
         .expect("Account must be created in previous step to get here")
         .id;
 

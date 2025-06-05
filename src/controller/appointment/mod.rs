@@ -1,13 +1,12 @@
-mod delete;
 mod get_answer;
 
 use std::sync::Arc;
 
 use axum::{Router, routing};
+use ctypes::Role;
 
-use crate::{database::account::Role, middleware, state::ApiState};
+use crate::{middleware, state::ApiState};
 
-pub use delete::*;
 pub use get_answer::*;
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
@@ -16,10 +15,5 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::authorize!(Role::Staff),
-        ))
-        .route("/appointment/{id}", routing::delete(delete))
-        .layer(axum::middleware::from_fn_with_state(
-            state,
-            middleware::authorize!(Role::Member),
         ))
 }

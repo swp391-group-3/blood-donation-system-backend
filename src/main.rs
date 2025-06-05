@@ -1,6 +1,5 @@
 mod config;
 mod controller;
-mod database;
 mod doc;
 mod error;
 mod middleware;

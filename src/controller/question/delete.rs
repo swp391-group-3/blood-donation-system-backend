@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use axum::extract::{Path, State};
+use database::queries;
 
-use crate::{database, error::Result, state::ApiState};
+use crate::{error::Result, state::ApiState};
 
 #[utoipa::path(
     delete,
@@ -14,8 +15,10 @@ use crate::{database, error::Result, state::ApiState};
     ),
     security(("jwt_token" = []))
 )]
-pub async fn delete(State(state): State<Arc<ApiState>>, Path(id): Path<i32>) -> Result<()> {
-    database::question::delete(id, &state.database_pool).await?;
+pub async fn delete(state: State<Arc<ApiState>>, Path(id): Path<i32>) -> Result<()> {
+    let database = state.database_pool.get().await?;
+
+    queries::question::delete().bind(&database, &id).await?;
 
     Ok(())
 }
