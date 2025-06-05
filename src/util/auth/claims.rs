@@ -3,7 +3,7 @@ use std::sync::{Arc, LazyLock};
 use axum::{RequestPartsExt, extract::FromRequestParts, http::request::Parts};
 use axum_extra::{
     TypedHeader,
-    extract::cookie::Cookie,
+    extract::{CookieJar, cookie::Cookie},
     headers::{Authorization, authorization::Bearer},
 };
 use chrono::Local;
@@ -61,11 +61,12 @@ impl FromRequestParts<Arc<ApiState>> for Claims {
         parts: &mut Parts,
         _: &Arc<ApiState>,
     ) -> Result<Self, Self::Rejection> {
-        let TypedHeader(Authorization(bearer)) = parts
-            .extract::<TypedHeader<Authorization<Bearer>>>()
-            .await?;
+        let jar = parts.extract::<CookieJar>().await.unwrap();
+        let token = jar
+            .get(TOKEN_KEY)
+            .ok_or(AuthError::MissingAuthToken)?
+            .value();
 
-        let token = bearer.token();
         let token = jsonwebtoken::decode::<Claims>(token, &DECODING_KEY, &Validation::default())
             .map_err(|error| {
                 tracing::error!(error = ?error);
