@@ -1,0 +1,59 @@
+services:
+  database:
+    container_name: blood-donation-system-database
+    image: postgres
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    volumes:
+      - data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - network
+    profiles:
+      - backend
+      - deploy
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: blood-donation-system-cloudbeaver
+    restart: always
+    volumes:
+      - zenick:/opt/cloudbeaver/workspace
+    networks:
+      - network
+    profiles:
+      - backend
+      - deploy
+
+  backend:
+    container_name: blood-donation-system-backend
+    environment:
+      DATABASE_URL: postgres://${PG_USER}:${PG_PASSWORD}@database/${PG_DB}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+    image: ghcr.io/blood-donation-system/backend:latest
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - network
+    profiles:
+      - backend
+      - deploy
+
+networks:
+  network:
+    name: blood-donation-system-network
+    external: true
+
+volumes:
+  data:
+    name: blood-donation-system-data
+    driver: local
+  cloudbeaver:
+    name: blood-donation-system-cloudbeaver
+    driver: local
