@@ -55,14 +55,8 @@ jobs:
       - run: ${{ matrix.deps }}
       - uses: ikalnytskyi/action-setup-postgres@v7
         id: postgres
-      - name: Install sqlx-cli
-        uses: taiki-e/install-action@v2
-        with:
-          tool: nextest,sqlx-cli
-      - name: Run migration
-        env:
-          DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}
-        run: sqlx migrate run
+      - name: Init database
+        run:  psql ${{ steps.postgres.outputs.connection-uri }} -a -f schema.sql
       - uses: Swatinem/rust-cache@v2
       - name: Test
         env:
