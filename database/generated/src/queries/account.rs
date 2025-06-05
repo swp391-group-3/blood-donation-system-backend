@@ -542,15 +542,15 @@ impl CreateStaffStmt {
     }
 }
 impl<
-    'c,
-    'a,
-    's,
-    C: GenericClient,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
-    T4: crate::StringSql,
->
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+    >
     crate::client::async_::Params<
         'c,
         'a,
@@ -723,25 +723,20 @@ impl ActivateStmt {
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
         client
-            .execute(stmt, &[
-                phone,
-                name,
-                gender,
-                address,
-                birthday,
-                blood_group,
-                id,
-            ])
+            .execute(
+                stmt,
+                &[phone, name, gender, address, birthday, blood_group, id],
+            )
             .await
     }
 }
 impl<
-    'a,
-    C: GenericClient + Send + Sync,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
->
+        'a,
+        C: GenericClient + Send + Sync,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+    >
     crate::client::async_::Params<
         'a,
         'a,
@@ -804,12 +799,12 @@ impl UpdateStmt {
     }
 }
 impl<
-    'a,
-    C: GenericClient + Send + Sync,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
->
+        'a,
+        C: GenericClient + Send + Sync,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+    >
     crate::client::async_::Params<
         'a,
         'a,

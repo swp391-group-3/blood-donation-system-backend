@@ -495,17 +495,20 @@ impl UpdateStmt {
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
         client
-            .execute(stmt, &[
-                temperature,
-                weight,
-                upper_blood_pressure,
-                lower_blood_pressure,
-                heart_pulse,
-                hemoglobin,
-                is_good_health,
-                note,
-                id,
-            ])
+            .execute(
+                stmt,
+                &[
+                    temperature,
+                    weight,
+                    upper_blood_pressure,
+                    lower_blood_pressure,
+                    heart_pulse,
+                    hemoglobin,
+                    is_good_health,
+                    note,
+                    id,
+                ],
+            )
             .await
     }
 }
