@@ -23,7 +23,7 @@ VALUES(
 )
 RETURNING id;
 
---! get_by_appoinment_id
+--! get_by_appointment_id
 SELECT *
 FROM healths
 WHERE appointment_id = :appointment_id;

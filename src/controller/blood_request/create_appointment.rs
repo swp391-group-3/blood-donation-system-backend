@@ -5,16 +5,27 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use database::{
+    client::Params,
+    queries::{self, appointment::CreateParams},
+};
+use futures::stream::TryStreamExt;
+use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{database, error::Result, state::ApiState, util::auth::Claims};
+use crate::{error::Result, state::ApiState, util::auth::Claims};
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Mapper)]
+#[mapper(
+    into(custom = "with_appointment_id"),
+    ty = queries::answer::CreateParams::<String>,
+    add(field = appointment_id, ty = Uuid)
+)]
 pub struct Answer {
     pub question_id: i32,
-    pub answer: String,
+    pub content: String,
 }
 
 #[derive(Deserialize, ToSchema)]
@@ -33,15 +44,26 @@ pub struct Request {
         ("id" = Uuid, Path, description = "Blood request id")
     ),
     request_body = Request,
+    responses(
+        (status = Status::OK, body = Uuid)
+    ),
     security(("jwt_token" = []))
 )]
 pub async fn create_appointment(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     claims: Claims,
     Path(id): Path<Uuid>,
     Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
-    let question_ids = database::question::get_all_id(&state.database_pool).await?;
+    let mut database = state.database_pool.get().await?;
+
+    let question_ids: HashSet<_> = queries::question::get_all()
+        .bind(&database)
+        .map(|raw| raw.id)
+        .iter()
+        .await?
+        .try_collect()
+        .await?;
     let submitted_question_ids = request
         .answers
         .iter()
@@ -52,18 +74,26 @@ pub async fn create_appointment(
         return Err(anyhow!("Missing required questions").into());
     }
 
-    let mut transaction = state.database_pool.begin().await?;
+    let mut transaction = database.transaction().await?;
 
-    let appointment_id = database::appointment::create(id, claims.sub, &mut *transaction).await?;
+    let appointment_id = queries::appointment::create()
+        .params(
+            &mut transaction,
+            &CreateParams {
+                request_id: id,
+                member_id: claims.sub,
+            },
+        )
+        .one()
+        .await?;
 
     for answer in request.answers {
-        database::answer::create(
-            answer.question_id,
-            appointment_id,
-            &answer.answer,
-            &mut *transaction,
-        )
-        .await?;
+        queries::answer::create()
+            .params(
+                &mut transaction,
+                &answer.with_appointment_id(appointment_id),
+            )
+            .await?;
     }
 
     transaction.commit().await?;

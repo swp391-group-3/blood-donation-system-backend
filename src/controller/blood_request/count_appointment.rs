@@ -4,9 +4,10 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use database::queries;
 use uuid::Uuid;
 
-use crate::{database, error::Result, state::ApiState};
+use crate::{error::Result, state::ApiState};
 
 #[utoipa::path(
     get,
@@ -16,13 +17,21 @@ use crate::{database, error::Result, state::ApiState};
     params(
         ("id" = Uuid, Path, description = "Blood request id")
     ),
+    responses(
+        (status = Status::OK, body = i64)
+    ),
     security(("jwt_token" = []))
 )]
 pub async fn count_appointment(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<i64>> {
-    let count = database::blood_request::count_appointment(id, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    let count = queries::blood_request::count_appointment()
+        .bind(&database, &id)
+        .one()
+        .await?;
 
     Ok(Json(count))
 }

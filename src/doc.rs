@@ -56,11 +56,12 @@ impl Modify for SecurityAddon {
         controller::blood_request::delete,
         controller::blood_request::create_appointment,
 
-        controller::appointment::delete,
+        controller::appointment::get_answer,
 
         controller::blog::create,
-        controller::blog::get_by_id,
-        controller::blog::get_list,
+        controller::blog::get,
+        controller::blog::get_all,
+
         controller::health::create,
         controller::health::update,
         controller::health::get_by_appointment_id,

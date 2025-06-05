@@ -5,7 +5,7 @@ pub struct UpdateParams<T1: crate::StringSql> {
     pub content: T1,
     pub id: i32,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetAll {
     pub id: i32,
     pub content: String,

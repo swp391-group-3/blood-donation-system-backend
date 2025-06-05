@@ -7,14 +7,33 @@ mod update;
 use std::sync::Arc;
 
 use axum::{Router, routing};
+use chrono::{DateTime, Utc};
+use ctypes::{DonationType, Role};
+use database::queries::donation::{Get, GetAll, GetByMemberId};
+use model_mapper::Mapper;
+use serde::Serialize;
+use utoipa::ToSchema;
+use uuid::Uuid;
 
-use crate::{database::account::Role, middleware, state::ApiState};
+use crate::{middleware, state::ApiState};
 
 pub use create::*;
 pub use get::*;
 pub use get_all::*;
 pub use get_by_member_id::*;
 pub use update::*;
+
+#[derive(Serialize, ToSchema, Mapper)]
+#[mapper(derive(from(custom = "from_get"), ty = Get))]
+#[mapper(derive(from(custom = "from_get_all"), ty = GetAll))]
+#[mapper(derive(from(custom = "from_get_by_member_id"), ty = GetByMemberId))]
+pub struct Donation {
+    pub id: Uuid,
+    pub appointment_id: Uuid,
+    pub r#type: DonationType,
+    pub amount: i32,
+    pub created_at: DateTime<Utc>,
+}
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()

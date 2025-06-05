@@ -27,10 +27,10 @@ VALUES (
 RETURNING id;
 
 --! get_auth_status
-SELECT is_active, role FROM accounts;
+SELECT is_active, role FROM accounts WHERE id = :id;
 
 --! get_id_and_password
-SELECT id, password FROM accounts WHERE email = $1;
+SELECT id, password FROM accounts WHERE email = :email;
 
 --! get : (gender?, address?, birthday?, blood_group?)
 SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at

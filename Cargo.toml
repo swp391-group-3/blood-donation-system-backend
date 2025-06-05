@@ -14,6 +14,7 @@ ctypes = { path = "./database/ctypes" }
 database = { path = "./database/generated" }
 futures = "0.3.31"
 jsonwebtoken = "9.3.1"
+model-mapper = "0.6.1"
 openidconnect = "4.0.0"
 rand = "0.9.1"
 serde = { version = "1.0.219", features = ["derive"] }

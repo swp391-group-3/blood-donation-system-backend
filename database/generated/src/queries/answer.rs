@@ -6,7 +6,7 @@ pub struct CreateParams<T1: crate::StringSql> {
     pub appointment_id: uuid::Uuid,
     pub content: T1,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetByAppointmentId {
     pub question: String,
     pub answer: String,

@@ -1,27 +1,33 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use database::{
+    client::Params,
+    queries::{self, blog::CreateParams},
+};
+use model_mapper::Mapper;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{
-    database::{self},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState, util::auth::Claims};
 
-#[derive(Deserialize, Serialize, ToSchema)]
-pub struct Request {
-    pub account_id: Uuid,
+#[derive(Deserialize, Serialize, ToSchema, Mapper)]
+#[mapper(
+    into(custom = "with_account_id"),
+    ty = CreateParams::<String, String>,
+    add(field = account_id, ty = Uuid),
+)]
+pub struct CreateBlogRequest {
     pub title: String,
     pub content: String,
 }
+
 #[utoipa::path(
     post,
     tag = "Blog",
-    path = "/blog/create",
-    request_body = Request,
+    path = "/blog",
+    request_body = CreateBlogRequest,
     responses(
         (status = 201, description = "Create blog successfully", body = Uuid),
         (status = 400, description = "Invalid data"),
@@ -29,16 +35,16 @@ pub struct Request {
     )
 )]
 pub async fn create(
-    State(state): State<Arc<ApiState>>,
-    Json(request): Json<Request>,
+    state: State<Arc<ApiState>>,
+    claims: Claims,
+    Json(request): Json<CreateBlogRequest>,
 ) -> Result<Json<Uuid>> {
-    let id = database::blog::create(
-        &request.account_id,
-        &request.title,
-        &request.content,
-        &state.database_pool,
-    )
-    .await?;
+    let database = state.database_pool.get().await?;
+
+    let id = queries::blog::create()
+        .params(&database, &request.with_account_id(claims.sub))
+        .one()
+        .await?;
 
     Ok(Json(id))
 }

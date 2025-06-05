@@ -8,11 +8,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{
-    database::{self, donation::UpdateParams},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState};
 
 #[derive(Deserialize, ToSchema)]
 #[schema(as = donation::update::Request)]

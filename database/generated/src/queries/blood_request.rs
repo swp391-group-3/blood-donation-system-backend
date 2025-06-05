@@ -17,7 +17,7 @@ pub struct UpdateParams<T1: crate::StringSql> {
     pub max_people: Option<i32>,
     pub id: uuid::Uuid,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetAll {
     pub blood_group: ctypes::BloodGroup,
     pub priority: ctypes::RequestPriority,
@@ -55,7 +55,7 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetBooked {
     pub blood_group: ctypes::BloodGroup,
     pub priority: ctypes::RequestPriority,

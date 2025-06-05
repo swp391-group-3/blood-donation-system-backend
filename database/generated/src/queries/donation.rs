@@ -12,7 +12,7 @@ pub struct UpdateParams {
     pub amount: Option<i32>,
     pub id: uuid::Uuid,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct Get {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
@@ -20,7 +20,7 @@ pub struct Get {
     pub amount: i32,
     pub created_at: crate::types::time::TimestampTz,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct GetAll {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,
@@ -28,7 +28,7 @@ pub struct GetAll {
     pub amount: i32,
     pub created_at: crate::types::time::TimestampTz,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct GetByMemberId {
     pub id: uuid::Uuid,
     pub appointment_id: uuid::Uuid,

@@ -6,7 +6,7 @@ pub struct CreateParams<T1: crate::StringSql, T2: crate::StringSql> {
     pub title: T1,
     pub content: T2,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Get {
     pub id: uuid::Uuid,
     pub account_id: uuid::Uuid,
@@ -36,7 +36,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetAll {
     pub id: uuid::Uuid,
     pub account_id: uuid::Uuid,

@@ -36,12 +36,12 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
     pub birthday: Option<crate::types::time::Date>,
     pub id: uuid::Uuid,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, Copy, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct GetAuthStatus {
     pub is_active: bool,
     pub role: ctypes::Role,
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetIdAndPassword {
     pub id: uuid::Uuid,
     pub password: String,
@@ -58,7 +58,7 @@ impl<'a> From<GetIdAndPasswordBorrowed<'a>> for GetIdAndPassword {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Get {
     pub role: ctypes::Role,
     pub email: String,
@@ -108,7 +108,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
         }
     }
 }
-#[derive(serde::Serialize, Debug, Clone, PartialEq, serde::Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetAll {
     pub role: ctypes::Role,
     pub email: String,
@@ -576,7 +576,7 @@ impl<
 }
 pub fn get_auth_status() -> GetAuthStatusStmt {
     GetAuthStatusStmt(crate::client::async_::Stmt::new(
-        "SELECT is_active, role FROM accounts",
+        "SELECT is_active, role FROM accounts WHERE id = $1",
     ))
 }
 pub struct GetAuthStatusStmt(crate::client::async_::Stmt);
@@ -584,10 +584,11 @@ impl GetAuthStatusStmt {
     pub fn bind<'c, 'a, 's, C: GenericClient>(
         &'s mut self,
         client: &'c C,
-    ) -> GetAuthStatusQuery<'c, 'a, 's, C, GetAuthStatus, 0> {
+        id: &'a uuid::Uuid,
+    ) -> GetAuthStatusQuery<'c, 'a, 's, C, GetAuthStatus, 1> {
         GetAuthStatusQuery {
             client,
-            params: [],
+            params: [id],
             stmt: &mut self.0,
             extractor: |row: &tokio_postgres::Row| -> Result<GetAuthStatus, tokio_postgres::Error> {
                 Ok(GetAuthStatus {
@@ -606,13 +607,14 @@ pub fn get_id_and_password() -> GetIdAndPasswordStmt {
 }
 pub struct GetIdAndPasswordStmt(crate::client::async_::Stmt);
 impl GetIdAndPasswordStmt {
-    pub fn bind<'c, 'a, 's, C: GenericClient>(
+    pub fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
-    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, GetIdAndPassword, 0> {
+        email: &'a T1,
+    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, GetIdAndPassword, 1> {
         GetIdAndPasswordQuery {
             client,
-            params: [],
+            params: [email],
             stmt: &mut self.0,
             extractor: |
                 row: &tokio_postgres::Row,

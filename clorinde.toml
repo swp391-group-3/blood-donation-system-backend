@@ -1,11 +1,7 @@
-serialize = true
 use-workspace-deps = "../../Cargo.toml"
 
 [package]
 name = "database"
-
-[types]
-derive-traits = ["serde::Deserialize", "utoipa::ToSchema"]
 
 [types.crates]
 ctypes = { path = "../ctypes" }

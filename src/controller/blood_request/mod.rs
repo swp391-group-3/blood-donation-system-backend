@@ -9,8 +9,14 @@ mod update;
 use std::sync::Arc;
 
 use axum::{Router, routing};
+use chrono::{DateTime, Utc};
+use ctypes::{BloodGroup, RequestPriority, Role};
+use database::queries::blood_request::{GetAllBorrowed, GetBookedBorrowed};
+use model_mapper::Mapper;
+use serde::Serialize;
+use utoipa::ToSchema;
 
-use crate::{database::account::Role, middleware, state::ApiState};
+use crate::{middleware, state::ApiState};
 
 pub use count_appointment::*;
 pub use create::*;
@@ -19,6 +25,18 @@ pub use delete::*;
 pub use get_all::*;
 pub use get_booked::*;
 pub use update::*;
+
+#[derive(Serialize, ToSchema, Mapper)]
+#[mapper(derive(from(custom = "from_get_all"), ty = GetAllBorrowed::<'_>))]
+#[mapper(derive(from(custom = "from_get_booked"), ty = GetBookedBorrowed::<'_>))]
+pub struct BloodRequest {
+    pub blood_group: BloodGroup,
+    pub priority: RequestPriority,
+    pub title: String,
+    pub max_people: i32,
+    pub start_time: DateTime<Utc>,
+    pub end_time: DateTime<Utc>,
+}
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()
