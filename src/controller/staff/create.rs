@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use database::{
     client::Params,
     queries::{self, account::CreateStaffParams},
@@ -11,9 +12,9 @@ use utoipa::ToSchema;
 
 use crate::{
     config::CONFIG,
-    error::{AuthError, Result},
+    error::{AuthError, Error, Result},
     state::ApiState,
-    util::auth::generate_token,
+    util::auth::Claims,
 };
 
 #[derive(Deserialize, ToSchema, Mapper)]
@@ -39,8 +40,9 @@ pub struct Request {
 )]
 pub async fn create(
     state: State<Arc<ApiState>>,
+    jar: CookieJar,
     Json(mut request): Json<Request>,
-) -> Result<String> {
+) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
     let password = bcrypt::hash_with_salt(
@@ -60,10 +62,10 @@ pub async fn create(
         .one()
         .await?;
 
-    let token = generate_token(id).map_err(|error| {
+    let cookie: Cookie = Claims::new(id).try_into().map_err(|error| {
         tracing::error!(error =? error);
-        AuthError::InvalidAuthToken
+        Error::from(AuthError::InvalidLoginData)
     })?;
 
-    Ok(token)
+    Ok(jar.add(cookie))
 }

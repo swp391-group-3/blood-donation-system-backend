@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use database::{
     client::Params,
     queries::{self, account::RegisterParams},
@@ -10,9 +11,9 @@ use utoipa::ToSchema;
 
 use crate::{
     config::CONFIG,
-    error::{AuthError, Result},
+    error::{AuthError, Error, Result},
     state::ApiState,
-    util::auth::generate_token,
+    util::auth::Claims,
 };
 
 #[derive(Deserialize, ToSchema)]
@@ -28,7 +29,11 @@ pub struct Request {
     path = "/auth/register",
     request_body = Request,
 )]
-pub async fn register(state: State<Arc<ApiState>>, request: Json<Request>) -> Result<String> {
+pub async fn register(
+    state: State<Arc<ApiState>>,
+    jar: CookieJar,
+    request: Json<Request>,
+) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
     let password = bcrypt::hash_with_salt(
@@ -57,10 +62,10 @@ pub async fn register(state: State<Arc<ApiState>>, request: Json<Request>) -> Re
             AuthError::AccountExisted
         })?;
 
-    let token = generate_token(id).map_err(|error| {
+    let cookie: Cookie = Claims::new(id).try_into().map_err(|error| {
         tracing::error!(error =? error);
-        AuthError::InvalidAuthToken
+        Error::from(AuthError::InvalidLoginData)
     })?;
 
-    Ok(token)
+    Ok(jar.add(cookie))
 }
