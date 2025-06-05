@@ -3,7 +3,7 @@
 #[derive(Debug)]
 pub struct RegisterParams<T1: crate::StringSql, T2: crate::StringSql> {
     pub email: T1,
-    pub password: Option<T2>,
+    pub password: T2,
 }
 #[derive(Debug)]
 pub struct CreateStaffParams<
@@ -470,7 +470,7 @@ where
 }
 pub fn register() -> RegisterStmt {
     RegisterStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO accounts(email, password, role) VALUES( $1, COALESCE($2, substr(md5(random()::text), 1, 25)), 'member'::role ) RETURNING id",
+        "INSERT INTO accounts(email, password, role) VALUES( $1, $2, 'member'::role ) RETURNING id",
     ))
 }
 pub struct RegisterStmt(crate::client::async_::Stmt);
@@ -479,7 +479,7 @@ impl RegisterStmt {
         &'s mut self,
         client: &'c C,
         email: &'a T1,
-        password: &'a Option<T2>,
+        password: &'a T2,
     ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
         UuidUuidQuery {
             client,
@@ -506,6 +506,22 @@ impl<'c, 'a, 's, C: GenericClient, T1: crate::StringSql, T2: crate::StringSql>
         params: &'a RegisterParams<T1, T2>,
     ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
         self.bind(client, &params.email, &params.password)
+    }
+}
+pub fn oauth2_register() -> Oauth2RegisterStmt {
+    Oauth2RegisterStmt(crate::client::async_::Stmt::new(
+        "INSERT INTO accounts(email, password, role) VALUES( $1, substr(md5(random()::text), 1, 25), 'member'::role ) ON CONFLICT DO NOTHING",
+    ))
+}
+pub struct Oauth2RegisterStmt(crate::client::async_::Stmt);
+impl Oauth2RegisterStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
+        &'s mut self,
+        client: &'c C,
+        email: &'a T1,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[email]).await
     }
 }
 pub fn create_staff() -> CreateStaffStmt {

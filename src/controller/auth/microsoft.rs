@@ -5,10 +5,7 @@ use axum::{
     response::{IntoResponse, Redirect},
 };
 use axum_extra::extract::{CookieJar, cookie::Cookie};
-use database::{
-    client::Params,
-    queries::{self, account::RegisterParams},
-};
+use database::queries::{self};
 use openidconnect::{AuthorizationCode, CsrfToken, Nonce};
 use serde::Deserialize;
 use tower_sessions::Session;
@@ -64,15 +61,8 @@ pub async fn authorized(
         .expect("Microsoft account must have email")
         .as_str();
 
-    queries::account::register()
-        .params(
-            &database,
-            &RegisterParams {
-                email,
-                password: None::<String>,
-            },
-        )
-        .one()
+    queries::account::oauth2_register()
+        .bind(&database, &email)
         .await
         .map_err(|error| {
             tracing::error!(error =? error);

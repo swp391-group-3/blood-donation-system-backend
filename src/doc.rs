@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::Router;
 use utoipa::{
     Modify, OpenApi,
-    openapi::security::{HttpAuthScheme, HttpBuilder, SecurityScheme},
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
 };
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -16,12 +16,7 @@ impl Modify for SecurityAddon {
         if let Some(components) = openapi.components.as_mut() {
             components.add_security_scheme(
                 "jwt_token",
-                SecurityScheme::Http(
-                    HttpBuilder::new()
-                        .scheme(HttpAuthScheme::Bearer)
-                        .bearer_format("JWT")
-                        .build(),
-                ),
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("token"))),
             )
         }
     }

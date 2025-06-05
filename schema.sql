@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     gender gender,
     address text,
     birthday date,
-    blood_group blood_group NOT NULL,
+    blood_group blood_group,
     is_active boolean NOT NULL DEFAULT false,
     created_at timestamptz NOT NULL DEFAULT now()
 );
