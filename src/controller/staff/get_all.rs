@@ -19,7 +19,7 @@ pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<Account>>> 
 
     let accounts = queries::account::get_all()
         .bind(&database)
-        .map(|raw| Account::from_get_all(raw))
+        .map(Account::from_get_all)
         .all()
         .await?;
 

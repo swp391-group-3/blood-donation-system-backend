@@ -18,7 +18,7 @@ pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<BloodReques
 
     let requests = queries::blood_request::get_all()
         .bind(&database)
-        .map(|raw| BloodRequest::from_get_all(raw))
+        .map(BloodRequest::from_get_all)
         .all()
         .await?;
 

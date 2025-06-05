@@ -27,7 +27,7 @@ pub async fn get(state: State<Arc<ApiState>>, Path(id): Path<Uuid>) -> Result<Js
 
     let blog = queries::blog::get()
         .bind(&database, &id)
-        .map(|raw| Blog::from_get(raw))
+        .map(Blog::from_get)
         .opt()
         .await?;
 

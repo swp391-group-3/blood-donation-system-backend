@@ -32,7 +32,7 @@ pub async fn get(
 
     let accounts = queries::account::get()
         .bind(&database, &id)
-        .map(|raw| Account::from_get(raw))
+        .map(Account::from_get)
         .opt()
         .await?;
 

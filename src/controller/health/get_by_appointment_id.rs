@@ -32,7 +32,7 @@ pub async fn get_by_appointment_id(
 
     let health = queries::health::get_by_appointment_id()
         .bind(&database, &appointment_id)
-        .map(|raw| Health::from_get_by_appointment_id(raw))
+        .map(Health::from_get_by_appointment_id)
         .opt()
         .await?;
 

@@ -22,7 +22,7 @@ pub async fn get_booked(
 
     let requests = queries::blood_request::get_booked()
         .bind(&database, &claims.sub)
-        .map(|raw| BloodRequest::from_get_booked(raw))
+        .map(BloodRequest::from_get_booked)
         .all()
         .await?;
 

@@ -25,7 +25,7 @@ pub async fn get_by_member_id(
 
     let healths = queries::health::get_by_member_id()
         .bind(&database, &claims.sub)
-        .map(|raw| Health::from_get_by_member_id(raw))
+        .map(Health::from_get_by_member_id)
         .all()
         .await?;
 

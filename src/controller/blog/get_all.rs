@@ -19,7 +19,7 @@ pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<Blog>>> {
 
     let blogs = queries::blog::get_all()
         .bind(&database)
-        .map(|raw| Blog::from_get_all(raw))
+        .map(Blog::from_get_all)
         .all()
         .await?;
 

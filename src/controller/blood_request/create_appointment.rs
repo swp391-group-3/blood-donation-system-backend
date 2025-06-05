@@ -74,10 +74,10 @@ pub async fn create_appointment(
         return Err(anyhow!("Missing required questions").into());
     }
 
-    let mut transaction = database.transaction().await?;
+    let transaction = database.transaction().await?;
 
     let appointment_id = queries::appointment::create()
-        .params(&mut transaction, &CreateParams {
+        .params(&transaction, &CreateParams {
             request_id: id,
             member_id: claims.sub,
         })
@@ -86,10 +86,7 @@ pub async fn create_appointment(
 
     for answer in request.answers {
         queries::answer::create()
-            .params(
-                &mut transaction,
-                &answer.with_appointment_id(appointment_id),
-            )
+            .params(&transaction, &answer.with_appointment_id(appointment_id))
             .await?;
     }
 
