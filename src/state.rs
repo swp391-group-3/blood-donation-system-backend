@@ -2,13 +2,17 @@ use std::sync::Arc;
 
 use database::{deadpool_postgres, tokio_postgres::NoTls};
 
-use crate::{config::CONFIG, util::auth::OpenIdConnectClient};
+use crate::{
+    config::CONFIG,
+    util::auth::{JwtService, OpenIdConnectClient},
+};
 
 #[allow(unused)]
 pub struct ApiState {
     pub database_pool: deadpool_postgres::Pool,
     pub google_client: OpenIdConnectClient,
     pub microsoft_client: OpenIdConnectClient,
+    pub jwt_service: JwtService,
 }
 
 impl ApiState {
@@ -26,6 +30,7 @@ impl ApiState {
             database_pool,
             google_client,
             microsoft_client,
+            jwt_service: JwtService::default(),
         })
     }
 }

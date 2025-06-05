@@ -3,6 +3,7 @@ use std::sync::{Arc, LazyLock};
 use axum::{RequestPartsExt, extract::FromRequestParts, http::request::Parts};
 use axum_extra::extract::{CookieJar, cookie::Cookie};
 use chrono::Local;
+use config::{Config, Environment};
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use tower_sessions::cookie::SameSite;
@@ -10,12 +11,29 @@ use uuid::Uuid;
 
 use crate::{config::CONFIG, error::AuthError, state::ApiState};
 
-pub static ENCODING_KEY: LazyLock<EncodingKey> =
-    LazyLock::new(|| EncodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
-pub static DECODING_KEY: LazyLock<DecodingKey> =
-    LazyLock::new(|| DecodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
+fn default_secret() -> String {
+    "secret".to_string()
+}
 
-const TOKEN_KEY: &str = "token";
+const fn default_expired_in() -> u64 {
+    24 * 60 * 60
+}
+
+fn default_token_key() -> String {
+    "token".to_string()
+}
+
+#[derive(Deserialize)]
+pub struct JwtConfig {
+    #[serde(default = "default_secret")]
+    pub secret: String,
+
+    #[serde(default = "default_expired_in")]
+    pub expired_in: u64,
+
+    #[serde(default = "default_token_key")]
+    pub token_key: String,
+}
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
@@ -23,24 +41,40 @@ pub struct Claims {
     pub exp: u64,
 }
 
-impl Claims {
-    pub fn new(id: Uuid) -> Self {
-        let now = Local::now().timestamp() as u64;
+pub struct JwtService {
+    pub encoding_key: EncodingKey,
+    pub decoding_key: DecodingKey,
+    pub token_key: String,
+}
 
+impl Default for JwtService {
+    fn default() -> Self {
+        let config: JwtConfig = Config::builder()
+            .add_source(Environment::default().prefix("JWT").try_parsing(true))
+            .build()
+            .unwrap()
+            .try_deserialize()
+            .unwrap();
         Self {
-            sub: id,
-            exp: now + CONFIG.jwt.expired_in,
+            encoding_key: EncodingKey::from_secret(config.secret.as_bytes()),
+            decoding_key: DecodingKey::from_secret(config.secret.as_bytes()),
+            token_key: config.token_key,
         }
     }
 }
 
-impl TryFrom<Claims> for Cookie<'static> {
-    type Error = jsonwebtoken::errors::Error;
+impl JwtService {
+    pub fn new_credential(&self, id: Uuid) -> jsonwebtoken::errors::Result<Cookie<'static>> {
+        let now = Local::now().timestamp() as u64;
 
-    fn try_from(claims: Claims) -> Result<Self, Self::Error> {
-        let token = jsonwebtoken::encode(&Header::default(), &claims, &ENCODING_KEY)?;
+        let claims = Claims {
+            sub: id,
+            exp: now + .jwt.expired_in,
+        };
 
-        let mut cookie = Cookie::new(TOKEN_KEY, token);
+        let token = jsonwebtoken::encode(&Header::default(), &claims, &self.encoding_key)?;
+
+        let mut cookie = Cookie::new(self.token_key.clone(), token);
         // cookie.set_secure(true);
         cookie.set_same_site(SameSite::Lax);
         // cookie.set_http_only(true);
@@ -55,19 +89,23 @@ impl FromRequestParts<Arc<ApiState>> for Claims {
 
     async fn from_request_parts(
         parts: &mut Parts,
-        _: &Arc<ApiState>,
+        state: &Arc<ApiState>,
     ) -> Result<Self, Self::Rejection> {
         let jar = parts.extract::<CookieJar>().await.unwrap();
         let token = jar
-            .get(TOKEN_KEY)
+            .get(&state.jwt_service.token_key)
             .ok_or(AuthError::MissingAuthToken)?
             .value();
 
-        let token = jsonwebtoken::decode::<Claims>(token, &DECODING_KEY, &Validation::default())
-            .map_err(|error| {
-                tracing::error!(error = ?error);
-                AuthError::InvalidAuthToken
-            })?;
+        let token = jsonwebtoken::decode::<Claims>(
+            token,
+            &state.jwt_service.decoding_key,
+            &Validation::default(),
+        )
+        .map_err(|error| {
+            tracing::error!(error = ?error);
+            AuthError::InvalidAuthToken
+        })?;
 
         Ok(token.claims)
     }
