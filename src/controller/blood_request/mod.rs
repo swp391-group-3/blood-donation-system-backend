@@ -1,6 +1,5 @@
 mod count_appointment;
 mod create;
-mod create_appointment;
 mod delete;
 mod get_all;
 mod get_booked;
@@ -20,7 +19,6 @@ use crate::{middleware, state::ApiState};
 
 pub use count_appointment::*;
 pub use create::*;
-pub use create_appointment::*;
 pub use delete::*;
 pub use get_all::*;
 pub use get_booked::*;
@@ -47,10 +45,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
             state.clone(),
             middleware::authorize!(Role::Staff),
         ))
-        .route(
-            "/blood-request/{id}/create-appointment",
-            routing::post(create_appointment),
-        )
         .route("/blood-request/get-booked", routing::get(get_booked))
         .layer(axum::middleware::from_fn_with_state(
             state,

@@ -37,9 +37,9 @@ pub struct Request {
 
 #[utoipa::path(
     post,
-    tag = "Blood Request",
+    tags = ["Appointment", "Blood Request"],
     path = "/blood-request/{id}/create-appointment",
-    operation_id = "blood_request::create_appointment",
+    operation_id = "appointment::create",
     params(
         ("id" = Uuid, Path, description = "Blood request id")
     ),
@@ -49,7 +49,7 @@ pub struct Request {
     ),
     security(("jwt_token" = []))
 )]
-pub async fn create_appointment(
+pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
     Path(id): Path<Uuid>,

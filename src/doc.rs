@@ -48,8 +48,8 @@ impl Modify for SecurityAddon {
         controller::blood_request::get_all,
         controller::blood_request::update,
         controller::blood_request::delete,
-        controller::blood_request::create_appointment,
 
+        controller::appointment::create,
         controller::appointment::get_answer,
 
         controller::blog::create,
