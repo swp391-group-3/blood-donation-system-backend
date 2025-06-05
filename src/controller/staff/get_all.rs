@@ -1,12 +1,11 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use database::queries;
 
-use crate::{
-    database::{self, account::*},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState};
+
+use super::Account;
 
 #[utoipa::path(
     get,
@@ -15,8 +14,14 @@ use crate::{
     operation_id = "staff::get_all",
     security(("jwt_token" = []))
 )]
-pub async fn get_all(State(state): State<Arc<ApiState>>) -> Result<Json<Vec<StaffDetail>>> {
-    let accounts = database::account::list_by_role(Role::Staff, &state.database_pool).await?;
+pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<Account>>> {
+    let database = state.database_pool.get().await?;
+
+    let accounts = queries::account::get_all()
+        .bind(&database)
+        .map(|raw| Account::from_get_all(raw))
+        .all()
+        .await?;
 
     Ok(Json(accounts))
 }

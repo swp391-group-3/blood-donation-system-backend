@@ -1,4 +1,4 @@
---! create
+--! create (note?)
 INSERT INTO healths(
     appointment_id,
     temperature,
@@ -33,7 +33,7 @@ SELECT *
 FROM healths
 WHERE appointment_id IN (SELECT id FROM appointments WHERE member_id = :member_id);
 
---! update
+--! update(temperature?, weight?, upper_blood_pressure?, lower_blood_pressure?, heart_pulse?, hemoglobin?, is_good_health?, note?)
 UPDATE healths
 SET
     temperature = COALESCE(:temperature, temperature),

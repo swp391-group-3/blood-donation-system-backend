@@ -15,12 +15,13 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState, util::auth::Claims};
 
 #[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = blood_request::create::Request)]
 #[mapper(
     into(custom = "with_staff_id"),
     ty = CreateParams::<String>,
     add(field = staff_id, ty = Uuid),
 )]
-pub struct CreateBloodRequest {
+pub struct Request {
     pub blood_group: BloodGroup,
     pub priority: RequestPriority,
     pub title: String,
@@ -34,7 +35,7 @@ pub struct CreateBloodRequest {
     tag = "Blood Request",
     path = "/blood-request",
     operation_id = "blood_request::create",
-    request_body = CreateBloodRequest,
+    request_body = Request,
     responses(
         (status = Status::OK, body = Uuid)
     ),
@@ -43,7 +44,7 @@ pub struct CreateBloodRequest {
 pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
-    Json(request): Json<CreateBloodRequest>,
+    Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
 

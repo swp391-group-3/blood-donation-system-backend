@@ -17,12 +17,13 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState};
 
 #[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = blood_request::update::Request)]
 #[mapper(
     into(custom = "with_id"),
     ty = UpdateParams::<String>,
     add(field = id, ty = Uuid)
 )]
-pub struct UpdateBloodRequest {
+pub struct Request {
     pub priority: Option<RequestPriority>,
     pub title: Option<String>,
     pub max_people: Option<i32>,
@@ -36,13 +37,13 @@ pub struct UpdateBloodRequest {
     params(
         ("id" = Uuid, Path, description = "Blood request id")
     ),
-    request_body = UpdateBloodRequest,
+    request_body = Request,
     security(("jwt_token" = []))
 )]
 pub async fn update(
     state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
-    Json(request): Json<UpdateBloodRequest>,
+    Json(request): Json<Request>,
 ) -> Result<()> {
     let database = state.database_pool.get().await?;
 

@@ -15,7 +15,7 @@ use super::BloodRequest;
     security(("jwt_token" = []))
 )]
 pub async fn get_booked(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     claims: Claims,
 ) -> Result<Json<Vec<BloodRequest>>> {
     let database = state.database_pool.get().await?;

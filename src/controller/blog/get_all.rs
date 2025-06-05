@@ -14,7 +14,7 @@ use super::Blog;
         (status = 200, description = "Get Blog Successfully", body = Blog)
     )
 )]
-pub async fn get_all(State(state): State<Arc<ApiState>>) -> Result<Json<Vec<Blog>>> {
+pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<Blog>>> {
     let database = state.database_pool.get().await?;
 
     let blogs = queries::blog::get_all()

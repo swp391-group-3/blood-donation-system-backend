@@ -10,18 +10,18 @@ pub struct CreateParams<T1: crate::StringSql> {
     pub heart_pulse: i32,
     pub hemoglobin: f32,
     pub is_good_health: bool,
-    pub note: T1,
+    pub note: Option<T1>,
 }
 #[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql> {
-    pub temperature: f32,
-    pub weight: f32,
-    pub upper_blood_pressure: i32,
-    pub lower_blood_pressure: i32,
-    pub heart_pulse: i32,
-    pub hemoglobin: f32,
-    pub is_good_health: bool,
-    pub note: T1,
+    pub temperature: Option<f32>,
+    pub weight: Option<f32>,
+    pub upper_blood_pressure: Option<i32>,
+    pub lower_blood_pressure: Option<i32>,
+    pub heart_pulse: Option<i32>,
+    pub hemoglobin: Option<f32>,
+    pub is_good_health: Option<bool>,
+    pub note: Option<T1>,
     pub id: uuid::Uuid,
 }
 #[derive(Debug, Clone, PartialEq)]
@@ -350,7 +350,7 @@ impl CreateStmt {
         heart_pulse: &'a i32,
         hemoglobin: &'a f32,
         is_good_health: &'a bool,
-        note: &'a T1,
+        note: &'a Option<T1>,
     ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 9> {
         UuidUuidQuery {
             client,
@@ -483,14 +483,14 @@ impl UpdateStmt {
     pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
-        temperature: &'a f32,
-        weight: &'a f32,
-        upper_blood_pressure: &'a i32,
-        lower_blood_pressure: &'a i32,
-        heart_pulse: &'a i32,
-        hemoglobin: &'a f32,
-        is_good_health: &'a bool,
-        note: &'a T1,
+        temperature: &'a Option<f32>,
+        weight: &'a Option<f32>,
+        upper_blood_pressure: &'a Option<i32>,
+        lower_blood_pressure: &'a Option<i32>,
+        heart_pulse: &'a Option<i32>,
+        hemoglobin: &'a Option<f32>,
+        is_good_health: &'a Option<bool>,
+        note: &'a Option<T1>,
         id: &'a uuid::Uuid,
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;

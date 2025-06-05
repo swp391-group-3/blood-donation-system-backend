@@ -16,12 +16,13 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState};
 
 #[derive(Deserialize, ToSchema, Mapper)]
+#[schema(as = donation::create::Request)]
 #[mapper(
     into(custom = "with_appointment_id"),
     ty = CreateParams,
     add(field = appointment_id, ty = Uuid)
 )]
-pub struct CreateDonationRequest {
+pub struct Request {
     pub r#type: ctypes::DonationType,
     pub amount: i32,
 }
@@ -31,7 +32,7 @@ pub struct CreateDonationRequest {
     tags = ["Donation", "Appointment"],
     path = "/appointment/{id}/donation",
     operation_id = "donation::create",
-    request_body = CreateDonationRequest,
+    request_body = Request,
     responses(
         (status = Status::OK, body = Uuid)
     ),
@@ -40,7 +41,7 @@ pub struct CreateDonationRequest {
 pub async fn create(
     state: State<Arc<ApiState>>,
     Path(appointment_id): Path<Uuid>,
-    Json(request): Json<CreateDonationRequest>,
+    Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
 

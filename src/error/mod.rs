@@ -4,6 +4,7 @@ pub use auth::*;
 
 use axum::{Json, http::StatusCode, response::IntoResponse};
 use axum_extra::typed_header::TypedHeaderRejection;
+use database::{deadpool_postgres::PoolError, tokio_postgres};
 use serde::Serialize;
 use utoipa::ToSchema;
 
@@ -16,8 +17,11 @@ pub struct ErrorResponse {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error("Database pool error: {0}")]
+    DatabasePool(#[from] PoolError),
+
     #[error("Database error: {0}")]
-    Database(#[from] sqlx::Error),
+    Database(#[from] tokio_postgres::Error),
 
     #[error("{0}")]
     Auth(#[from] AuthError),
@@ -35,7 +39,7 @@ impl From<TypedHeaderRejection> for Error {
 impl IntoResponse for Error {
     fn into_response(self) -> axum::response::Response {
         match self {
-            Error::Database(_) => (
+            Error::DatabasePool(_) | Error::Database(_) => (
                 StatusCode::BAD_REQUEST,
                 Json(ErrorResponse {
                     message: "Failed to execute query".to_string(),

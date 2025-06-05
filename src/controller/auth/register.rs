@@ -16,7 +16,8 @@ use crate::{
 };
 
 #[derive(Deserialize, ToSchema)]
-pub struct RegistrationRequest {
+#[schema(as = auth::register::request)]
+pub struct Request {
     pub email: String,
     pub password: String,
 }
@@ -25,12 +26,9 @@ pub struct RegistrationRequest {
     post,
     tag = "Auth",
     path = "/auth/register",
-    request_body = RegistrationRequest,
+    request_body = Request,
 )]
-pub async fn register(
-    state: State<Arc<ApiState>>,
-    request: Json<RegistrationRequest>,
-) -> Result<String> {
+pub async fn register(state: State<Arc<ApiState>>, request: Json<Request>) -> Result<String> {
     let database = state.database_pool.get().await?;
 
     let password = bcrypt::hash_with_salt(
@@ -45,13 +43,10 @@ pub async fn register(
     .to_string();
 
     let id = queries::account::register()
-        .params(
-            &database,
-            &RegisterParams {
-                email: &request.email,
-                password: Some(password),
-            },
-        )
+        .params(&database, &RegisterParams {
+            email: &request.email,
+            password: Some(password),
+        })
         .one()
         .await
         .map_err(|error| {

@@ -27,7 +27,7 @@ use super::Donation;
 pub async fn get(state: State<Arc<ApiState>>, Path(id): Path<Uuid>) -> Result<Json<Donation>> {
     let database = state.database_pool.get().await?;
 
-    let donation = queries::donation::get(&database, &id)
+    let donation = queries::donation::get()
         .bind(&database, &id)
         .map(Donation::from_get)
         .one()

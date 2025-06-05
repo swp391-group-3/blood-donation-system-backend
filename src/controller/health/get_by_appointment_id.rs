@@ -4,13 +4,12 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use database::queries;
 use uuid::Uuid;
 
-use crate::{
-    database::{self, health::Health},
-    error::Result,
-    state::ApiState,
-};
+use crate::{error::Result, state::ApiState};
+
+use super::Health;
 
 #[utoipa::path(
     get,
@@ -20,14 +19,22 @@ use crate::{
     params(
         ("id" = Uuid, Path, description = "Appointment id")
     ),
+    responses(
+        (status = Status::OK, body = Option<Health>)
+    ),
     security(("jwt_token" = []))
 )]
 pub async fn get_by_appointment_id(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(appointment_id): Path<Uuid>,
 ) -> Result<Json<Option<Health>>> {
-    let health =
-        database::health::get_by_appoinment_id(appointment_id, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    let health = queries::health::get_by_appointment_id()
+        .bind(&database, &appointment_id)
+        .map(|raw| Health::from_get_by_appointment_id(raw))
+        .opt()
+        .await?;
 
     Ok(Json(health))
 }

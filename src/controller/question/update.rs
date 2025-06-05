@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
 use axum::extract::{Path, State};
+use database::queries;
 
-use crate::{database, error::Result, state::ApiState};
+use crate::{error::Result, state::ApiState};
 
 #[utoipa::path(
     put,
@@ -16,11 +17,15 @@ use crate::{database, error::Result, state::ApiState};
     security(("jwt_token" = []))
 )]
 pub async fn update(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(id): Path<i32>,
     new_content: String,
 ) -> Result<()> {
-    database::question::update(id, &new_content, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    queries::question::update()
+        .bind(&database, &new_content, &id)
+        .await?;
 
     Ok(())
 }

@@ -13,12 +13,13 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState, util::auth::Claims};
 
 #[derive(Deserialize, Serialize, ToSchema, Mapper)]
+#[schema(as = blod::create::Request)]
 #[mapper(
     into(custom = "with_account_id"),
     ty = CreateParams::<String, String>,
     add(field = account_id, ty = Uuid),
 )]
-pub struct CreateBlogRequest {
+pub struct Request {
     pub title: String,
     pub content: String,
 }
@@ -27,7 +28,7 @@ pub struct CreateBlogRequest {
     post,
     tag = "Blog",
     path = "/blog",
-    request_body = CreateBlogRequest,
+    request_body = Request,
     responses(
         (status = 201, description = "Create blog successfully", body = Uuid),
         (status = 400, description = "Invalid data"),
@@ -37,7 +38,7 @@ pub struct CreateBlogRequest {
 pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
-    Json(request): Json<CreateBlogRequest>,
+    Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
 

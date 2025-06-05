@@ -21,7 +21,7 @@ use crate::{error::Result, state::ApiState, util::auth::Claims};
     ty = ActivateParams::<String, String, String>,
     add(field = id, ty = Uuid),
 )]
-pub struct ActivationRequest {
+pub struct Request {
     pub phone: String,
     pub name: String,
     pub gender: i32,
@@ -34,12 +34,12 @@ pub struct ActivationRequest {
     post,
     tag = "Auth",
     path = "/auth/activate",
-    request_body = ActivationRequest,
+    request_body = Request,
 )]
 pub async fn activate(
     state: State<Arc<ApiState>>,
     claims: Claims,
-    Json(req): Json<ActivationRequest>,
+    Json(req): Json<Request>,
 ) -> Result<()> {
     queries::account::activate()
         .params(

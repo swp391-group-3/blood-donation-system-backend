@@ -33,11 +33,13 @@ pub struct Answer {
     )
 )]
 pub async fn get_answer(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<Vec<Answer>>> {
+    let database = state.database_pool.get().await?;
+
     let answers = queries::answer::get_by_appointment_id()
-        .bind(&state.database_pool.get().await?, &id)
+        .bind(&database, &id)
         .map(|raw| raw.into())
         .all()
         .await?;

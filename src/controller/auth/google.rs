@@ -21,7 +21,7 @@ use crate::{
 const KEY: &str = "google";
 
 #[utoipa::path(get, tag = "Auth", path = "/auth/google")]
-pub async fn google(State(state): State<Arc<ApiState>>, session: Session) -> impl IntoResponse {
+pub async fn google(state: State<Arc<ApiState>>, session: Session) -> impl IntoResponse {
     let (auth_url, csrf, nonce) = util::auth::oidc::generate(&state.google_client);
 
     session.insert(KEY, (csrf, nonce)).await.unwrap();
@@ -63,13 +63,10 @@ pub async fn authorized(
         .as_str();
 
     queries::account::register()
-        .params(
-            &database,
-            &RegisterParams {
-                email,
-                password: None::<String>,
-            },
-        )
+        .params(&database, &RegisterParams {
+            email,
+            password: None::<String>,
+        })
         .one()
         .await
         .map_err(|error| {

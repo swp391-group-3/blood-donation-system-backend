@@ -4,15 +4,28 @@ use axum::{
     Json,
     extract::{Path, State},
 };
+use database::{
+    client::Params,
+    queries::{self, donation::UpdateParams},
+};
+use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
 use crate::{error::Result, state::ApiState};
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Mapper)]
 #[schema(as = donation::update::Request)]
-pub struct Request(UpdateParams);
+#[mapper(
+    into(custom = "with_id"),
+    ty = UpdateParams,
+    add(field = id, ty = Uuid)
+)]
+pub struct Request {
+    pub r#type: Option<ctypes::DonationType>,
+    pub amount: Option<i32>,
+}
 
 #[utoipa::path(
     patch,
@@ -26,11 +39,15 @@ pub struct Request(UpdateParams);
     security(("jwt_token" = []))
 )]
 pub async fn update(
-    State(state): State<Arc<ApiState>>,
+    state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
-    Json(Request(params)): Json<Request>,
+    Json(request): Json<Request>,
 ) -> Result<()> {
-    database::donation::update(id, &params, &state.database_pool).await?;
+    let database = state.database_pool.get().await?;
+
+    queries::donation::update()
+        .params(&database, &request.with_id(id))
+        .await?;
 
     Ok(())
 }

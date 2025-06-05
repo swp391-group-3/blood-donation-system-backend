@@ -9,7 +9,6 @@ use axum_extra::{
 };
 use chrono::Local;
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, encode};
-use rand::distr::{Alphanumeric, SampleString};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -19,12 +18,6 @@ pub static ENCODING_KEY: LazyLock<EncodingKey> =
     LazyLock::new(|| EncodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
 pub static DECODING_KEY: LazyLock<DecodingKey> =
     LazyLock::new(|| DecodingKey::from_secret(CONFIG.jwt.secret.as_bytes()));
-
-const BCRYPT_LENGTH: usize = 72;
-
-pub fn random_password() -> String {
-    Alphanumeric.sample_string(&mut rand::rng(), BCRYPT_LENGTH)
-}
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {

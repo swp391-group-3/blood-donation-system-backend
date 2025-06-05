@@ -17,8 +17,9 @@ impl ApiState {
     pub async fn new() -> Arc<Self> {
         let mut database_config = deadpool_postgres::Config::new();
         database_config.url = Some(CONFIG.server.database_url.clone());
-        let database_pool =
-            database_config.create_pool(Some(deadpool_postgres::Runtime::Tokio1), NoTls)?;
+        let database_pool = database_config
+            .create_pool(Some(deadpool_postgres::Runtime::Tokio1), NoTls)
+            .unwrap();
 
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())

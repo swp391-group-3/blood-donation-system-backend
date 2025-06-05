@@ -46,8 +46,7 @@ impl Modify for SecurityAddon {
 
         controller::staff::create,
         controller::staff::get_all,
-        controller::staff::get_by_id,
-        controller::staff::get_by_name,
+        controller::staff::get,
         controller::staff::delete,
 
         controller::blood_request::create,
