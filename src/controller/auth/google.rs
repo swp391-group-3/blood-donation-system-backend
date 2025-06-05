@@ -15,7 +15,7 @@ use tower_sessions::Session;
 use crate::{
     error::{AuthError, Result},
     state::ApiState,
-    util::{self, auth::generate_token},
+    util::auth
 };
 
 const KEY: &str = "google";

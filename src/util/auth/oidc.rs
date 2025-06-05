@@ -28,12 +28,12 @@ type InnerClient = CoreClient<
     EndpointMaybeSet,
 >;
 
-pub struct Client {
+pub struct OpenIdConnectClient {
     inner_client: InnerClient,
     http_client: reqwest::Client,
 }
 
-impl Client {
+impl OpenIdConnectClient {
     pub async fn new(prefix: &str) -> Result<Self> {
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
