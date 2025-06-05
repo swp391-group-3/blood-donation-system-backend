@@ -67,3 +67,11 @@ pub enum BloodComponent {
     Platelet,
     Plasma,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+#[postgres(name = "gender", rename_all = "snake_case")]
+pub enum Gender {
+    Male,
+    Female,
+}

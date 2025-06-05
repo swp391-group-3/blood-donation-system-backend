@@ -17,6 +17,11 @@ CREATE TYPE role AS ENUM (
     'admin'
 );
 
+CREATE TYPE gender AS ENUM (
+    'male',
+    'female'
+);
+
 CREATE TABLE IF NOT EXISTS accounts(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     role role NOT NULL,
@@ -24,7 +29,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     password varchar(72) NOT NULL,
     phone varchar(16) UNIQUE,
     name varchar(64),
-    gender int,
+    gender gender,
     address text,
     birthday date,
     blood_group blood_group NOT NULL,
