@@ -1,14 +1,15 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use database::queries;
 use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    error::{AuthError, Result},
+    error::{AuthError, Error, Result},
     state::ApiState,
-    util,
+    util::auth::Claims,
 };
 
 #[derive(Deserialize, ToSchema)]
@@ -24,7 +25,11 @@ pub struct Request {
     path = "/auth/login",
     request_body = Request,
 )]
-pub async fn login(state: State<Arc<ApiState>>, Json(request): Json<Request>) -> Result<String> {
+pub async fn login(
+    state: State<Arc<ApiState>>,
+    jar: CookieJar,
+    Json(request): Json<Request>,
+) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
     let account = queries::account::get_id_and_password()
@@ -40,8 +45,10 @@ pub async fn login(state: State<Arc<ApiState>>, Json(request): Json<Request>) ->
         return Err(AuthError::InvalidLoginData.into());
     }
 
-    util::auth::generate_token(account.id).map_err(|error| {
+    let cookie: Cookie = Claims::new(account.id).try_into().map_err(|error| {
         tracing::error!(error =? error);
-        AuthError::InvalidLoginData.into()
-    })
+        Error::from(AuthError::InvalidLoginData)
+    })?;
+
+    Ok(jar.add(cookie))
 }

@@ -4,6 +4,7 @@ use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect},
 };
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use database::{
     client::Params,
     queries::{self, account::RegisterParams},
@@ -15,14 +16,14 @@ use tower_sessions::Session;
 use crate::{
     error::{AuthError, Result},
     state::ApiState,
-    util::{self, auth::generate_token},
+    util::auth::Claims,
 };
 
 const KEY: &str = "microsoft";
 
 #[utoipa::path(get, tag = "Auth", path = "/auth/microsoft")]
 pub async fn microsoft(state: State<Arc<ApiState>>, session: Session) -> impl IntoResponse {
-    let (auth_url, csrf, nonce) = util::auth::oidc::generate(&state.microsoft_client);
+    let (auth_url, csrf, nonce) = state.microsoft_client.generate();
 
     session.insert(KEY, (csrf, nonce)).await.unwrap();
 
@@ -38,22 +39,23 @@ pub struct AuthRequest {
 pub async fn authorized(
     state: State<Arc<ApiState>>,
     session: Session,
+    jar: CookieJar,
     Query(query): Query<AuthRequest>,
-) -> Result<String> {
+) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
-    let (csrf, nonce): (CsrfToken, Nonce) = session.get(KEY).await.unwrap().unwrap();
+    let (csrf, nonce): (CsrfToken, Nonce) = session.remove(KEY).await.unwrap().unwrap();
 
-    let microsoft_claims = util::auth::oidc::get_claims(
-        AuthorizationCode::new(query.code),
-        CsrfToken::new(query.state),
-        csrf,
-        nonce,
-        &state.microsoft_client,
-        &state.http_client,
-    )
-    .await
-    .unwrap();
+    let microsoft_claims = state
+        .microsoft_client
+        .get_claims(
+            AuthorizationCode::new(query.code),
+            CsrfToken::new(query.state),
+            csrf,
+            nonce,
+        )
+        .await
+        .unwrap();
 
     tracing::info!(claims =? microsoft_claims);
 
@@ -84,10 +86,10 @@ pub async fn authorized(
         .expect("Account must be created in previous step to get here")
         .id;
 
-    let token = generate_token(id).map_err(|error| {
+    let cookie: Cookie = Claims::new(id).try_into().map_err(|error| {
         tracing::error!(error =? error);
         AuthError::InvalidAuthToken
     })?;
 
-    Ok(token)
+    Ok(jar.add(cookie))
 }

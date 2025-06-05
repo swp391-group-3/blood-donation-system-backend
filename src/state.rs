@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use database::{deadpool_postgres, tokio_postgres::NoTls};
-use openidconnect::reqwest;
 
 use crate::{config::CONFIG, util::auth::OpenIdConnectClient};
 

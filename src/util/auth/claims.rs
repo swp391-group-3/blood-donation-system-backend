@@ -1,11 +1,7 @@
 use std::sync::{Arc, LazyLock};
 
 use axum::{RequestPartsExt, extract::FromRequestParts, http::request::Parts};
-use axum_extra::{
-    TypedHeader,
-    extract::{CookieJar, cookie::Cookie},
-    headers::{Authorization, authorization::Bearer},
-};
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use chrono::Local;
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
