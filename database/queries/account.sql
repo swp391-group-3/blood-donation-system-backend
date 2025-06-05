@@ -1,11 +1,20 @@
---! register (password?)
+--! register (password)
 INSERT INTO accounts(email, password, role)
 VALUES(
     :email,
-    COALESCE(:password, substr(md5(random()::text), 1, 25)),
+    :password,
     'member'::role
 )
 RETURNING id;
+
+--! oauth2_register
+INSERT INTO accounts(email, password, role)
+VALUES(
+    :email,
+    substr(md5(random()::text), 1, 25),
+    'member'::role
+)
+ON CONFLICT DO NOTHING;
 
 --! create_staff
 INSERT INTO accounts(
