@@ -52,7 +52,7 @@ pub async fn register(
             &database,
             &RegisterParams {
                 email: &request.email,
-                password: Some(password),
+                password,
             },
         )
         .one()
