@@ -43,10 +43,13 @@ pub async fn register(state: State<Arc<ApiState>>, request: Json<Request>) -> Re
     .to_string();
 
     let id = queries::account::register()
-        .params(&database, &RegisterParams {
-            email: &request.email,
-            password: Some(password),
-        })
+        .params(
+            &database,
+            &RegisterParams {
+                email: &request.email,
+                password: Some(password),
+            },
+        )
         .one()
         .await
         .map_err(|error| {

@@ -63,10 +63,13 @@ pub async fn authorized(
         .as_str();
 
     queries::account::register()
-        .params(&database, &RegisterParams {
-            email,
-            password: None::<String>,
-        })
+        .params(
+            &database,
+            &RegisterParams {
+                email,
+                password: None::<String>,
+            },
+        )
         .one()
         .await
         .map_err(|error| {

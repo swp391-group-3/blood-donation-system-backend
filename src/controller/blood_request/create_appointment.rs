@@ -77,10 +77,13 @@ pub async fn create_appointment(
     let transaction = database.transaction().await?;
 
     let appointment_id = queries::appointment::create()
-        .params(&transaction, &CreateParams {
-            request_id: id,
-            member_id: claims.sub,
-        })
+        .params(
+            &transaction,
+            &CreateParams {
+                request_id: id,
+                member_id: claims.sub,
+            },
+        )
         .one()
         .await?;
 
