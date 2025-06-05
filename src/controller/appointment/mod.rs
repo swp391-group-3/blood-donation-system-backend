@@ -1,3 +1,4 @@
+mod create;
 mod get_answer;
 
 use std::sync::Arc;
@@ -7,6 +8,7 @@ use ctypes::Role;
 
 use crate::{middleware, state::ApiState};
 
+pub use create::*;
 pub use get_answer::*;
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
@@ -16,4 +18,8 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
             state.clone(),
             middleware::authorize!(Role::Staff),
         ))
+        .route(
+            "/blood-request/{id}/create-appointment",
+            routing::post(create),
+        )
 }
