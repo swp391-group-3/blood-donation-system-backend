@@ -21,7 +21,7 @@ pub struct CreateStaffParams<
 pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
     pub phone: T1,
     pub name: T2,
-    pub gender: i32,
+    pub gender: ctypes::Gender,
     pub address: T3,
     pub birthday: crate::types::time::Date,
     pub blood_group: ctypes::BloodGroup,
@@ -31,7 +31,7 @@ pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate:
 pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
     pub phone: Option<T1>,
     pub name: Option<T2>,
-    pub gender: Option<i32>,
+    pub gender: Option<ctypes::Gender>,
     pub address: Option<T3>,
     pub birthday: Option<crate::types::time::Date>,
     pub id: uuid::Uuid,
@@ -64,7 +64,7 @@ pub struct Get {
     pub email: String,
     pub phone: String,
     pub name: String,
-    pub gender: Option<i32>,
+    pub gender: Option<ctypes::Gender>,
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
@@ -75,7 +75,7 @@ pub struct GetBorrowed<'a> {
     pub email: &'a str,
     pub phone: &'a str,
     pub name: &'a str,
-    pub gender: Option<i32>,
+    pub gender: Option<ctypes::Gender>,
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
@@ -114,7 +114,7 @@ pub struct GetAll {
     pub email: String,
     pub phone: String,
     pub name: String,
-    pub gender: Option<i32>,
+    pub gender: Option<ctypes::Gender>,
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
@@ -125,7 +125,7 @@ pub struct GetAllBorrowed<'a> {
     pub email: &'a str,
     pub phone: &'a str,
     pub name: &'a str,
-    pub gender: Option<i32>,
+    pub gender: Option<ctypes::Gender>,
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
@@ -542,15 +542,15 @@ impl CreateStaffStmt {
     }
 }
 impl<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-        T4: crate::StringSql,
-    >
+    'c,
+    'a,
+    's,
+    C: GenericClient,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+>
     crate::client::async_::Params<
         'c,
         'a,
@@ -715,7 +715,7 @@ impl ActivateStmt {
         client: &'c C,
         phone: &'a T1,
         name: &'a T2,
-        gender: &'a i32,
+        gender: &'a ctypes::Gender,
         address: &'a T3,
         birthday: &'a crate::types::time::Date,
         blood_group: &'a ctypes::BloodGroup,
@@ -723,20 +723,25 @@ impl ActivateStmt {
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
         client
-            .execute(
-                stmt,
-                &[phone, name, gender, address, birthday, blood_group, id],
-            )
+            .execute(stmt, &[
+                phone,
+                name,
+                gender,
+                address,
+                birthday,
+                blood_group,
+                id,
+            ])
             .await
     }
 }
 impl<
-        'a,
-        C: GenericClient + Send + Sync,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >
+    'a,
+    C: GenericClient + Send + Sync,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+>
     crate::client::async_::Params<
         'a,
         'a,
@@ -787,7 +792,7 @@ impl UpdateStmt {
         client: &'c C,
         phone: &'a Option<T1>,
         name: &'a Option<T2>,
-        gender: &'a Option<i32>,
+        gender: &'a Option<ctypes::Gender>,
         address: &'a Option<T3>,
         birthday: &'a Option<crate::types::time::Date>,
         id: &'a uuid::Uuid,
@@ -799,12 +804,12 @@ impl UpdateStmt {
     }
 }
 impl<
-        'a,
-        C: GenericClient + Send + Sync,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >
+    'a,
+    C: GenericClient + Send + Sync,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+>
     crate::client::async_::Params<
         'a,
         'a,

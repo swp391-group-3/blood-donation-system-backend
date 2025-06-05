@@ -1,14 +1,14 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE blood_group AS ENUM (
-    'O+',
-    'O-',
-    'A+',
-    'A-',
-    'B+',
-    'B-',
-    'AB+',
-    'AB-'
+    'o_plus',
+    'o_minus',
+    'a_plus',
+    'a_minus',
+    'b_plus',
+    'b_minus',
+    'ab_plus',
+    'ab_minus'
 );
 
 CREATE TYPE role AS ENUM (

@@ -3,31 +3,16 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToSql, FromSql, Serialize, Deserialize, ToSchema)]
-#[postgres(name = "blood_group")]
+#[serde(rename_all = "snake_case")]
+#[postgres(name = "blood_group", rename_all = "snake_case")]
 pub enum BloodGroup {
-    #[serde(rename = "O+")]
-    #[postgres(name = "O+")]
     OPlus,
-    #[serde(rename = "O-")]
-    #[postgres(name = "O-")]
     OMinus,
-    #[serde(rename = "A+")]
-    #[postgres(name = "A+")]
     APlus,
-    #[serde(rename = "A-")]
-    #[postgres(name = "A-")]
     AMinus,
-    #[serde(rename = "B+")]
-    #[postgres(name = "B+")]
     BPlus,
-    #[serde(rename = "B-")]
-    #[postgres(name = "B-")]
     BMinus,
-    #[serde(rename = "AB+")]
-    #[postgres(name = "AB+")]
     ABPlus,
-    #[serde(rename = "AB-")]
-    #[postgres(name = "AB-")]
     ABMinus,
 }
 

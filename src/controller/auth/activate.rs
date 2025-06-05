@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 use chrono::NaiveDate;
-use ctypes::BloodGroup;
+use ctypes::{BloodGroup, Gender};
 use database::{
     client::Params,
     queries::{self, account::ActivateParams},
@@ -24,7 +24,7 @@ use crate::{error::Result, state::ApiState, util::auth::Claims};
 pub struct Request {
     pub phone: String,
     pub name: String,
-    pub gender: i32,
+    pub gender: Gender,
     pub address: String,
     pub birthday: NaiveDate,
     pub blood_group: BloodGroup,

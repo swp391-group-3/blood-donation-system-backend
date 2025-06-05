@@ -7,7 +7,7 @@ use std::sync::Arc;
 
 use axum::{Router, routing};
 use chrono::{DateTime, NaiveDate, Utc};
-use ctypes::{BloodGroup, Role};
+use ctypes::{BloodGroup, Gender, Role};
 use database::queries::account::{GetAllBorrowed, GetBorrowed};
 use model_mapper::Mapper;
 use serde::Serialize;
@@ -28,7 +28,7 @@ pub struct Account {
     pub email: String,
     pub phone: String,
     pub name: String,
-    pub gender: Option<i32>,
+    pub gender: Option<Gender>,
     #[mapper(with = address.map(|x| x.to_string()))]
     pub address: Option<String>,
     pub birthday: Option<NaiveDate>,
