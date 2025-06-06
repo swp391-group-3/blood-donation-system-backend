@@ -210,6 +210,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "backend"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "axum-extra",
+ "axum-test",
+ "bcrypt",
+ "chrono",
+ "config",
+ "ctypes",
+ "database",
+ "futures",
+ "jsonwebtoken",
+ "model-mapper",
+ "openidconnect",
+ "rand 0.9.1",
+ "serde",
+ "strum",
+ "thiserror 2.0.12",
+ "tokio",
+ "tower-http",
+ "tower-sessions",
+ "tracing",
+ "tracing-subscriber",
+ "utoipa",
+ "utoipa-swagger-ui",
+ "uuid",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,37 +305,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
 dependencies = [
  "generic-array",
-]
-
-[[package]]
-name = "blood-donation-system-backend"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "axum",
- "axum-extra",
- "axum-test",
- "bcrypt",
- "chrono",
- "config",
- "ctypes",
- "database",
- "futures",
- "jsonwebtoken",
- "model-mapper",
- "openidconnect",
- "rand 0.9.1",
- "serde",
- "strum",
- "thiserror 2.0.12",
- "tokio",
- "tower-http",
- "tower-sessions",
- "tracing",
- "tracing-subscriber",
- "utoipa",
- "utoipa-swagger-ui",
- "uuid",
 ]
 
 [[package]]
