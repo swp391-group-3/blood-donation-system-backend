@@ -30,9 +30,7 @@ pub struct Request {
     path = "/blog",
     request_body = Request,
     responses(
-        (status = 201, description = "Create blog successfully", body = Uuid),
-        (status = 400, description = "Invalid data"),
-        (status = 500, description = "Internal server error")
+        (status = 201, description = "Create blog successfully", body = Uuid)
     )
 )]
 pub async fn create(
