@@ -12,3 +12,4 @@ ctypes = { path = "../ctypes" }
 "public.request_priority" = "ctypes::RequestPriority"
 "public.donation_type" = "ctypes::DonationType"
 "public.gender" = "ctypes::Gender"
+"public.blood_component" = "ctypes::BloodComponent"
