@@ -210,6 +210,49 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-valid"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f0315c61f53843466eb1e7eeaf702a5e6a8aee507c5f7d72a7f35a8fc2e2753"
+dependencies = [
+ "axum",
+ "validator",
+]
+
+[[package]]
+name = "backend"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "axum-extra",
+ "axum-test",
+ "axum-valid",
+ "bcrypt",
+ "chrono",
+ "config",
+ "ctypes",
+ "database",
+ "futures",
+ "jsonwebtoken",
+ "model-mapper",
+ "openidconnect",
+ "rand 0.9.1",
+ "serde",
+ "strum",
+ "thiserror 2.0.12",
+ "tokio",
+ "tower-http",
+ "tower-sessions",
+ "tracing",
+ "tracing-subscriber",
+ "utoipa",
+ "utoipa-swagger-ui",
+ "uuid",
+ "validator",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,37 +317,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
 dependencies = [
  "generic-array",
-]
-
-[[package]]
-name = "blood-donation-system-backend"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "axum",
- "axum-extra",
- "axum-test",
- "bcrypt",
- "chrono",
- "config",
- "ctypes",
- "database",
- "futures",
- "jsonwebtoken",
- "model-mapper",
- "openidconnect",
- "rand 0.9.1",
- "serde",
- "strum",
- "thiserror 2.0.12",
- "tokio",
- "tower-http",
- "tower-sessions",
- "tracing",
- "tracing-subscriber",
- "utoipa",
- "utoipa-swagger-ui",
- "uuid",
 ]
 
 [[package]]
@@ -3115,6 +3127,36 @@ dependencies = [
  "rand 0.9.1",
  "serde",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "validator"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43fb22e1a008ece370ce08a3e9e4447a910e92621bb49b85d6e48a45397e7cfa"
+dependencies = [
+ "idna",
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "url",
+ "validator_derive",
+]
+
+[[package]]
+name = "validator_derive"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b7df16e474ef958526d1205f6dda359fdfab79d9aa6d54bafcb92dcd07673dca"
+dependencies = [
+ "darling",
+ "once_cell",
+ "proc-macro-error2",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
