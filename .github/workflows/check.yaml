@@ -2,14 +2,8 @@ on:
   workflow_dispatch:
   push:
     branches: main
-    paths-ignore:
-      - "**.md"
-      - ".github/**"
   pull_request:
     branches: main
-    paths-ignore:
-      - "**.md"
-      - ".github/**"
 
 permissions:
   contents: read
@@ -24,6 +18,7 @@ jobs:
         with:
           toolchain: stable
           components: clippy, rustfmt
+      - run: cd backend
       - uses: Swatinem/rust-cache@v2
       - name: Check Clippy
         run: cargo clippy --workspace -- -D warnings
@@ -57,6 +52,7 @@ jobs:
         id: postgres
       - name: Init database
         run:  psql ${{ steps.postgres.outputs.connection-uri }} -a -f schema.sql
+      - run: cd backend
       - uses: Swatinem/rust-cache@v2
       - name: Test
         env:
