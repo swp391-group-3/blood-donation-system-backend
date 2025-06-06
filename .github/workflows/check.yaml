@@ -2,14 +2,8 @@ on:
   workflow_dispatch:
   push:
     branches: main
-    paths-ignore:
-      - "**.md"
-      - ".github/**"
   pull_request:
     branches: main
-    paths-ignore:
-      - "**.md"
-      - ".github/**"
 
 permissions:
   contents: read
@@ -18,6 +12,9 @@ jobs:
   clippy-fmt:
     name: Check Clippy and rustfmt
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
@@ -32,6 +29,9 @@ jobs:
 
   test:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./backend
     env:
       PGHOST: localhost
       PGDATABASE: test
