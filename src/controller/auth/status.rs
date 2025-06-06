@@ -7,7 +7,7 @@ use model_mapper::Mapper;
 use serde::Serialize;
 use utoipa::ToSchema;
 
-use crate::{error::Result, state::ApiState, util::auth::Claims};
+use crate::{error::Result, state::ApiState, util::jwt::Claims};
 
 #[derive(Serialize, ToSchema, Mapper)]
 #[mapper(from, ty = GetAuthStatus)]

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-use axum_extra::extract::{CookieJar, cookie::Cookie};
+use axum_extra::extract::CookieJar;
 use database::queries;
 use serde::Deserialize;
 use utoipa::ToSchema;
@@ -9,7 +9,6 @@ use utoipa::ToSchema;
 use crate::{
     error::{AuthError, Error, Result},
     state::ApiState,
-    util::auth::Claims,
 };
 
 #[derive(Deserialize, ToSchema)]
@@ -38,17 +37,22 @@ pub async fn login(
         .await?
         .ok_or(AuthError::InvalidLoginData)?;
 
-    let is_password_correct = !bcrypt::verify(request.password, &account.password)
+    let is_password_correct = !state
+        .bcrypt_service
+        .verify(&request.password, &account.password)
         .map_err(|_| AuthError::InvalidLoginData)?;
 
     if !is_password_correct {
         return Err(AuthError::InvalidLoginData.into());
     }
 
-    let cookie: Cookie = Claims::new(account.id).try_into().map_err(|error| {
-        tracing::error!(error =? error);
-        Error::from(AuthError::InvalidLoginData)
-    })?;
+    let cookie = state
+        .jwt_service
+        .new_credential(account.id)
+        .map_err(|error| {
+            tracing::error!(error =? error);
+            Error::from(AuthError::InvalidLoginData)
+        })?;
 
     Ok(jar.add(cookie))
 }

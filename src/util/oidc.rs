@@ -1,23 +1,15 @@
 use anyhow::{Context, Result, ensure};
-use config::{Config, Environment};
 use openidconnect::{
-    AuthenticationFlow, AuthorizationCode, ClientId, ClientSecret, CsrfToken, EndpointMaybeSet,
-    EndpointNotSet, EndpointSet, IssuerUrl, Nonce, RedirectUrl, Scope,
+    AuthenticationFlow, AuthorizationCode, CsrfToken, EndpointMaybeSet,
+    EndpointNotSet, EndpointSet, Nonce, Scope,
     core::{
         CoreClient, CoreIdTokenClaims, CoreIdTokenVerifier, CoreProviderMetadata, CoreResponseType,
     },
     reqwest,
     url::Url,
 };
-use serde::Deserialize;
 
-#[derive(Deserialize)]
-struct OpenIdConnectConfig {
-    pub client_id: ClientId,
-    pub client_secret: ClientSecret,
-    pub issuer_url: IssuerUrl,
-    pub redirect_url: RedirectUrl,
-}
+use crate::config::oidc::OpenIdConnectConfig;
 
 type InnerClient = CoreClient<
     EndpointSet,
@@ -34,15 +26,10 @@ pub struct OpenIdConnectClient {
 }
 
 impl OpenIdConnectClient {
-    pub async fn new(prefix: &str) -> Result<Self> {
+    pub async fn from_config(config: OpenIdConnectConfig) -> Result<Self> {
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
             .build()?;
-
-        let config: OpenIdConnectConfig = Config::builder()
-            .add_source(Environment::default().prefix(prefix).try_parsing(true))
-            .build()?
-            .try_deserialize()?;
 
         let provider_metadata =
             CoreProviderMetadata::discover_async(config.issuer_url, &http_client).await?;
