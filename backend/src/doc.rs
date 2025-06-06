@@ -66,6 +66,9 @@ impl Modify for SecurityAddon {
         controller::donation::get_all,
         controller::donation::get_by_member_id,
         controller::donation::update,
+
+        controller::blood_bag::get_all,
+        controller::blood_bag::get,
     ),
     modifiers(&SecurityAddon),
 )]
