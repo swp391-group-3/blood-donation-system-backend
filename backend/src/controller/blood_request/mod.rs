@@ -37,19 +37,25 @@ pub struct BloodRequest {
 }
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
-    Router::new()
+    let staff_route = Router::new()
         .route("/blood-request", routing::post(create))
         .route("/blood-request/{id}", routing::put(update))
         .route("/blood-request/{id}", routing::delete(delete))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::authorize!(Role::Staff),
-        ))
+        ));
+
+    let member_route = Router::new()
         .route("/blood-request/get-booked", routing::get(get_booked))
-        // .layer(axum::middleware::from_fn_with_state(
-        //     state,
-        //     middleware::authorize!(Role::Member),
-        // ))
+        .layer(axum::middleware::from_fn_with_state(
+            state,
+            middleware::authorize!(Role::Member),
+        ));
+
+    Router::new()
+        .merge(staff_route)
+        .merge(member_route)
         .route("/blood-request", routing::get(get_all))
         .route(
             "/blood-request/{id}/count-appointment",
