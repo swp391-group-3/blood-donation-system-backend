@@ -10,5 +10,5 @@ pub use create::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
     Router::new()
-        .route("/create", post(create))
+        .route("/comment", post(create))
 }

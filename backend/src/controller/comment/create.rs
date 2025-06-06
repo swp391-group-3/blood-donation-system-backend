@@ -7,11 +7,12 @@ use database::{
 };
 use model_mapper::Mapper;
 use serde::Deserialize;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
 use crate::{error::Result, state::ApiState, util::jwt::Claims};
 
-#[derive(Deserialize, Mapper)]
+#[derive(Deserialize, Mapper, ToSchema)]
 #[mapper(
     into(custom = "with_account_id"),
     ty = CreateParams::<String>,
@@ -22,13 +23,21 @@ pub struct Request {
     pub content: String,
 }
 
+#[utoipa::path(
+    post,
+    tag = "Comment",
+    path = "/comment",
+    request_body = Request,
+    responses(
+        (status = Status::OK, body = Uuid)
+    )
+)]
 pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
     Json(request): Json<Request>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
-
     let id = queries::comment::create()
         .params(&database, &request.with_account_id(claims.sub))
         .one()
