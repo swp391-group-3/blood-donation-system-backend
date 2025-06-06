@@ -4,6 +4,7 @@ pub mod account;
 pub mod answer;
 pub mod appointment;
 pub mod blog;
+pub mod blood_bag;
 pub mod blood_request;
 pub mod comment;
 pub mod donation;
