@@ -15,7 +15,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{error::Result, state::ApiState, util::auth::Claims};
+use crate::{error::Result, state::ApiState, util::jwt::Claims};
 
 #[derive(Deserialize, ToSchema, Mapper)]
 #[mapper(

@@ -1,3 +1,4 @@
+use config::{Config, Environment};
 use serde::Deserialize;
 
 const fn default_cost() -> u32 {
@@ -17,14 +18,10 @@ pub struct BcryptConfig {
     pub salt: [u8; 16],
 }
 
-impl BcryptConfig {
-    pub fn new() -> Self {
-        ::config::Config::builder()
-            .add_source(
-                ::config::Environment::default()
-                    .prefix("BCRYPT")
-                    .try_parsing(true),
-            )
+impl Default for BcryptConfig {
+    fn default() -> Self {
+        Config::builder()
+            .add_source(Environment::default().prefix("BCRYPT").try_parsing(true))
             .build()
             .unwrap()
             .try_deserialize()

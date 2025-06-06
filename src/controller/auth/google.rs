@@ -4,7 +4,7 @@ use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect},
 };
-use axum_extra::extract::{CookieJar, cookie::Cookie};
+use axum_extra::extract::CookieJar;
 use database::queries::{self};
 use openidconnect::{AuthorizationCode, CsrfToken, Nonce};
 use serde::Deserialize;
@@ -13,7 +13,6 @@ use tower_sessions::Session;
 use crate::{
     error::{AuthError, Result},
     state::ApiState,
-    util::auth::Claims,
 };
 
 const KEY: &str = "google";
@@ -76,7 +75,7 @@ pub async fn authorized(
         .expect("Account must be created in previous step to get here")
         .id;
 
-    let cookie: Cookie = Claims::new(id).try_into().map_err(|error| {
+    let cookie = state.jwt_service.new_credential(id).map_err(|error| {
         tracing::error!(error =? error);
         AuthError::InvalidAuthToken
     })?;

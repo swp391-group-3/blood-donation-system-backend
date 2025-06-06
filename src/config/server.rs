@@ -1,3 +1,4 @@
+use config::{Config, Environment};
 use serde::Deserialize;
 
 const fn default_port() -> u16 {
@@ -12,10 +13,10 @@ pub struct ServerConfig {
     pub port: u16,
 }
 
-impl ServerConfig {
-    pub fn new() -> Self {
-        ::config::Config::builder()
-            .add_source(::config::Environment::default().try_parsing(true))
+impl Default for ServerConfig {
+    fn default() -> Self {
+        Config::builder()
+            .add_source(Environment::default().try_parsing(true))
             .build()
             .unwrap()
             .try_deserialize()

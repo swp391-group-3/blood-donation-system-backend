@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-use axum_extra::extract::{CookieJar, cookie::Cookie};
+use axum_extra::extract::CookieJar;
 use database::{
     client::Params,
     queries::{self, account::CreateStaffParams},
@@ -11,10 +11,8 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    config::CONFIG,
     error::{AuthError, Error, Result},
     state::ApiState,
-    util::auth::Claims,
 };
 
 #[derive(Deserialize, ToSchema, Mapper)]
@@ -45,16 +43,14 @@ pub async fn create(
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
-    let password = bcrypt::hash_with_salt(
-        request.password.as_bytes(),
-        CONFIG.bcrypt.cost,
-        CONFIG.bcrypt.salt,
-    )
-    .map_err(|error| {
-        tracing::error!(error =? error);
-        AuthError::InvalidLoginData
-    })?
-    .to_string();
+    let password = state
+        .bcrypt_service
+        .hash(&request.password)
+        .map_err(|error| {
+            tracing::error!(error =? error);
+            AuthError::InvalidLoginData
+        })?
+        .to_string();
     request.password = password;
 
     let id = queries::account::create_staff()
@@ -62,7 +58,7 @@ pub async fn create(
         .one()
         .await?;
 
-    let cookie: Cookie = Claims::new(id).try_into().map_err(|error| {
+    let cookie = state.jwt_service.new_credential(id).map_err(|error| {
         tracing::error!(error =? error);
         Error::from(AuthError::InvalidLoginData)
     })?;
