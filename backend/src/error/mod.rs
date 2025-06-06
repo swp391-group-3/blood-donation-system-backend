@@ -7,7 +7,7 @@ use axum_extra::typed_header::TypedHeaderRejection;
 use database::{deadpool_postgres::PoolError, tokio_postgres};
 use serde::Serialize;
 use utoipa::ToSchema;
-use validator::ValidationError;
+use validator::ValidationErrors;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -28,7 +28,7 @@ pub enum Error {
     Auth(#[from] AuthError),
 
     #[error("Validation error: {0}")]
-    Validation(#[from] ValidationError),
+    Validation(#[from] ValidationErrors),
 
     #[error("Unknown error: {0}")]
     Other(#[from] anyhow::Error),
