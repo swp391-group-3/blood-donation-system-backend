@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
-use axum_extra::extract::CookieJar;
 use database::{
     client::Params,
     queries::{self, account::CreateStaffParams},
@@ -11,7 +10,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    error::{AuthError, Error, Result},
+    error::{AuthError, Result},
     state::ApiState,
 };
 
@@ -30,17 +29,13 @@ pub struct Request {
 
 #[utoipa::path(
     post,
-    tag = "Staff",
-    path = "/staff",
-    operation_id = "staff::create",
+    tag = "Account",
+    path = "/account/create-staff",
+    operation_id = "account::create_staff",
     request_body = Request,
     security(("jwt_token" = []))
 )]
-pub async fn create(
-    state: State<Arc<ApiState>>,
-    jar: CookieJar,
-    Json(mut request): Json<Request>,
-) -> Result<CookieJar> {
+pub async fn create(state: State<Arc<ApiState>>, Json(mut request): Json<Request>) -> Result<()> {
     let database = state.database_pool.get().await?;
 
     let password = state
@@ -53,15 +48,10 @@ pub async fn create(
         .to_string();
     request.password = password;
 
-    let id = queries::account::create_staff()
+    queries::account::create_staff()
         .params(&database, &request.into())
         .one()
         .await?;
 
-    let cookie = state.jwt_service.new_credential(id).map_err(|error| {
-        tracing::error!(error =? error);
-        Error::from(AuthError::InvalidLoginData)
-    })?;
-
-    Ok(jar.add(cookie))
+    Ok(())
 }

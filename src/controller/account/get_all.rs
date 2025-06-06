@@ -9,9 +9,9 @@ use super::Account;
 
 #[utoipa::path(
     get,
-    tag = "Staff",
-    path = "/staff",
-    operation_id = "staff::get_all",
+    tag = "Account",
+    path = "/account",
+    operation_id = "account::get_all",
     security(("jwt_token" = []))
 )]
 pub async fn get_all(state: State<Arc<ApiState>>) -> Result<Json<Vec<Account>>> {

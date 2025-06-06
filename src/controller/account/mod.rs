@@ -1,4 +1,4 @@
-mod create;
+mod create_staff;
 mod delete;
 mod get;
 mod get_all;
@@ -15,7 +15,7 @@ use utoipa::ToSchema;
 
 use crate::{middleware, state::ApiState};
 
-pub use create::*;
+pub use create_staff::*;
 pub use delete::*;
 pub use get::*;
 pub use get_all::*;
@@ -38,10 +38,10 @@ pub struct Account {
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()
-        .route("/staff", routing::post(create))
-        .route("/staff", routing::get(get_all))
-        .route("/staff/{id}", routing::get(get))
-        .route("/staff/{id}", routing::delete(delete))
+        .route("/account/create-staff", routing::post(create_staff))
+        .route("/account", routing::get(get_all))
+        .route("/account/{id}", routing::get(get))
+        .route("/account/{id}", routing::delete(delete))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Admin),

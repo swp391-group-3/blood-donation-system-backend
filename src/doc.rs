@@ -39,10 +39,10 @@ impl Modify for SecurityAddon {
         controller::question::update,
         controller::question::delete,
 
-        controller::staff::create,
-        controller::staff::get_all,
-        controller::staff::get,
-        controller::staff::delete,
+        controller::account::create_staff,
+        controller::account::get_all,
+        controller::account::get,
+        controller::account::delete,
 
         controller::blood_request::create,
         controller::blood_request::get_all,
