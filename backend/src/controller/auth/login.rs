@@ -41,7 +41,7 @@ pub async fn login(
         .await?
         .ok_or(AuthError::InvalidLoginData)?;
 
-    let is_password_correct = !state
+    let is_password_correct = state
         .bcrypt_service
         .verify(&request.password, &account.password)
         .map_err(|_| AuthError::InvalidLoginData)?;
