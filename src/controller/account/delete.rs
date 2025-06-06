@@ -8,11 +8,11 @@ use crate::{error::Result, state::ApiState};
 
 #[utoipa::path(
     delete,
-    tag = "Staff",
-    path = "/staff/{id}",
-    operation_id = "staff::delete",
+    tag = "Account",
+    path = "/account/{id}",
+    operation_id = "account::delete",
     params(
-        ("id" = Uuid, Path, description = "The UUID of the staff member")
+        ("id" = Uuid, Path, description = "The UUID of the account")
     ),
     security(("jwt_token" = []))
 )]

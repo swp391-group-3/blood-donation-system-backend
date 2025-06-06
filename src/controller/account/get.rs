@@ -13,11 +13,11 @@ use super::Account;
 
 #[utoipa::path(
     get,
-    tag = "Staff",
-    path = "/staff/{id}",
-    operation_id = "staff::get",
+    tag = "Account",
+    path = "/account/{id}",
+    operation_id = "account::get",
     params(
-        ("id" = Uuid, Path, description = "The UUID of the staff member")
+        ("id" = Uuid, Path, description = "The UUID of the account")
     ),
     responses(
         (status = Status::OK, body = Option<Account>)
