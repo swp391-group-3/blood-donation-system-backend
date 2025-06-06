@@ -11,10 +11,11 @@ use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
+use validator::Validate;
 
 use crate::{error::Result, state::ApiState, util::jwt::Claims};
 
-#[derive(Deserialize, ToSchema, Mapper)]
+#[derive(Deserialize, ToSchema, Mapper, Validate)]
 #[schema(as = blood_request::create::Request)]
 #[mapper(
     into(custom = "with_staff_id"),
@@ -25,7 +26,8 @@ pub struct Request {
     pub blood_group: BloodGroup,
     pub priority: RequestPriority,
     pub title: String,
-    pub max_people: i32,
+    #[validate(range(min = 1))]
+    pub max_people: u16,
     pub start_time: DateTime<Utc>,
     pub end_time: DateTime<Utc>,
 }
