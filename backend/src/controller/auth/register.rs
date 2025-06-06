@@ -2,22 +2,26 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 use axum_extra::extract::CookieJar;
+use axum_valid::Valid;
 use database::{
     client::Params,
     queries::{self, account::RegisterParams},
 };
 use serde::Deserialize;
 use utoipa::ToSchema;
+use validator::Validate;
 
 use crate::{
     error::{AuthError, Error, Result},
     state::ApiState,
 };
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Validate)]
 #[schema(as = auth::register::request)]
 pub struct Request {
+    #[validate(email)]
     pub email: String,
+    #[validate(length(min = 1))]
     pub password: String,
 }
 
@@ -30,7 +34,7 @@ pub struct Request {
 pub async fn register(
     state: State<Arc<ApiState>>,
     jar: CookieJar,
-    request: Json<Request>,
+    Valid(Json(request)): Valid<Json<Request>>,
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 

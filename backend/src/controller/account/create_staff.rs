@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_valid::Valid;
 use database::{
     client::Params,
     queries::{self, account::CreateStaffParams},
@@ -8,22 +9,26 @@ use database::{
 use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
+use validator::Validate;
 
 use crate::{
     error::{AuthError, Result},
     state::ApiState,
 };
 
-#[derive(Deserialize, ToSchema, Mapper)]
+#[derive(Deserialize, ToSchema, Mapper, Validate)]
 #[schema(as = staff::create::Request)]
 #[mapper(
     into,
     ty = CreateStaffParams::<String, String, String, String>,
 )]
 pub struct Request {
+    #[validate(email)]
     pub email: String,
     pub password: String,
+    #[validate(length(min = 10))]
     pub phone: String,
+    #[validate(length(min = 1))]
     pub name: String,
 }
 
@@ -37,7 +42,7 @@ pub struct Request {
 )]
 pub async fn create_staff(
     state: State<Arc<ApiState>>,
-    Json(mut request): Json<Request>,
+    Valid(Json(mut request)): Valid<Json<Request>>,
 ) -> Result<()> {
     let database = state.database_pool.get().await?;
 
