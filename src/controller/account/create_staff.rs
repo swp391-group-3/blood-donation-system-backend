@@ -35,7 +35,10 @@ pub struct Request {
     request_body = Request,
     security(("jwt_token" = []))
 )]
-pub async fn create(state: State<Arc<ApiState>>, Json(mut request): Json<Request>) -> Result<()> {
+pub async fn create_staff(
+    state: State<Arc<ApiState>>,
+    Json(mut request): Json<Request>,
+) -> Result<()> {
     let database = state.database_pool.get().await?;
 
     let password = state
