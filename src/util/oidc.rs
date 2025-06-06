@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use openidconnect::{
-    AuthenticationFlow, AuthorizationCode, CsrfToken, EndpointMaybeSet,
-    EndpointNotSet, EndpointSet, Nonce, Scope,
+    AuthenticationFlow, AuthorizationCode, CsrfToken, EndpointMaybeSet, EndpointNotSet,
+    EndpointSet, Nonce, Scope,
     core::{
         CoreClient, CoreIdTokenClaims, CoreIdTokenVerifier, CoreProviderMetadata, CoreResponseType,
     },
