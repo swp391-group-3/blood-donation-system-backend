@@ -1,6 +1,9 @@
 use std::sync::Arc;
 
-use axum::{extract::{Path, State}, Json};
+use axum::{
+    Json,
+    extract::{Path, State},
+};
 use database::{
     client::Params,
     queries::{self},
@@ -8,7 +11,6 @@ use database::{
 use uuid::Uuid;
 
 use crate::{error::Result, state::ApiState, util::jwt::Claims};
-
 
 #[utoipa::path(
     post,
@@ -30,7 +32,7 @@ pub async fn create(
     let params = queries::comment::CreateParams {
         account_id: claims.sub,
         blog_id,
-        content
+        content,
     };
 
     let id = queries::comment::create()

@@ -9,6 +9,5 @@ use crate::state::ApiState;
 pub use create::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
-    Router::new()
-        .route("/comment/{blog_id}", post(create))
+    Router::new().route("/comment/{blog_id}", post(create))
 }
