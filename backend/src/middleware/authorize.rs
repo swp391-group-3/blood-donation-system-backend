@@ -15,8 +15,11 @@ macro_rules! authorize {
             if !auth_status.is_active {
                 return Err($crate::error::AuthError::ActivationRequired.into());
             }
+            
+            tracing::info!(role =? auth_status.role);
 
             $(
+                tracing::info!(required_role =? $role);
                 if $role == auth_status.role {
                     return Ok(next.run(request).await)
                 }

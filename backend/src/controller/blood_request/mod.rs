@@ -46,10 +46,10 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
             middleware::authorize!(Role::Staff),
         ))
         .route("/blood-request/get-booked", routing::get(get_booked))
-        .layer(axum::middleware::from_fn_with_state(
-            state,
-            middleware::authorize!(Role::Member),
-        ))
+        // .layer(axum::middleware::from_fn_with_state(
+        //     state,
+        //     middleware::authorize!(Role::Member),
+        // ))
         .route("/blood-request", routing::get(get_all))
         .route(
             "/blood-request/{id}/count-appointment",

@@ -5,7 +5,7 @@ pub fn date_time_must_after_now(value: &DateTime<Utc>) -> Result<(), ValidationE
     let now = Utc::now();
 
     if value <= &now {
-        return Err(ValidationError::new("date_time"));
+        return Err(ValidationError::new("timestamp"));
     }
 
     Ok(())

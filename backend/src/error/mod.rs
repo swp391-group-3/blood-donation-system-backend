@@ -27,7 +27,7 @@ pub enum Error {
     #[error("{0}")]
     Auth(#[from] AuthError),
 
-    #[error("Validation error: {0}")]
+    #[error("{0}")]
     Validation(#[from] ValidationErrors),
 
     #[error("Unknown error: {0}")]

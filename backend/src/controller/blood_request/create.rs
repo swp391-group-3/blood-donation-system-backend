@@ -29,7 +29,7 @@ pub struct Request {
     #[validate(length(min = 1))]
     pub title: String,
     #[validate(range(min = 1))]
-    pub max_people: u16,
+    pub max_people: i32,
     #[validate(custom(function = "custom_validator::date_time_must_after_now"))]
     pub start_time: DateTime<Utc>,
     #[validate(custom(function = "custom_validator::date_time_must_after_now"))]
