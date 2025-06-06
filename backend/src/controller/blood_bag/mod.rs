@@ -6,7 +6,7 @@ use std::sync::Arc;
 use axum::{Router, routing};
 use chrono::{DateTime, Utc};
 use ctypes::{BloodComponent, Role};
-use database::queries::blood_bag::{GetAll, Get};
+use database::queries::blood_bag::{Get, GetAll};
 use model_mapper::Mapper;
 use serde::Serialize;
 use utoipa::ToSchema;
@@ -26,7 +26,7 @@ pub struct BloodBag {
     pub component: BloodComponent,
     pub is_used: bool,
     pub amount: i32,
-    pub expired_time: DateTime<Utc>
+    pub expired_time: DateTime<Utc>,
 }
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {

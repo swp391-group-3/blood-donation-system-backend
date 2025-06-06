@@ -2,12 +2,12 @@ pub mod account;
 pub mod appointment;
 pub mod auth;
 pub mod blog;
+pub mod blood_bag;
 pub mod blood_request;
 pub mod donation;
 pub mod health;
 mod ping;
 pub mod question;
-pub mod blood_bag;
 
 use std::sync::Arc;
 
