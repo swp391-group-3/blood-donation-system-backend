@@ -7,6 +7,7 @@ pub mod donation;
 pub mod health;
 mod ping;
 pub mod question;
+pub mod blood_bag;
 
 use std::sync::Arc;
 
@@ -25,5 +26,6 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .merge(blood_request::build(state.clone()))
         .merge(appointment::build(state.clone()))
         .merge(health::build(state.clone()))
+        .merge(blood_bag::build(state.clone()))
         .merge(donation::build(state))
 }
