@@ -182,7 +182,7 @@ export default function BloodRequestPage() {
                                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none"/>
                                             <Input 
                                                 placeholder="Search requests by tittle"
-                                                className="pl-10 h-12"
+                                                className="pl-10 h-9"
                                                 {...field}
                                             />
                                         </>
@@ -221,7 +221,7 @@ export default function BloodRequestPage() {
                                 <FormItem>
                                     <Select value={field.value} onValueChange={field.onChange}>
                                     <FormControl>
-                                        <SelectTrigger className="w-[180px] h-12">
+                                        <SelectTrigger className="w-[200px] h-12">
                                         <Droplet className="mr-2 h-4 w-4" />
                                         <SelectValue placeholder="Blood Group" />
                                         </SelectTrigger>
