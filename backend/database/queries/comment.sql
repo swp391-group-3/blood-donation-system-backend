@@ -9,3 +9,9 @@ RETURNING ID;
 DELETE FROM comments
 WHERE
 id = :id;
+
+
+--! update
+UPDATE comments
+SET content = COALESCE(:content, content)
+WHERE id = :id;
