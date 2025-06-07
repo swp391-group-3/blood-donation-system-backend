@@ -1,8 +1,20 @@
 'use client';
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers"
+import { useForm } from "react-hook-form"
+import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import {
     Droplet,
     Plus,
@@ -15,18 +27,19 @@ import {
     AlertTriangle,
     Heart,
 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import Link from 'next/link';
 import { mockRequests } from '../../../../constants/sample-data';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
+
+
+const schema = z.object({
+    searchTerm: z.string().optional(),
+    priority: z.string().default("all"),
+    bloodGroup: z.string().default("all"),
+});
+
+export type SearchFormValues = z.infer<typeof schema>;
 
 export default function BloodRequestPage() {
     const [statusFilter, setStatusFilter] = useState('active');
@@ -34,6 +47,8 @@ export default function BloodRequestPage() {
     const [priorityFilter, setPriorityFilter] = useState('all');
     const [bloodGroupFilter, setBloodGroupFilter] = useState('all');
     const [filteredRequests, setFilteredRequests] = useState(mockRequests);
+
+    
 
     const getPriorityConfig = (priority: string) => {
         switch (priority) {
