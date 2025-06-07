@@ -161,7 +161,32 @@ export default function BloodRequestPage() {
                     <TabsTrigger value="recommended">Recommended for You</TabsTrigger>
                 </TabsList>
 
-                
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(handleSearch)}
+                        className="flex flex-col lg:flex-row gap-4"
+                    >
+                        <FormField 
+                            control={form.control}
+                            name="searchTerm"
+                            render={({ field }) =>(
+                                <FormItem className="relative flex-1">
+                                    <FormControl>
+                                        <>
+                                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none"/>
+                                            <Input 
+                                                placeholder="Search requests by tittle"
+                                                className="pl-10 h-12"
+                                                {...field}
+                                            />
+                                        </>
+                                    </FormControl>
+                                </FormItem>
+                            )}                            
+                        />
+
+                    </form>
+                </Form>
 
                 <TabsContent value="active" className="space-y-6">
                     {filteredRequests.length > 0 ? (
