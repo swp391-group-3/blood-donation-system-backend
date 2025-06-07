@@ -8,7 +8,17 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState};
 use database::queries;
 
-
+#[utoipa::path(
+    put,
+    tag = "Comment",
+    path = "/comment/{id}",
+    params(
+        ("id" = Uuid, Path, description = "Comment Id")
+    ),
+    responses(
+        (status = Status::OK)
+    )
+)]
 pub async fn update(
     state: State<Arc<ApiState>>,
     Path(id): Path<Uuid>,
