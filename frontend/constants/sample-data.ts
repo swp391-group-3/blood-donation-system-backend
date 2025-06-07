@@ -13,47 +13,40 @@ export const sidebarItems = [
     {   icon: House, 
         label: 'Dashboard',
         href: "/member", 
-        active: true 
     },
     {
         icon: Droplet,
         label: 'Blood Requests',
         href: "/member/request",
-        active: false,
     },
     {
         icon: Calendar,
         label: 'Appointments',
         href: "/member/appointment",
-        active: false,
     },
     {
         icon: Activity,
         label: 'Health Profile',
         href: "/member/health-profile",
-        active: false,
     },
     { 
         icon: Award, 
         label: 'Achievements', 
         href: "/member/achievement",
-        active: false 
     },
     { 
         icon: Heart, 
         label: 'Impact Tracker',
         href: "/member/impact",
-        active: false },
+    },
     {
         icon: CircleAlert,
         label: 'Emergency Alerts',
         href: "/member/emergency",
-        active: false,
     },
     {   icon: Settings, 
         label: 'Settings', 
         href: "/member/profile",
-        active: false 
     },
 ];
 
