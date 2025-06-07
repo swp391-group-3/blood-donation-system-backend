@@ -27,3 +27,7 @@ SET
     type = COALESCE(:type, type),
     amount = COALESCE(:amount, amount)
 WHERE id = :id;
+
+--! delete
+DELETE FROM donations
+WHERE id = :id;
