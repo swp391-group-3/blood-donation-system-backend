@@ -12,3 +12,10 @@ WHERE id = :id;
 SELECT id, account_id, title, content
 FROM blogs
 ORDER BY created_at DESC;
+
+--! update (title?, content?)
+UPDATE blogs
+SET title = COALESCE(:title, title),
+    content = COALESCE(:content, content)
+WHERE id = :id 
+AND account_id = :account_id;

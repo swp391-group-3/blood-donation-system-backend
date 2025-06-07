@@ -1,6 +1,7 @@
 mod create;
 mod get;
 mod get_all;
+mod update;
 
 use crate::state::ApiState;
 use axum::{Router, routing};
@@ -14,6 +15,7 @@ use uuid::Uuid;
 pub use create::*;
 pub use get::*;
 pub use get_all::*;
+pub use update::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ToSchema, Mapper)]
 #[mapper(derive(from(custom = "from_get"), ty = GetBorrowed::<'_>))]
@@ -30,4 +32,5 @@ pub fn build() -> Router<Arc<ApiState>> {
         .route("/blog", routing::post(create))
         .route("/blog", routing::get(get_all))
         .route("/blog/{id}", routing::get(get))
+        .route("/blog/{id}", routing::patch(update))
 }
