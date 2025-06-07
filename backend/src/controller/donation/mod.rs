@@ -1,9 +1,9 @@
 mod create;
+mod delete;
 mod get;
 mod get_all;
 mod get_by_member_id;
 mod update;
-mod delete;
 
 use std::sync::Arc;
 
@@ -19,11 +19,11 @@ use uuid::Uuid;
 use crate::{middleware, state::ApiState};
 
 pub use create::*;
+pub use delete::*;
 pub use get::*;
 pub use get_all::*;
 pub use get_by_member_id::*;
 pub use update::*;
-pub use delete::*;
 
 #[derive(Serialize, ToSchema, Mapper)]
 #[mapper(derive(from(custom = "from_get"), ty = Get))]
