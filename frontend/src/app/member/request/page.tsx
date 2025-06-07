@@ -251,60 +251,48 @@ export default function BloodRequestPage() {
                                         className={`transition-all duration-200 hover:shadow-lg ${
                                             isCompatible
                                                 ? 'ring-1 ring-green-200 bg-green-50'
-                                                : 'ring-1 ring-zinc-400 bg-zinc-50'
+                                                : 'ring-1 ring-zinc-200 bg-zinc-50'
                                         }`}
                                     >
                                         <CardContent className="p-6">
                                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                                                 <div className="space-y-4 flex-1">
                                                     <div className="flex items-start gap-3">
-                                                        <div
-                                                            className={`p-2 rounded-lg ${priorityConfig.bgColor}`}
-                                                        >
-                                                            <PriorityIcon
-                                                                className={`h-5 w-5 ${priorityConfig.textColor}`}
-                                                            />
+                                                        <div className={`p-2 rounded-lg ${priorityConfig.bgColor}`}>
+                                                            <PriorityIcon className={`h-5 w-5 ${priorityConfig.textColor}`} />
                                                         </div>
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-2 mb-2">
-                                                                <h3 className="text-xl font-semibold text-gray-900">
-                                                                    {
-                                                                        request.title
-                                                                    }
+                                                                <h3 className="text-xl font-semibold text-zinc-900">
+                                                                    { request.title }  
                                                                 </h3>
-                                                                <Badge
-                                                                    className={
-                                                                        priorityConfig.color
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        priorityConfig.label
-                                                                    }
+                                                                <Badge className={ priorityConfig.color } >
+                                                                    { priorityConfig.label }  
                                                                 </Badge>
-                                                                {isCompatible && (
+                                                                {isCompatible ? (
                                                                     <Badge className="bg-green-500">
                                                                         Compatible
                                                                     </Badge>
+                                                                ) : (
+                                                                    <Badge className="bg-zinc-500">
+                                                                        Not Compatible
+                                                                    </Badge>
                                                                 )}
                                                             </div>
-                                                            <p className="text-gray-600 mb-3">
-                                                                {
-                                                                    request.description
-                                                                }
+                                                            <p className="text-zinc-600 mb-3">
+                                                                { request.description }
                                                             </p>
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                                         <div className="flex items-center gap-2">
                                                             <Droplet className="h-4 w-4 text-red-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.bloodGroup
-                                                                    }
+                                                                    { request.bloodGroup }
                                                                 </p>
-                                                                <p className="text-xs text-gray-500">
+                                                                <p className="text-xs text-zinc-500">
                                                                     Blood Type
                                                                 </p>
                                                             </div>
@@ -313,9 +301,7 @@ export default function BloodRequestPage() {
                                                             <Calendar className="h-4 w-4 text-blue-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.estimatedTimeLeft
-                                                                    }
+                                                                    { request.estimatedTimeLeft }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Time Left
@@ -323,29 +309,10 @@ export default function BloodRequestPage() {
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <MapPin className="h-4 w-4 text-green-500" />
-                                                            <div>
-                                                                <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.location
-                                                                    }
-                                                                </p>
-                                                                <p className="text-xs text-gray-500">
-                                                                    Location
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
                                                             <Users className="h-4 w-4 text-purple-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.currentPeople
-                                                                    }
-                                                                    /
-                                                                    {
-                                                                        request.maxPeople
-                                                                    }
+                                                                    { request.currentPeople } / { request.maxPeople }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Donors
