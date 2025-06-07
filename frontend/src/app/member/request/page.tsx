@@ -1,6 +1,6 @@
 'use client';
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
 import { useState } from 'react';
@@ -34,7 +34,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 
 
 const schema = z.object({
-    searchTerm: z.string().optional(),
+    searchTerm: z.string().optional().default(""),
     priority: z.string().default("all"),
     bloodGroup: z.string().default("all"),
 });
@@ -48,7 +48,18 @@ export default function BloodRequestPage() {
     const [bloodGroupFilter, setBloodGroupFilter] = useState('all');
     const [filteredRequests, setFilteredRequests] = useState(mockRequests);
 
-    
+    const form = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            searchTerm: "",
+            priority: "all",
+            bloodGroup: "all",
+        },
+    });
+
+    function handleSearch(data : SearchFormValues) {
+        // Come in future
+    }
 
     const getPriorityConfig = (priority: string) => {
         switch (priority) {
