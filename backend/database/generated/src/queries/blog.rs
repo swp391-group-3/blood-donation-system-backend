@@ -556,9 +556,7 @@ impl<'a, C: GenericClient + Send + Sync>
         'a,
         DeleteParams,
         std::pin::Pin<
-            Box<
-                dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a
-            >,
+            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
         >,
         C,
     > for DeleteStmt
@@ -568,9 +566,7 @@ impl<'a, C: GenericClient + Send + Sync>
         client: &'a C,
         params: &'a DeleteParams,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a
-        >,
+        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
     > {
         Box::pin(self.bind(client, &params.id, &params.account_id))
     }
