@@ -373,7 +373,6 @@ export default function BloodRequestPage() {
                                                             Apply Now
                                                         </Link>
                                                     </Button>
-                                                    
                                                 </div>
                                             </div>
                                         </CardContent>
@@ -399,17 +398,16 @@ export default function BloodRequestPage() {
                 </TabsContent>
 
                 <TabsContent value="recommended" className="space-y-6">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                         <div className="flex items-center gap-2 mb-2">
-                            <Heart className="h-5 w-5 text-blue-600" />
-                            <h3 className="font-medium text-blue-800">
+                            <Heart className="h-5 w-5 text-red-600" />
+                            <h3 className="font-medium text-zinc-800">
                                 Personalized Recommendations
                             </h3>
                         </div>
-                        <p className="text-sm text-blue-700">
+                        <p className="text-sm text-zinc-700">
                             These requests are recommended based on your blood
-                            type ({userBloodGroup}) and urgent needs in your
-                            area.
+                            type ({userBloodGroup}) and urgent needs.
                         </p>
                     </div>
 
@@ -423,59 +421,48 @@ export default function BloodRequestPage() {
                                 const isCompatible = isCompatibleBloodGroup(
                                     request.bloodGroup,
                                 );
-                                const progressPercentage =
-                                    (request.currentPeople /
-                                        request.maxPeople) *
-                                    100;
-
+                                const progressPercentage = (request.currentPeople / request.maxPeople) * 100;
                                 return (
                                     <Card
                                         key={request.id}
-                                        className="ring-2 ring-blue-200 bg-blue-50/30 hover:shadow-lg transition-all duration-200"
+                                        className="ring-1 ring-green-200 bg-green-50 hover:shadow-lg transition-all duration-200"
                                     >
                                         <CardContent className="p-6">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <Badge className="bg-blue-500">
-                                                    Recommended
-                                                </Badge>
-                                                {isCompatible && (
-                                                    <Badge className="bg-green-500">
-                                                        Perfect Match
-                                                    </Badge>
-                                                )}
-                                            </div>
                                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                                                 <div className="space-y-4 flex-1">
                                                     <div className="flex items-start gap-3">
-                                                        <div
-                                                            className={`p-2 rounded-lg ${priorityConfig.bgColor}`}
-                                                        >
-                                                            <PriorityIcon
-                                                                className={`h-5 w-5 ${priorityConfig.textColor}`}
-                                                            />
+                                                        <div className={`p-2 rounded-lg ${priorityConfig.bgColor}`}>
+                                                            <PriorityIcon className={`h-5 w-5 ${priorityConfig.textColor}`} />
                                                         </div>
                                                         <div className="flex-1">
-                                                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                                                {request.title}
-                                                            </h3>
-                                                            <p className="text-gray-600 mb-3">
-                                                                {
-                                                                    request.description
-                                                                }
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <h3 className="text-xl font-semibold text-zinc-900">
+                                                                    { request.title }  
+                                                                </h3>
+                                                                <Badge className={ priorityConfig.color } >
+                                                                    { priorityConfig.label }  
+                                                                </Badge>
+                                                                {isCompatible && (
+                                                                    <Badge className="bg-green-500">
+                                                                        Compatible
+                                                                    </Badge>
+                                                                )}
+                                                            </div>
+                                                        
+                                                            <p className="text-zinc-600 mb-3">
+                                                                { request.description }
                                                             </p>
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                                         <div className="flex items-center gap-2">
                                                             <Droplet className="h-4 w-4 text-red-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.bloodGroup
-                                                                    }
+                                                                    { request.bloodGroup }
                                                                 </p>
-                                                                <p className="text-xs text-gray-500">
+                                                                <p className="text-xs text-zinc-500">
                                                                     Blood Type
                                                                 </p>
                                                             </div>
@@ -484,9 +471,7 @@ export default function BloodRequestPage() {
                                                             <Calendar className="h-4 w-4 text-blue-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.estimatedTimeLeft
-                                                                    }
+                                                                    { request.estimatedTimeLeft }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Time Left
@@ -494,29 +479,10 @@ export default function BloodRequestPage() {
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <MapPin className="h-4 w-4 text-green-500" />
-                                                            <div>
-                                                                <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.location
-                                                                    }
-                                                                </p>
-                                                                <p className="text-xs text-gray-500">
-                                                                    Location
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
                                                             <Users className="h-4 w-4 text-purple-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    {
-                                                                        request.currentPeople
-                                                                    }
-                                                                    /
-                                                                    {
-                                                                        request.maxPeople
-                                                                    }
+                                                                    { request.currentPeople } / { request.maxPeople }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Donors
@@ -531,34 +497,28 @@ export default function BloodRequestPage() {
                                                                 Progress
                                                             </span>
                                                             <span className="text-sm text-gray-500">
-                                                                {Math.round(
-                                                                    progressPercentage,
-                                                                )}
-                                                                % filled
+                                                                {Math.round(progressPercentage)}% filled
                                                             </span>
                                                         </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-3">
-                                                            <div
-                                                                className="bg-blue-500 h-3 rounded-full transition-all duration-300"
-                                                                style={{
-                                                                    width: `${Math.min(progressPercentage, 100)}%`,
-                                                                }}
-                                                            />
-                                                        </div>
+                                                        <Progress
+                                                            value={progressPercentage}
+                                                            className={`
+                                                                h-2
+                                                                [&>div]:transition-all
+                                                                [&>div]:duration-300
+                                                                ${
+                                                                  progressPercentage >= 80
+                                                                    ? "[&>div]:bg-green-600"
+                                                                    : progressPercentage >= 50
+                                                                      ? "[&>div]:bg-yellow-600"
+                                                                      : "[&>div]:bg-red-600"
+                                                                }
+                                                            `}
+                                                        />
                                                     </div>
                                                 </div>
 
                                                 <div className="flex flex-col gap-3 lg:w-48">
-                                                    <Button
-                                                        className="w-full bg-blue-600 hover:bg-blue-700"
-                                                        asChild
-                                                    >
-                                                        <Link
-                                                            href={`/dashboard/requests/${request.id}/apply`}
-                                                        >
-                                                            Apply to Donate
-                                                        </Link>
-                                                    </Button>
                                                     <Button
                                                         variant="outline"
                                                         className="w-full"
@@ -568,6 +528,18 @@ export default function BloodRequestPage() {
                                                             href={`/dashboard/requests/${request.id}`}
                                                         >
                                                             View Details
+                                                        </Link>
+                                                    </Button>
+
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full bg-green-600 text-white"
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={`/dashboard/requests/${request.id}`}
+                                                        >
+                                                            Apply Now
                                                         </Link>
                                                     </Button>
                                                 </div>
