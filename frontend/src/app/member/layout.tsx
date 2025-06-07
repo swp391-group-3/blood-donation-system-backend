@@ -52,8 +52,8 @@ export default function HomepageLayout({ children }: HomepageLayoutProps) {
                 </div>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <button className="flex items-center gap-3 border-r border-zinc-300 px-5 py-3 transition hover:bg-zinc-50 focus:outline-none">
+                    <DropdownMenuTrigger asChild>
+                        <div className="flex items-center gap-3 border-r border-zinc-300 px-5 py-3 transition hover:bg-zinc-50 focus:outline-none">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage
                                     src="../../public/avatars/sample-avatar.png"
@@ -69,9 +69,9 @@ export default function HomepageLayout({ children }: HomepageLayoutProps) {
                                     m@example.com
                                 </span>
                             </div>
-                        </button>
+                        </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64">
+                    <DropdownMenuContent align="start" sideOffset={0} className="w-[calc(100vw-80px)] max-w-[350px] min-w-[200px]">
                         <DropdownMenuItem>My Profile</DropdownMenuItem>
                         <DropdownMenuItem>View Health Record</DropdownMenuItem>
                         <DropdownMenuSeparator />
