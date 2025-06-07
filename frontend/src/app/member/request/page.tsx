@@ -1,14 +1,14 @@
 'use client';
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form"
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Progress } from "@/components/ui/progress";
+import { Progress } from '@/components/ui/progress';
 import {
     Select,
     SelectContent,
@@ -31,11 +31,10 @@ import { mockRequests } from '../../../../constants/sample-data';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 
-
 const schema = z.object({
-    searchTerm: z.string().optional().default(""),
-    priority: z.string().default("all"),
-    bloodGroup: z.string().default("all"),
+    searchTerm: z.string().optional().default(''),
+    priority: z.string().default('all'),
+    bloodGroup: z.string().default('all'),
 });
 
 export type SearchFormValues = z.infer<typeof schema>;
@@ -50,19 +49,19 @@ export default function BloodRequestPage() {
     const form = useForm({
         resolver: zodResolver(schema),
         defaultValues: {
-            searchTerm: "",
-            priority: "all",
-            bloodGroup: "all",
+            searchTerm: '',
+            priority: 'all',
+            bloodGroup: 'all',
         },
     });
 
-    const { watch }= form;
-    
-    const searchTerm = watch("searchTerm");
-    const priority = watch("priority");
-    const bloodGroup = watch("bloodGroup");
-    
-    function handleSearch(data : SearchFormValues) {
+    const { watch } = form;
+
+    const searchTerm = watch('searchTerm');
+    const priority = watch('priority');
+    const bloodGroup = watch('bloodGroup');
+
+    function handleSearch(data: SearchFormValues) {
         // Come in future
     }
 
@@ -151,7 +150,9 @@ export default function BloodRequestPage() {
             >
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="active">Active Requests</TabsTrigger>
-                    <TabsTrigger value="recommended">Recommended for You</TabsTrigger>
+                    <TabsTrigger value="recommended">
+                        Recommended for You
+                    </TabsTrigger>
                 </TabsList>
 
                 <Form {...form}>
@@ -159,15 +160,15 @@ export default function BloodRequestPage() {
                         onSubmit={form.handleSubmit(handleSearch)}
                         className="flex flex-col lg:flex-row gap-4"
                     >
-                        <FormField 
+                        <FormField
                             control={form.control}
                             name="searchTerm"
-                            render={({ field }) =>(
+                            render={({ field }) => (
                                 <FormItem className="relative flex-1">
                                     <FormControl>
                                         <>
-                                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none"/>
-                                            <Input 
+                                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                                            <Input
                                                 placeholder="Search requests by tittle"
                                                 className="pl-10 h-9"
                                                 {...field}
@@ -175,16 +176,19 @@ export default function BloodRequestPage() {
                                         </>
                                     </FormControl>
                                 </FormItem>
-                            )}                            
+                            )}
                         />
 
                         <div className="flex gap-3">
-                            <FormField 
+                            <FormField
                                 control={form.control}
                                 name="priority"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <Select value={field.value} onValueChange={field.onChange}>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger className="w-[180px] h-12">
                                                     <Filter className="mr-2 h-4 w-4" />
@@ -192,10 +196,18 @@ export default function BloodRequestPage() {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="all">All Priorities</SelectItem>
-                                                <SelectItem value="high">High Priorities</SelectItem>
-                                                <SelectItem value="medium">Medium Priorities</SelectItem>
-                                                <SelectItem value="low">Low Priority</SelectItem>
+                                                <SelectItem value="all">
+                                                    All Priorities
+                                                </SelectItem>
+                                                <SelectItem value="high">
+                                                    High Priorities
+                                                </SelectItem>
+                                                <SelectItem value="medium">
+                                                    Medium Priorities
+                                                </SelectItem>
+                                                <SelectItem value="low">
+                                                    Low Priority
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormItem>
@@ -205,27 +217,48 @@ export default function BloodRequestPage() {
                                 control={form.control}
                                 name="bloodGroup"
                                 render={({ field }) => (
-                                <FormItem>
-                                    <Select value={field.value} onValueChange={field.onChange}>
-                                    <FormControl>
-                                        <SelectTrigger className="w-[200px] h-12">
-                                        <Droplet className="mr-2 h-4 w-4" />
-                                        <SelectValue placeholder="Blood Group" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Blood Groups</SelectItem>
-                                        <SelectItem value="A+">A+</SelectItem>
-                                        <SelectItem value="A-">A-</SelectItem>
-                                        <SelectItem value="B+">B+</SelectItem>
-                                        <SelectItem value="B-">B-</SelectItem>
-                                        <SelectItem value="AB+">AB+</SelectItem>
-                                        <SelectItem value="AB-">AB-</SelectItem>
-                                        <SelectItem value="O+">O+</SelectItem>
-                                        <SelectItem value="O-">O-</SelectItem>
-                                    </SelectContent>
-                                    </Select>
-                                </FormItem>
+                                    <FormItem>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="w-[200px] h-12">
+                                                    <Droplet className="mr-2 h-4 w-4" />
+                                                    <SelectValue placeholder="Blood Group" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="all">
+                                                    All Blood Groups
+                                                </SelectItem>
+                                                <SelectItem value="A+">
+                                                    A+
+                                                </SelectItem>
+                                                <SelectItem value="A-">
+                                                    A-
+                                                </SelectItem>
+                                                <SelectItem value="B+">
+                                                    B+
+                                                </SelectItem>
+                                                <SelectItem value="B-">
+                                                    B-
+                                                </SelectItem>
+                                                <SelectItem value="AB+">
+                                                    AB+
+                                                </SelectItem>
+                                                <SelectItem value="AB-">
+                                                    AB-
+                                                </SelectItem>
+                                                <SelectItem value="O+">
+                                                    O+
+                                                </SelectItem>
+                                                <SelectItem value="O-">
+                                                    O-
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormItem>
                                 )}
                             />
                         </div>
@@ -243,7 +276,10 @@ export default function BloodRequestPage() {
                                 const isCompatible = isCompatibleBloodGroup(
                                     request.bloodGroup,
                                 );
-                                const progressPercentage = (request.currentPeople /  request.maxPeople) * 100;                                  
+                                const progressPercentage =
+                                    (request.currentPeople /
+                                        request.maxPeople) *
+                                    100;
                                 return (
                                     <Card
                                         key={request.id}
@@ -257,16 +293,28 @@ export default function BloodRequestPage() {
                                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                                                 <div className="space-y-4 flex-1">
                                                     <div className="flex items-start gap-3">
-                                                        <div className={`p-2 rounded-lg ${priorityConfig.bgColor}`}>
-                                                            <PriorityIcon className={`h-5 w-5 ${priorityConfig.textColor}`} />
+                                                        <div
+                                                            className={`p-2 rounded-lg ${priorityConfig.bgColor}`}
+                                                        >
+                                                            <PriorityIcon
+                                                                className={`h-5 w-5 ${priorityConfig.textColor}`}
+                                                            />
                                                         </div>
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-2 mb-2">
                                                                 <h3 className="text-xl font-semibold text-zinc-900">
-                                                                    { request.title }  
+                                                                    {
+                                                                        request.title
+                                                                    }
                                                                 </h3>
-                                                                <Badge className={ priorityConfig.color } >
-                                                                    { priorityConfig.label }  
+                                                                <Badge
+                                                                    className={
+                                                                        priorityConfig.color
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        priorityConfig.label
+                                                                    }
                                                                 </Badge>
                                                                 {isCompatible ? (
                                                                     <Badge className="bg-green-500">
@@ -274,12 +322,15 @@ export default function BloodRequestPage() {
                                                                     </Badge>
                                                                 ) : (
                                                                     <Badge className="bg-zinc-500">
-                                                                        Not Compatible
+                                                                        Not
+                                                                        Compatible
                                                                     </Badge>
                                                                 )}
                                                             </div>
                                                             <p className="text-zinc-600 mb-3">
-                                                                { request.description }
+                                                                {
+                                                                    request.description
+                                                                }
                                                             </p>
                                                         </div>
                                                     </div>
@@ -289,7 +340,9 @@ export default function BloodRequestPage() {
                                                             <Droplet className="h-4 w-4 text-red-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.bloodGroup }
+                                                                    {
+                                                                        request.bloodGroup
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-zinc-500">
                                                                     Blood Type
@@ -300,7 +353,9 @@ export default function BloodRequestPage() {
                                                             <Calendar className="h-4 w-4 text-blue-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.estimatedTimeLeft }
+                                                                    {
+                                                                        request.estimatedTimeLeft
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Time Left
@@ -311,7 +366,13 @@ export default function BloodRequestPage() {
                                                             <Users className="h-4 w-4 text-purple-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.currentPeople } / { request.maxPeople }
+                                                                    {
+                                                                        request.currentPeople
+                                                                    }{' '}
+                                                                    /{' '}
+                                                                    {
+                                                                        request.maxPeople
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Donors
@@ -326,21 +387,28 @@ export default function BloodRequestPage() {
                                                                 Progress
                                                             </span>
                                                             <span className="text-sm text-gray-500">
-                                                                {Math.round(progressPercentage)}% filled
+                                                                {Math.round(
+                                                                    progressPercentage,
+                                                                )}
+                                                                % filled
                                                             </span>
                                                         </div>
                                                         <Progress
-                                                            value={progressPercentage}
+                                                            value={
+                                                                progressPercentage
+                                                            }
                                                             className={`
                                                                 h-2
                                                                 [&>div]:transition-all
                                                                 [&>div]:duration-300
                                                                 ${
-                                                                  progressPercentage >= 80
-                                                                    ? "[&>div]:bg-green-600"
-                                                                    : progressPercentage >= 50
-                                                                      ? "[&>div]:bg-yellow-600"
-                                                                      : "[&>div]:bg-red-600"
+                                                                    progressPercentage >=
+                                                                    80
+                                                                        ? '[&>div]:bg-green-600'
+                                                                        : progressPercentage >=
+                                                                            50
+                                                                          ? '[&>div]:bg-yellow-600'
+                                                                          : '[&>div]:bg-red-600'
                                                                 }
                                                             `}
                                                         />
@@ -419,7 +487,10 @@ export default function BloodRequestPage() {
                                 const isCompatible = isCompatibleBloodGroup(
                                     request.bloodGroup,
                                 );
-                                const progressPercentage = (request.currentPeople / request.maxPeople) * 100;
+                                const progressPercentage =
+                                    (request.currentPeople /
+                                        request.maxPeople) *
+                                    100;
                                 return (
                                     <Card
                                         key={request.id}
@@ -429,16 +500,28 @@ export default function BloodRequestPage() {
                                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                                                 <div className="space-y-4 flex-1">
                                                     <div className="flex items-start gap-3">
-                                                        <div className={`p-2 rounded-lg ${priorityConfig.bgColor}`}>
-                                                            <PriorityIcon className={`h-5 w-5 ${priorityConfig.textColor}`} />
+                                                        <div
+                                                            className={`p-2 rounded-lg ${priorityConfig.bgColor}`}
+                                                        >
+                                                            <PriorityIcon
+                                                                className={`h-5 w-5 ${priorityConfig.textColor}`}
+                                                            />
                                                         </div>
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-2 mb-2">
                                                                 <h3 className="text-xl font-semibold text-zinc-900">
-                                                                    { request.title }  
+                                                                    {
+                                                                        request.title
+                                                                    }
                                                                 </h3>
-                                                                <Badge className={ priorityConfig.color } >
-                                                                    { priorityConfig.label }  
+                                                                <Badge
+                                                                    className={
+                                                                        priorityConfig.color
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        priorityConfig.label
+                                                                    }
                                                                 </Badge>
                                                                 {isCompatible && (
                                                                     <Badge className="bg-green-500">
@@ -446,9 +529,11 @@ export default function BloodRequestPage() {
                                                                     </Badge>
                                                                 )}
                                                             </div>
-                                                        
+
                                                             <p className="text-zinc-600 mb-3">
-                                                                { request.description }
+                                                                {
+                                                                    request.description
+                                                                }
                                                             </p>
                                                         </div>
                                                     </div>
@@ -458,7 +543,9 @@ export default function BloodRequestPage() {
                                                             <Droplet className="h-4 w-4 text-red-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.bloodGroup }
+                                                                    {
+                                                                        request.bloodGroup
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-zinc-500">
                                                                     Blood Type
@@ -469,7 +556,9 @@ export default function BloodRequestPage() {
                                                             <Calendar className="h-4 w-4 text-blue-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.estimatedTimeLeft }
+                                                                    {
+                                                                        request.estimatedTimeLeft
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Time Left
@@ -480,7 +569,13 @@ export default function BloodRequestPage() {
                                                             <Users className="h-4 w-4 text-purple-500" />
                                                             <div>
                                                                 <p className="text-sm font-medium">
-                                                                    { request.currentPeople } / { request.maxPeople }
+                                                                    {
+                                                                        request.currentPeople
+                                                                    }{' '}
+                                                                    /{' '}
+                                                                    {
+                                                                        request.maxPeople
+                                                                    }
                                                                 </p>
                                                                 <p className="text-xs text-gray-500">
                                                                     Donors
@@ -495,21 +590,28 @@ export default function BloodRequestPage() {
                                                                 Progress
                                                             </span>
                                                             <span className="text-sm text-gray-500">
-                                                                {Math.round(progressPercentage)}% filled
+                                                                {Math.round(
+                                                                    progressPercentage,
+                                                                )}
+                                                                % filled
                                                             </span>
                                                         </div>
                                                         <Progress
-                                                            value={progressPercentage}
+                                                            value={
+                                                                progressPercentage
+                                                            }
                                                             className={`
                                                                 h-2
                                                                 [&>div]:transition-all
                                                                 [&>div]:duration-300
                                                                 ${
-                                                                  progressPercentage >= 80
-                                                                    ? "[&>div]:bg-green-600"
-                                                                    : progressPercentage >= 50
-                                                                      ? "[&>div]:bg-yellow-600"
-                                                                      : "[&>div]:bg-red-600"
+                                                                    progressPercentage >=
+                                                                    80
+                                                                        ? '[&>div]:bg-green-600'
+                                                                        : progressPercentage >=
+                                                                            50
+                                                                          ? '[&>div]:bg-yellow-600'
+                                                                          : '[&>div]:bg-red-600'
                                                                 }
                                                             `}
                                                         />
@@ -565,7 +667,11 @@ export default function BloodRequestPage() {
                 <Card>
                     <CardContent className="p-6 text-center">
                         <div className="text-3xl font-bold text-red-600 mb-2">
-                            { mockRequests.filter((request) => request.priority === 'high',).length }
+                            {
+                                mockRequests.filter(
+                                    (request) => request.priority === 'high',
+                                ).length
+                            }
                         </div>
                         <p className="text-sm text-gray-600">Urgent Requests</p>
                     </CardContent>
@@ -583,7 +689,11 @@ export default function BloodRequestPage() {
                 <Card>
                     <CardContent className="p-6 text-center">
                         <div className="text-3xl font-bold text-green-600 mb-2">
-                            {mockRequests.reduce( (sum, r) => sum + (r.maxPeople - r.currentPeople), 0,)}
+                            {mockRequests.reduce(
+                                (sum, r) =>
+                                    sum + (r.maxPeople - r.currentPeople),
+                                0,
+                            )}
                         </div>
                         <p className="text-sm text-gray-600">
                             Donors Still Needed
