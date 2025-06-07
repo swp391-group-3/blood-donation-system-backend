@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Progress } from "@/components/ui/progress";
 import {
     Select,
     SelectContent,
@@ -327,28 +328,24 @@ export default function BloodRequestPage() {
                                                                 Progress
                                                             </span>
                                                             <span className="text-sm text-gray-500">
-                                                                {Math.round(
-                                                                    progressPercentage,
-                                                                )}
-                                                                % filled
+                                                                {Math.round(progressPercentage)}% filled
                                                             </span>
                                                         </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-3">
-                                                            <div
-                                                                className={`h-3 rounded-full transition-all duration-300 ${
-                                                                    progressPercentage >=
-                                                                    80
-                                                                        ? 'bg-green-500'
-                                                                        : progressPercentage >=
-                                                                            50
-                                                                          ? 'bg-yellow-500'
-                                                                          : 'bg-red-500'
-                                                                }`}
-                                                                style={{
-                                                                    width: `${Math.min(progressPercentage, 100)}%`,
-                                                                }}
-                                                            />
-                                                        </div>
+                                                        <Progress
+                                                            value={progressPercentage}
+                                                            className={`
+                                                                h-2
+                                                                [&>div]:transition-all
+                                                                [&>div]:duration-300
+                                                                ${
+                                                                  progressPercentage >= 80
+                                                                    ? "[&>div]:bg-green-600"
+                                                                    : progressPercentage >= 50
+                                                                      ? "[&>div]:bg-yellow-600"
+                                                                      : "[&>div]:bg-red-600"
+                                                                }
+                                                            `}
+                                                        />
                                                     </div>
                                                 </div>
 
