@@ -11,6 +11,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from "next/link";
 
 interface HomepageLayoutProps {
     children: React.ReactNode;
@@ -32,6 +33,7 @@ export default function HomepageLayout({ children }: HomepageLayoutProps) {
                 <div className="p-4 space-y-2 flex-1 border-r border-zinc-300">
                     {sidebarItems.map((item, index) => (
                         <Button
+                            asChild
                             key={index}
                             variant="ghost"
                             className={cn(
@@ -39,8 +41,12 @@ export default function HomepageLayout({ children }: HomepageLayoutProps) {
                                 item.active && 'bg-red-50 text-red-600',
                             )}
                         >
-                            <item.icon className="mr-3 h-4 w-4" />
-                            {item.label}
+                            <Link href={item.href}>
+                                <span className="flex items-center">
+                                    <item.icon className="mr-3 h-4 w-4" />
+                                    {item.label}
+                                </span>
+                            </Link>
                         </Button>
                     ))}
                 </div>
