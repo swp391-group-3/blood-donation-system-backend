@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { Heart, LogOut } from 'lucide-react';
 import { sidebarItems } from '../../../constants/sample-data';
@@ -12,12 +13,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from "next/link";
-
+import { usePathname } from 'next/navigation';
 interface HomepageLayoutProps {
     children: React.ReactNode;
 }
 
 export default function HomepageLayout({ children }: HomepageLayoutProps) {
+    const pathname = usePathname();
     return (
         <div className="flex bg-gray-50">
             <div className="sticky top-0 h-screen w-70 bg-white border-zinc-300 flex flex-col">
@@ -38,7 +40,8 @@ export default function HomepageLayout({ children }: HomepageLayoutProps) {
                             variant="ghost"
                             className={cn(
                                 'w-full justify-start text-zinc-600 hover:text-zinc-900 hover:bg-gray-100',
-                                item.active && 'bg-red-50 text-red-600',
+                                pathname === item.href && "bg-red-50 text-red-600 hover:bg-red-100 hover:shadow"
+
                             )}
                         >
                             <Link href={item.href}>
