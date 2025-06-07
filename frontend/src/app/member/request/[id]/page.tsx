@@ -1,5 +1,193 @@
-export default function ViewDetailRequest() {
-    return (
-        <h1>Hello world</h1>
-    )
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Droplets, Users, CalendarDays, Clock, MapPin, AlertTriangle } from "lucide-react"
+
+export default function BloodRequestPage() {
+  return (
+    <div className="flex-1 p-6 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-2xl font-bold text-gray-900">Emergency O- needed for surgery</h1>
+            <Badge variant="destructive" className="bg-red-500 hover:bg-red-600">
+              High Priority
+            </Badge>
+          </div>
+          <p className="text-sm text-gray-500">Request ID: 1</p>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="flex gap-6 h-full">
+          {/* Left Column - Main Content */}
+          <div className="flex-1 space-y-6">
+            {/* Request Details Card */}
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Request Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  We urgently need O- blood donors for multiple emergency surgeries scheduled this week. Your donation
+                  could save lives.
+                </p>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-red-50 rounded-lg">
+                      <Droplets className="h-4 w-4 text-red-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">Blood Type</p>
+                      <p className="font-medium text-gray-900">O+</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-50 rounded-lg">
+                      <Users className="h-4 w-4 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">5/5</p>
+                      <p className="font-medium text-gray-900">Donors</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-green-50 rounded-lg">
+                      <CalendarDays className="h-4 w-4 text-green-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">Donation Period</p>
+                      <p className="font-medium text-gray-900">6/1/2025 - 6/3/2025</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-50 rounded-lg">
+                      <Clock className="h-4 w-4 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-1">Time</p>
+                      <p className="font-medium text-gray-900">8:00 - 18:00</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-50 rounded-lg">
+                    <MapPin className="h-4 w-4 text-purple-500" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Location</p>
+                    <p className="font-medium text-gray-900">Hoan Hao Hospital</p>
+                  </div>
+                </div>
+
+                {/* Progress Section */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Progress</span>
+                    <span className="text-sm font-medium text-gray-900">100% of target reached</span>
+                  </div>
+                  <Progress value={100} className="h-2 bg-gray-200" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Donation Requirements Card */}
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Donation Requirements</CardTitle>
+                <p className="text-sm text-gray-500">Please ensure you meet all requirements before applying</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-700">Must be between 18-65 years old</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-700">Minimum weight of 50kg</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-700">No recent illness or medication</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-700">No tattoos or piercings in the last 6 months</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Cannot Apply Alert */}
+            <Alert className="bg-yellow-50 border-yellow-200">
+              <AlertTriangle className="h-4 w-4 text-yellow-600" />
+              <AlertDescription className="text-yellow-800">
+                <span className="font-medium">Cannot Apply</span>
+                <br />
+                This donation period has ended
+              </AlertDescription>
+            </Alert>
+          </div>
+
+          {/* Right Column - Sidebar Info */}
+          <div className="w-80 space-y-6">
+            {/* Request Created By Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Request Created By</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3 mb-4">
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback className="bg-blue-500 text-white font-medium">DD</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-gray-900">Dr. Dorriss Dang</p>
+                    <p className="text-sm text-gray-500">Medical Staff</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Created</p>
+                  <p className="text-sm font-medium text-gray-900">5/30/2025</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Registered Donors Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Registered Donors</CardTitle>
+                <p className="text-sm text-gray-500">2 donors registered</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-blue-500 text-white text-xs font-medium">DD</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm text-gray-900">Dr. Dorriss Dang</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-blue-500 text-white text-xs font-medium">DD</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm text-gray-900">Dr. Dorriss Dang</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
