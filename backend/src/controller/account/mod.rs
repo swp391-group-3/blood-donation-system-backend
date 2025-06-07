@@ -2,6 +2,7 @@ mod create_staff;
 mod delete;
 mod get;
 mod get_all;
+mod update;
 
 use std::sync::Arc;
 
@@ -19,6 +20,7 @@ pub use create_staff::*;
 pub use delete::*;
 pub use get::*;
 pub use get_all::*;
+pub use update::*;
 
 #[derive(Serialize, ToSchema, Mapper)]
 #[mapper(derive(from(custom = "from_get_all"), ty = GetAllBorrowed::<'_>))]
@@ -42,6 +44,7 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/account", routing::get(get_all))
         .route("/account/{id}", routing::get(get))
         .route("/account/{id}", routing::delete(delete))
+        .route("/account", routing::put(update))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Admin),
