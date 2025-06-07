@@ -130,12 +130,9 @@ export default function BloodRequestPage() {
                 onValueChange={setStatusFilter}
                 className="space-y-6"
             >
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="active">Active Requests</TabsTrigger>
-                    <TabsTrigger value="recommended">
-                        Recommended for You
-                    </TabsTrigger>
-                    <TabsTrigger value="urgent">Urgent</TabsTrigger>
+                    <TabsTrigger value="recommended">Recommended for You</TabsTrigger>
                 </TabsList>
 
                 <div className="flex flex-col lg:flex-row gap-4">
