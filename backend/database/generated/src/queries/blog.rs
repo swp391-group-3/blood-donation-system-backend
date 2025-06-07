@@ -481,6 +481,8 @@ impl SearchBlogStmt {
                 },
             mapper: |it| SearchBlog::from(it),
         }
+    }
+}
 pub fn update() -> UpdateStmt {
     UpdateStmt(crate::client::async_::Stmt::new(
         "UPDATE blogs SET title = COALESCE($1, title), content = COALESCE($2, content) WHERE id = $3 AND account_id = $4",
@@ -554,7 +556,9 @@ impl<'a, C: GenericClient + Send + Sync>
         'a,
         DeleteParams,
         std::pin::Pin<
-            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+            Box<
+                dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a
+            >,
         >,
         C,
     > for DeleteStmt
@@ -564,7 +568,9 @@ impl<'a, C: GenericClient + Send + Sync>
         client: &'a C,
         params: &'a DeleteParams,
     ) -> std::pin::Pin<
-        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+        Box<
+            dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a
+        >,
     > {
         Box::pin(self.bind(client, &params.id, &params.account_id))
     }
