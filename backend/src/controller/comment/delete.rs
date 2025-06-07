@@ -14,6 +14,9 @@ use database::queries::{self};
     params( 
         ("id" = Uuid, Path, description = "Content Id")
     ),
+    responses(
+        (status = Status::OK)
+    ),
     security(("jwt_token" = []))
 )]
 pub async fn delete(state: State<Arc<ApiState>>, Path(id): Path<Uuid>) -> Result<()> {
