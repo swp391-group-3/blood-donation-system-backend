@@ -1,7 +1,6 @@
-pub mod create;
-pub mod delete;
-pub mod update;
-
+mod create;
+mod delete;
+mod update;
 
 use std::sync::Arc;
 
@@ -14,9 +13,8 @@ pub use delete::*;
 pub use update::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
-    Router::new().route("/comment/{id}", 
-    routing::post(create)
-    .delete(delete)
-    .put(update))
-
+    Router::new().route(
+        "/comment/{id}",
+        routing::post(create).delete(delete).put(update),
+    )
 }
