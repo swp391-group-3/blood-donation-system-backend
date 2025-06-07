@@ -74,8 +74,12 @@ impl Modify for SecurityAddon {
         controller::comment::delete,
         controller::comment::update,
 
+        controller::blood_bag::create,
         controller::blood_bag::get_all,
         controller::blood_bag::get,
+        controller::blood_bag::delete,
+
+        controller::comment::create,
     ),
     modifiers(&SecurityAddon),
 )]
