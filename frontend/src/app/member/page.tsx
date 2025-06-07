@@ -143,7 +143,9 @@ export default function MemberHomePage() {
                             </div>
                         </div>
                         <Button asChild variant="outline" className="w-full">
-                            View Full Impact
+                            <Link href="/member/impact">
+                                View Full Impact
+                            </Link>
                         </Button>
                     </CardContent>
                 </Card>
@@ -208,13 +210,15 @@ export default function MemberHomePage() {
                                             className={
                                                 request.compatible
                                                     ? 'bg-red-600 hover:bg-red-700'
-                                                    : 'bg-zinc-400'
+                                                    : 'bg-zinc-400 hover:bg-zinc-600'
                                             }
                                             disabled={!request.compatible}
                                         >
-                                            {request.compatible
-                                                ? 'Respond'
-                                                : 'Not Compatible'}
+                                            <Link href="/member/emergency">
+                                                {request.compatible
+                                                    ? 'Respond'
+                                                    : 'Not Compatible'}
+                                            </Link>
                                         </Button>
                                     </div>
                                 </div>
@@ -222,7 +226,9 @@ export default function MemberHomePage() {
                         </Card>
                     ))}
                     <Button asChild variant="outline" className="w-full">
-                        View All Requests
+                        <Link href="/member/request">
+                            View All Requests
+                        </Link>
                     </Button>
                 </CardContent>
             </Card>
@@ -263,7 +269,9 @@ export default function MemberHomePage() {
                             </Card>
                         ))}
                         <Button asChild variant="outline" className="w-full">
-                            Schedule Appointment
+                            <Link href="/member/appointment">
+                                Schedule Appointment
+                            </Link>
                         </Button>
                     </CardContent>
                 </Card>
@@ -298,7 +306,9 @@ export default function MemberHomePage() {
                             </Card>
                         ))}
                         <Button asChild variant="outline" className="w-full">
-                            Schedule Appointment
+                            <Link href="/member/appointment">
+                                Schedule Appointment
+                            </Link>
                         </Button>
                     </CardContent>
                 </Card>
