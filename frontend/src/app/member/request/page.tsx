@@ -562,15 +562,12 @@ export default function BloodRequestPage() {
                     )}
                 </TabsContent>
             </Tabs>
+
             <div className="grid gap-6 md:grid-cols-3">
                 <Card>
                     <CardContent className="p-6 text-center">
                         <div className="text-3xl font-bold text-red-600 mb-2">
-                            {
-                                mockRequests.filter(
-                                    (r) => r.priority === 'high',
-                                ).length
-                            }
+                            { mockRequests.filter((request) => request.priority === 'high',).length }
                         </div>
                         <p className="text-sm text-gray-600">Urgent Requests</p>
                     </CardContent>
@@ -588,11 +585,7 @@ export default function BloodRequestPage() {
                 <Card>
                     <CardContent className="p-6 text-center">
                         <div className="text-3xl font-bold text-green-600 mb-2">
-                            {mockRequests.reduce(
-                                (sum, r) =>
-                                    sum + (r.maxPeople - r.currentPeople),
-                                0,
-                            )}
+                            {mockRequests.reduce( (sum, r) => sum + (r.maxPeople - r.currentPeople), 0,)}
                         </div>
                         <p className="text-sm text-gray-600">
                             Donors Still Needed
