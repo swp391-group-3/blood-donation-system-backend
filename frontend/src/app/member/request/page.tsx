@@ -161,64 +161,7 @@ export default function BloodRequestPage() {
                     <TabsTrigger value="recommended">Recommended for You</TabsTrigger>
                 </TabsList>
 
-                <div className="flex flex-col lg:flex-row gap-4">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-                        <Input
-                            placeholder="Search requests by title or location..."
-                            className="pl-10 h-12"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex gap-3">
-                        <Select
-                            value={priorityFilter}
-                            onValueChange={setPriorityFilter}
-                        >
-                            <SelectTrigger className="w-[180px] h-12">
-                                <Filter className="mr-2 h-4 w-4" />
-                                <SelectValue placeholder="Priority" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">
-                                    All Priorities
-                                </SelectItem>
-                                <SelectItem value="high">
-                                    High Priority
-                                </SelectItem>
-                                <SelectItem value="medium">
-                                    Medium Priority
-                                </SelectItem>
-                                <SelectItem value="low">
-                                    Low Priority
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Select
-                            value={bloodGroupFilter}
-                            onValueChange={setBloodGroupFilter}
-                        >
-                            <SelectTrigger className="w-[180px] h-12">
-                                <Droplet className="mr-2 h-4 w-4" />
-                                <SelectValue placeholder="Blood Group" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">
-                                    All Blood Groups
-                                </SelectItem>
-                                <SelectItem value="A+">A+</SelectItem>
-                                <SelectItem value="A-">A-</SelectItem>
-                                <SelectItem value="B+">B+</SelectItem>
-                                <SelectItem value="B-">B-</SelectItem>
-                                <SelectItem value="AB+">AB+</SelectItem>
-                                <SelectItem value="AB-">AB-</SelectItem>
-                                <SelectItem value="O+">O+</SelectItem>
-                                <SelectItem value="O-">O-</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                
 
                 <TabsContent value="active" className="space-y-6">
                     {filteredRequests.length > 0 ? (
