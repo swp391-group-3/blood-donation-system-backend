@@ -23,3 +23,7 @@ VALUES (
     :expired_time
 )
 RETURNING id;
+
+--! delete
+DELETE FROM blood_bags
+WHERE id = :id;
