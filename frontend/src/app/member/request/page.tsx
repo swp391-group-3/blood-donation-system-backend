@@ -361,6 +361,19 @@ export default function BloodRequestPage() {
                                                             View Details
                                                         </Link>
                                                     </Button>
+
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full bg-green-600 text-white"
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={`/dashboard/requests/${request.id}`}
+                                                        >
+                                                            Apply Now
+                                                        </Link>
+                                                    </Button>
+                                                    
                                                 </div>
                                             </div>
                                         </CardContent>
