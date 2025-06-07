@@ -111,7 +111,7 @@ export const appointments = [
     },
 ];
 
-const mockRequests = [
+export const mockRequests = [
     {
       id: "1",
       title: "Emergency O- needed for surgery",
@@ -121,12 +121,11 @@ const mockRequests = [
       endDate: "2025-06-03",
       maxPeople: 5,
       currentPeople: 2,
-      location: "City General Hospital",
       createdAt: "2025-05-30",
       description: "Urgent need for O- blood for multiple emergency surgeries.",
       estimatedTimeLeft: "2 days",
-      applications: 3, // Number of applications received
-      createdBy: "staff1", // ID of the staff who created the request
+      applications: 3,
+      createdBy: "staff1",
     },
     {
       id: "2",
