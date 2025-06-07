@@ -12,3 +12,9 @@ WHERE id = :id;
 SELECT id, account_id, title, content
 FROM blogs
 ORDER BY created_at DESC;
+
+--! search_blog
+SELECT id, account_id, title, content
+FROM blogs
+WHERE content LIKE '%' || :content || '%'
+ORDER BY created_at;

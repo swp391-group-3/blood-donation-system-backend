@@ -8,7 +8,7 @@ pub struct CreateParams<T1: crate::StringSql> {
 }
 #[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql> {
-    pub content: T1,
+    pub content: Option<T1>,
     pub id: uuid::Uuid,
 }
 use crate::client::async_::GenericClient;
@@ -141,7 +141,7 @@ impl UpdateStmt {
     pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
-        content: &'a T1,
+        content: &'a Option<T1>,
         id: &'a uuid::Uuid,
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
