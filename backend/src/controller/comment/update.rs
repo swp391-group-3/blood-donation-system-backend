@@ -24,10 +24,10 @@ pub async fn update(
     Path(id): Path<Uuid>,
     Json(content): Json<String>,
 ) -> Result<()> {
-    // let database = state.database_pool.get().await?;
-    // queries::comment::update()
-    //     .bind(&database, &content, &id)
-    //     .await?;
+    let database = state.database_pool.get().await?;
+    queries::comment::update()
+        .bind(&database, &Some(content), &id)
+        .await?;
 
     Ok(())
 }
