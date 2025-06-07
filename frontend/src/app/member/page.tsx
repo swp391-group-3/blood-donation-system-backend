@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Droplet, Heart, Clock, Calendar, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 export default function MemberHomePage() {
     return (
@@ -27,23 +28,25 @@ export default function MemberHomePage() {
                             className="p-0 h-auto bg-transparent shadow-none hover:shadow-md transition-shadow text-left"
                             key={index}
                         >
-                            <Card className="h-full w-full">
-                                <CardContent className="p-6 text-center flex flex-col items-center">
-                                    <div
-                                        className={`inline-flex p-5 rounded-full ${action.color} mb-3`}
-                                    >
-                                        <action.icon
-                                            style={{
-                                                width: '20px',
-                                                height: '20px',
-                                            }}
-                                        />
-                                    </div>
-                                    <h2 className="font-medium text-base text-zinc-950">
-                                        {action.title}
-                                    </h2>
-                                </CardContent>
-                            </Card>
+                            <Link href={action.href}>
+                                <Card className="h-full w-full">
+                                    <CardContent className="p-6 text-center flex flex-col items-center">
+                                        <div
+                                            className={`inline-flex p-5 rounded-full ${action.color} mb-3`}
+                                        >
+                                            <action.icon
+                                                style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                }}
+                                            />
+                                        </div>
+                                        <h2 className="font-medium text-base text-zinc-950">
+                                            {action.title}
+                                        </h2>
+                                    </CardContent>
+                                </Card>
+                            </Link>
                         </Button>
                     ))}
                 </div>
