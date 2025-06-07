@@ -105,7 +105,6 @@ export default function BloodRequestPage() {
     };
 
     type BloodType = 'O-' | 'O+' | 'A-' | 'A+' | 'B-' | 'B+' | 'AB-' | 'AB+';
-
     const compatible: Record<BloodType, BloodType[]> = {
         'O-': ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'],
         'O+': ['O+', 'A+', 'B+', 'AB+'],
@@ -117,20 +116,9 @@ export default function BloodRequestPage() {
         'AB+': ['AB+'],
     };
 
-    // Suppose this is defined somewhere in your component/service
-    const userBloodGroup: BloodType = 'O-'; // Example; set this as needed
-
+    const userBloodGroup: BloodType = 'A-';
     function isCompatibleBloodGroup(requestBloodGroup: string): boolean {
         if (requestBloodGroup === 'All') return true;
-
-        // Type guard to check if input is a valid blood type
-        const isBloodType = (group: string): group is BloodType =>
-            Object.keys(compatible).includes(group);
-
-        if (!isBloodType(userBloodGroup) || !isBloodType(requestBloodGroup)) {
-            return false; // Invalid blood type
-        }
-
         return compatible[userBloodGroup].includes(
             requestBloodGroup as BloodType,
         );
@@ -256,18 +244,14 @@ export default function BloodRequestPage() {
                                 const isCompatible = isCompatibleBloodGroup(
                                     request.bloodGroup,
                                 );
-                                const progressPercentage =
-                                    (request.currentPeople /
-                                        request.maxPeople) *
-                                    100;
-
+                                const progressPercentage = (request.currentPeople /  request.maxPeople) * 100;                                  
                                 return (
                                     <Card
                                         key={request.id}
                                         className={`transition-all duration-200 hover:shadow-lg ${
                                             isCompatible
-                                                ? 'ring-2 ring-green-200 bg-green-50/30'
-                                                : ''
+                                                ? 'ring-1 ring-green-200 bg-green-50'
+                                                : 'ring-1 ring-zinc-400 bg-zinc-50'
                                         }`}
                                     >
                                         <CardContent className="p-6">
