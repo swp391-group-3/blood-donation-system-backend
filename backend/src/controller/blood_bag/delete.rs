@@ -19,9 +19,7 @@ use crate::{error::Result, state::ApiState};
 pub async fn delete(state: State<Arc<ApiState>>, Path(id): Path<Uuid>) -> Result<()> {
     let database = state.database_pool.get().await?;
 
-    queries::blood_bag::delete()
-        .bind(&database, &id)
-        .await?;
+    queries::blood_bag::delete().bind(&database, &id).await?;
 
     Ok(())
 }
