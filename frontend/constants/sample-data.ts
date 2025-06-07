@@ -137,7 +137,6 @@ export const mockRequests = [
         endDate: '2025-06-10',
         maxPeople: 20,
         currentPeople: 8,
-        location: 'South Branch Center',
         createdAt: '2025-05-29',
         description:
             'Community blood drive to replenish our general inventory.',
@@ -154,7 +153,6 @@ export const mockRequests = [
         endDate: '2025-06-15',
         maxPeople: 10,
         currentPeople: 3,
-        location: 'Cancer Treatment Center',
         createdAt: '2025-05-28',
         description: 'Platelet donations needed for ongoing cancer treatments.',
         estimatedTimeLeft: '8 days',
@@ -170,7 +168,6 @@ export const mockRequests = [
         endDate: '2025-06-05',
         maxPeople: 15,
         currentPeople: 7,
-        location: 'Trauma Center',
         createdAt: '2025-05-31',
         description: 'Support for ongoing treatment of accident victims.',
         estimatedTimeLeft: '3 days',
