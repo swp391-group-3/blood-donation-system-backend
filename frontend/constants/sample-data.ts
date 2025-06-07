@@ -136,7 +136,7 @@ export const mockRequests = [
         startDate: '2025-06-05',
         endDate: '2025-06-10',
         maxPeople: 20,
-        currentPeople: 8,
+        currentPeople: 19,
         createdAt: '2025-05-29',
         description:
             'Community blood drive to replenish our general inventory.',
@@ -152,7 +152,7 @@ export const mockRequests = [
         startDate: '2025-06-08',
         endDate: '2025-06-15',
         maxPeople: 10,
-        currentPeople: 3,
+        currentPeople: 6,
         createdAt: '2025-05-28',
         description: 'Platelet donations needed for ongoing cancer treatments.',
         estimatedTimeLeft: '8 days',
