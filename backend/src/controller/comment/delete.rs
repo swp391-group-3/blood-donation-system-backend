@@ -5,8 +5,6 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState};
 use database::queries::{self};
 
-
-
 #[utoipa::path(
     delete,
     tag = "Comment",
