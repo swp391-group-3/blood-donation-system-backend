@@ -43,7 +43,7 @@ export type SearchFormValues = z.infer<typeof schema>;
 
 export default function BloodRequestPage() {
     const [statusFilter, setStatusFilter] = useState('active');
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchField, setSearchField] = useState('');
     const [priorityFilter, setPriorityFilter] = useState('all');
     const [bloodGroupFilter, setBloodGroupFilter] = useState('all');
     const [filteredRequests, setFilteredRequests] = useState(mockRequests);
@@ -57,6 +57,12 @@ export default function BloodRequestPage() {
         },
     });
 
+    const { watch }= form;
+    
+    const searchTerm = watch("searchTerm");
+    const priority = watch("priority");
+    const bloodGroup = watch("bloodGroup");
+    
     function handleSearch(data : SearchFormValues) {
         // Come in future
     }
@@ -185,6 +191,57 @@ export default function BloodRequestPage() {
                             )}                            
                         />
 
+                        <div className="flex gap-3">
+                            <FormField 
+                                control={form.control}
+                                name="priority"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Select value={field.value} onValueChange={field.onChange}>
+                                            <FormControl>
+                                                <SelectTrigger className="w-[180px] h-12">
+                                                    <Filter className="mr-2 h-4 w-4" />
+                                                    <SelectValue placeholder="Priority" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="all">All Priorities</SelectItem>
+                                                <SelectItem value="high">High Priorities</SelectItem>
+                                                <SelectItem value="medium">Medium Priorities</SelectItem>
+                                                <SelectItem value="low">Low Priority</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="bloodGroup"
+                                render={({ field }) => (
+                                <FormItem>
+                                    <Select value={field.value} onValueChange={field.onChange}>
+                                    <FormControl>
+                                        <SelectTrigger className="w-[180px] h-12">
+                                        <Droplet className="mr-2 h-4 w-4" />
+                                        <SelectValue placeholder="Blood Group" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Blood Groups</SelectItem>
+                                        <SelectItem value="A+">A+</SelectItem>
+                                        <SelectItem value="A-">A-</SelectItem>
+                                        <SelectItem value="B+">B+</SelectItem>
+                                        <SelectItem value="B-">B-</SelectItem>
+                                        <SelectItem value="AB+">AB+</SelectItem>
+                                        <SelectItem value="AB-">AB-</SelectItem>
+                                        <SelectItem value="O+">O+</SelectItem>
+                                        <SelectItem value="O-">O-</SelectItem>
+                                    </SelectContent>
+                                    </Select>
+                                </FormItem>
+                                )}
+                            />
+                        </div>
                     </form>
                 </Form>
 
@@ -371,7 +428,7 @@ export default function BloodRequestPage() {
                             action={{
                                 label: 'Clear Filters',
                                 onClick: () => {
-                                    setSearchTerm('');
+                                    setSearchField('');
                                     setPriorityFilter('all');
                                     setBloodGroupFilter('all');
                                 },
