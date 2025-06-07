@@ -1,4 +1,5 @@
 mod create;
+mod delete;
 mod get;
 mod get_all;
 mod update;
@@ -13,6 +14,7 @@ use utoipa::ToSchema;
 use uuid::Uuid;
 
 pub use create::*;
+pub use delete::*;
 pub use get::*;
 pub use get_all::*;
 pub use update::*;
@@ -33,4 +35,5 @@ pub fn build() -> Router<Arc<ApiState>> {
         .route("/blog", routing::get(get_all))
         .route("/blog/{id}", routing::get(get))
         .route("/blog/{id}", routing::patch(update))
+        .route("/blog/{id}", routing::delete(delete))
 }

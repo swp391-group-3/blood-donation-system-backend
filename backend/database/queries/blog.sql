@@ -19,3 +19,8 @@ SET title = COALESCE(:title, title),
     content = COALESCE(:content, content)
 WHERE id = :id 
 AND account_id = :account_id;
+
+--! delete
+DELETE FROM blogs
+WHERE id = :id
+AND account_id = :account_id;

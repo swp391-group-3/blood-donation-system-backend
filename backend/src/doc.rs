@@ -56,6 +56,7 @@ impl Modify for SecurityAddon {
         controller::blog::get,
         controller::blog::get_all,
         controller::blog::update,
+        controller::blog::delete,
 
         controller::health::create,
         controller::health::update,

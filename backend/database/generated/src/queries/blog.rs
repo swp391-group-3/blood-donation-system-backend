@@ -13,6 +13,11 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql> {
     pub id: uuid::Uuid,
     pub account_id: uuid::Uuid,
 }
+#[derive(Clone, Copy, Debug)]
+pub struct DeleteParams {
+    pub id: uuid::Uuid,
+    pub account_id: uuid::Uuid,
+}
 #[derive(Debug, Clone, PartialEq)]
 pub struct Get {
     pub id: uuid::Uuid,
@@ -402,5 +407,44 @@ impl<'a, C: GenericClient + Send + Sync, T1: crate::StringSql, T2: crate::String
             &params.id,
             &params.account_id,
         ))
+    }
+}
+pub fn delete() -> DeleteStmt {
+    DeleteStmt(crate::client::async_::Stmt::new(
+        "DELETE FROM blogs WHERE id = $1 AND account_id = $2",
+    ))
+}
+pub struct DeleteStmt(crate::client::async_::Stmt);
+impl DeleteStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient>(
+        &'s mut self,
+        client: &'c C,
+        id: &'a uuid::Uuid,
+        account_id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[id, account_id]).await
+    }
+}
+impl<'a, C: GenericClient + Send + Sync>
+    crate::client::async_::Params<
+        'a,
+        'a,
+        'a,
+        DeleteParams,
+        std::pin::Pin<
+            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+        >,
+        C,
+    > for DeleteStmt
+{
+    fn params(
+        &'a mut self,
+        client: &'a C,
+        params: &'a DeleteParams,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+    > {
+        Box::pin(self.bind(client, &params.id, &params.account_id))
     }
 }
