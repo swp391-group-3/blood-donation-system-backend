@@ -1,3 +1,4 @@
+mod create;
 mod get;
 mod get_all;
 
@@ -14,6 +15,7 @@ use uuid::Uuid;
 
 use crate::{middleware, state::ApiState};
 
+pub use create::*;
 pub use get::*;
 pub use get_all::*;
 
@@ -33,6 +35,7 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
     Router::new()
         .route("/blood-bag", routing::get(get_all))
         .route("/blood-bag/{id}", routing::get(get))
+        .route("/donation/{id}/blood-bag", routing::post(create))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Staff),
