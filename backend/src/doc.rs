@@ -70,6 +70,8 @@ impl Modify for SecurityAddon {
         controller::blood_bag::create,
         controller::blood_bag::get_all,
         controller::blood_bag::get,
+
+        controller::comment::create,
     ),
     modifiers(&SecurityAddon),
 )]
