@@ -81,19 +81,19 @@ export const actions = [
         icon: Calendar,
         title: 'Schedule Donation',
         color: 'bg-green-50 text-green-600',
-        path: '/member/appointment',
+        href: '/member/appointment',
     },
     {
         icon: Droplet,
         title: 'View Requests',
         color: 'bg-red-50 text-red-500',
-        path: '/member/request',
+        href: '/member/request',
     },
     {
         icon: Activity,
         title: 'Health Records',
         color: 'bg-purple-50 text-purple-600',
-        path: '/member/health-profile',
+        href: '/member/health-profile',
     },
 ];
 
