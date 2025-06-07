@@ -11,19 +11,18 @@ FROM blood_bags;
 INSERT INTO blood_bags (
     donation_id,
     component,
-    is_used,
     amount,
     expired_time
 )
 VALUES (
     :donation_id,
     :component,
-    :is_used,
     :amount,
     :expired_time
 )
 RETURNING id;
 
 --! delete
-DELETE FROM blood_bags
+UPDATE blood_bags
+SET is_used = true
 WHERE id = :id;

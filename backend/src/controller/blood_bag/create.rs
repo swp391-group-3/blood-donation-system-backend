@@ -28,7 +28,6 @@ use crate::{error::Result, state::ApiState};
 )]
 pub struct Request {
     pub component: BloodComponent,
-    pub is_used: bool,
     pub amount: i32,
     pub expired_time: DateTime<Utc>,
 }

@@ -4,7 +4,6 @@
 pub struct CreateParams {
     pub donation_id: uuid::Uuid,
     pub component: ctypes::BloodComponent,
-    pub is_used: bool,
     pub amount: i32,
     pub expired_time: crate::types::time::TimestampTz,
 }
@@ -272,7 +271,7 @@ impl GetAllStmt {
 }
 pub fn create() -> CreateStmt {
     CreateStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO blood_bags ( donation_id, component, is_used, amount, expired_time ) VALUES ( $1, $2, $3, $4, $5 ) RETURNING id",
+        "INSERT INTO blood_bags ( donation_id, component, amount, expired_time ) VALUES ( $1, $2, $3, $4 ) RETURNING id",
     ))
 }
 pub struct CreateStmt(crate::client::async_::Stmt);
@@ -282,13 +281,12 @@ impl CreateStmt {
         client: &'c C,
         donation_id: &'a uuid::Uuid,
         component: &'a ctypes::BloodComponent,
-        is_used: &'a bool,
         amount: &'a i32,
         expired_time: &'a crate::types::time::TimestampTz,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 5> {
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 4> {
         UuidUuidQuery {
             client,
-            params: [donation_id, component, is_used, amount, expired_time],
+            params: [donation_id, component, amount, expired_time],
             stmt: &mut self.0,
             extractor: |row| Ok(row.try_get(0)?),
             mapper: |it| it,
@@ -301,7 +299,7 @@ impl<'c, 'a, 's, C: GenericClient>
         'a,
         's,
         CreateParams,
-        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 5>,
+        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 4>,
         C,
     > for CreateStmt
 {
@@ -309,12 +307,11 @@ impl<'c, 'a, 's, C: GenericClient>
         &'s mut self,
         client: &'c C,
         params: &'a CreateParams,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 5> {
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 4> {
         self.bind(
             client,
             &params.donation_id,
             &params.component,
-            &params.is_used,
             &params.amount,
             &params.expired_time,
         )
@@ -322,7 +319,7 @@ impl<'c, 'a, 's, C: GenericClient>
 }
 pub fn delete() -> DeleteStmt {
     DeleteStmt(crate::client::async_::Stmt::new(
-        "DELETE FROM blood_bags WHERE id = $1",
+        "UPDATE blood_bags SET is_used = true WHERE id = $1",
     ))
 }
 pub struct DeleteStmt(crate::client::async_::Stmt);
