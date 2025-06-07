@@ -242,7 +242,6 @@ where
         }
     }
     pub async fn one(self) -> Result<T, tokio_postgres::Error> {
-        // * at this point data fetched from database will be in its most primitive form that is ray bytes.
         let stmt = self.stmt.prepare(self.client).await?;
         let row = self.client.query_one(stmt, &self.params).await?;
         Ok((self.mapper)((self.extractor)(&row)?))
@@ -661,7 +660,6 @@ impl GetStmt {
             client,
             params: [id],
             stmt: &mut self.0,
-            // * the generated extractor function pulls data directly from the raw row
             extractor: |row: &tokio_postgres::Row| -> Result<GetBorrowed, tokio_postgres::Error> {
                 Ok(GetBorrowed {
                     role: row.try_get(0)?,
@@ -675,7 +673,6 @@ impl GetStmt {
                     created_at: row.try_get(8)?,
                 })
             },
-            // the query system converts borrowed data to owned data
             mapper: |it| Get::from(it),
         }
     }

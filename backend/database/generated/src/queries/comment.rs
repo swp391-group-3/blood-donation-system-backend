@@ -110,3 +110,19 @@ impl<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>
         self.bind(client, &params.blog_id, &params.account_id, &params.content)
     }
 }
+pub fn delete() -> DeleteStmt {
+    DeleteStmt(crate::client::async_::Stmt::new(
+        "DELETE FROM comments WHERE id = $1",
+    ))
+}
+pub struct DeleteStmt(crate::client::async_::Stmt);
+impl DeleteStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient>(
+        &'s mut self,
+        client: &'c C,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[id]).await
+    }
+}
