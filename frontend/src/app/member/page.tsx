@@ -104,7 +104,9 @@ export default function MemberHomePage() {
                             asChild
                             className="w-full bg-red-600 hover:bg-red-700"
                         >
-                            Schedule Donation
+                            <Link href="/member/request">
+                                Schedule Donation
+                            </Link>
                         </Button>
                     </CardContent>
                 </Card>
