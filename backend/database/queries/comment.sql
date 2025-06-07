@@ -11,7 +11,7 @@ WHERE
 id = :id;
 
 
---! update
+--! update(content?)
 UPDATE comments
 SET content = COALESCE(:content, content)
 WHERE id = :id;
