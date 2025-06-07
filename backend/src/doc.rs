@@ -43,6 +43,7 @@ impl Modify for SecurityAddon {
         controller::account::get_all,
         controller::account::get,
         controller::account::delete,
+        controller::account::update,
 
         controller::blood_request::create,
         controller::blood_request::get_all,

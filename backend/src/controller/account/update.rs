@@ -37,7 +37,16 @@ impl Request {
         }
     }
 }
-
+#[utoipa::path(
+    put,
+    tag = "Account",
+    path = "/account",
+    request_body = Request,
+    responses(
+        (status = Status::OK)
+    ),
+    security(("jwt_token" = []))
+)]
 pub async fn update(
     state: State<Arc<ApiState>>,
     claims: Claims,
