@@ -9,7 +9,7 @@ use database::queries::{self};
     delete,
     tag = "Comment",
     path = "/comment/{id}",
-    params( 
+    params(
         ("id" = Uuid, Path, description = "Content Id")
     ),
     responses(
