@@ -462,108 +462,29 @@ export default function AppointmentsPage() {
                 </Tabs>
             </div>
 
-            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="bg-red-50 border-red-200">
-                    <CardContent>
-                        <div className="flex items-center gap-2 pb-3">
-                            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                                <Droplet className="h-4 w-4 text-red-500"/>
-                            </div>
-                            <CardTitle className="text-lg">
-                                Total Donations
-                            </CardTitle>
-                        </div>
-                        <div className="text-3xl font-bold text-red-600 mb-1">
-                            {summaryStats.totalDonations}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-blue-50 border-blue-200">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                <span className="text-blue-600 text-lg">
-                                    🩸
-                                </span>
-                            </div>
-                            <CardTitle className="text-lg">
-                                Blood Donated
-                            </CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-blue-600 mb-1">
-                            {summaryStats.bloodDonated}
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                            {summaryStats.totalVolume}
-                        </p>
-                        <p className="text-sm text-blue-600">
-                            {summaryStats.livesEquivalent}
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-green-50 border-green-200">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center gap-2">
-                            <Calendar className="h-6 w-6 text-green-600" />
-                            <CardTitle className="text-lg">
-                                Next Eligible
-                            </CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-green-600 mb-1">
-                            {summaryStats.nextEligible}
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                            {summaryStats.nextDonationDate}
-                        </p>
-                        <p className="text-sm text-green-600">
-                            {summaryStats.weeksRemaining}
-                        </p>
-                    </CardContent>
-                </Card>
-            </div> */}
             <div className="grid gap-6 md:grid-cols-3">
                 <Card>
                     <CardContent className="p-6 text-center">
-                        <div className="flex items-center gap-2 pb-3">
-                            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                                <Droplet className="h-4 w-4 text-red-500"/>
-                            </div>
-                            <CardTitle className="text-lg">
-                                Total Donations
-                            </CardTitle>
-                        </div>
-                        <div className="text-3xl font-bold text-red-600 mb-1">
+                        <div className="text-3xl font-bold text-red-600 mb-2">
                             {summaryStats.totalDonations}
                         </div>
+                        <p className="text-sm text-zinc-600">Total Donations</p>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardContent className="p-6 text-center">
-                        <div className="text-3xl font-bold text-blue-600 mb-1">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">
                             {summaryStats.bloodDonated}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                            {summaryStats.totalVolume}
-                        </p>
+                        <p className="text-sm text-zinc-600">Total Volume Donated</p>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold text-green-600 mb-1">
+                        <div className="text-3xl font-bold text-green-600 mb-2">
                             {summaryStats.nextEligible}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                            {summaryStats.nextDonationDate}
-                        </p>
-                        <p className="text-sm text-green-600">
-                            {summaryStats.weeksRemaining}
-                        </p>
+                        <p className="text-sm text-zinc-600">Next Donation Date</p>
                     </CardContent>
                 </Card>
             </div>
