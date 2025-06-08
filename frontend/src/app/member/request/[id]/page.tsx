@@ -9,6 +9,7 @@ import {
     CalendarDays,
     Clock,
     AlertTriangle,
+    CheckCircle
 } from 'lucide-react';
 
 export default function BloodRequestPage() {
@@ -118,7 +119,6 @@ export default function BloodRequestPage() {
                             </CardContent>
                         </Card>
 
-                        {/* Donation Requirements Card */}
                         <Card className="w-full">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold">
@@ -132,25 +132,25 @@ export default function BloodRequestPage() {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                         <span className="text-sm text-gray-700">
                                             Must be between 18-65 years old
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                         <span className="text-sm text-gray-700">
                                             Minimum weight of 50kg
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                         <span className="text-sm text-gray-700">
                                             No recent illness or medication
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 rounded-full border-2 border-orange-400 bg-orange-100 flex-shrink-0"></div>
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                         <span className="text-sm text-gray-700">
                                             No tattoos or piercings in the last
                                             6 months
