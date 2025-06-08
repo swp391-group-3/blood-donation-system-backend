@@ -8,18 +8,16 @@ import {
     Users,
     CalendarDays,
     Clock,
-    MapPin,
     AlertTriangle,
 } from 'lucide-react';
 
 export default function BloodRequestPage() {
     return (
-        <div className="flex-1 p-6 bg-gray-50 min-h-screen">
+        <div className="flex-1 p-6 bg-zinc-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-2xl font-bold text-gray-900">
+                        <h1 className="text-2xl font-bold text-zinc-900">
                             Emergency O- needed for surgery
                         </h1>
                         <Badge
@@ -29,38 +27,33 @@ export default function BloodRequestPage() {
                             High Priority
                         </Badge>
                     </div>
-                    <p className="text-sm text-gray-500">Request ID: 1</p>
+                    <p className="text-sm text-zinc-500">Request ID: 1</p>
                 </div>
 
-                {/* Main Content Grid */}
-                <div className="flex gap-6 h-full">
-                    {/* Left Column - Main Content */}
-                    <div className="flex-1 space-y-6">
-                        {/* Request Details Card */}
+                <div className="flex gap-4 h-full">
+                    <div className="flex-1 space-y-4">
                         <Card className="w-full">
-                            <CardHeader>
+                            <CardHeader className="pb-1">
                                 <CardTitle className="text-lg font-semibold">
                                     Request Details
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <p className="text-gray-600 text-sm leading-relaxed">
+                            <CardContent className="space-y-4">
+                                <p className="text-zinc-600 text-sm leading-relaxed">
                                     We urgently need O- blood donors for
                                     multiple emergency surgeries scheduled this
                                     week. Your donation could save lives.
                                 </p>
-
-                                {/* Details Grid */}
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="flex items-center gap-3">
                                         <div className="p-2 bg-red-50 rounded-lg">
                                             <Droplets className="h-4 w-4 text-red-500" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 mb-1">
+                                            <p className="text-xs text-zinc-500 mb-1">
                                                 Blood Type
                                             </p>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-zinc-900">
                                                 O+
                                             </p>
                                         </div>
@@ -71,10 +64,10 @@ export default function BloodRequestPage() {
                                             <Users className="h-4 w-4 text-blue-500" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 mb-1">
+                                            <p className="text-xs text-zinc-500 mb-1">
                                                 5/5
                                             </p>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-zinc-900">
                                                 Donors
                                             </p>
                                         </div>
@@ -85,10 +78,10 @@ export default function BloodRequestPage() {
                                             <CalendarDays className="h-4 w-4 text-green-500" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 mb-1">
+                                            <p className="text-xs text-zinc-500 mb-1">
                                                 Donation Period
                                             </p>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-zinc-900">
                                                 6/1/2025 - 6/3/2025
                                             </p>
                                         </div>
@@ -99,43 +92,27 @@ export default function BloodRequestPage() {
                                             <Clock className="h-4 w-4 text-orange-500" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 mb-1">
+                                            <p className="text-xs text-zinc-500 mb-1">
                                                 Time
                                             </p>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-zinc-900">
                                                 8:00 - 18:00
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-purple-50 rounded-lg">
-                                        <MapPin className="h-4 w-4 text-purple-500" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-gray-500 mb-1">
-                                            Location
-                                        </p>
-                                        <p className="font-medium text-gray-900">
-                                            Hoan Hao Hospital
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Progress Section */}
                                 <div className="space-y-3">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm text-gray-600">
+                                        <span className="text-sm text-zinc-600">
                                             Progress
                                         </span>
-                                        <span className="text-sm font-medium text-gray-900">
-                                            100% of target reached
+                                        <span className="text-sm font-medium text-zinc-900">
+                                            90% of target reached
                                         </span>
                                     </div>
                                     <Progress
-                                        value={100}
-                                        className="h-2 bg-gray-200"
+                                        value={90}
+                                        className="h-2 [&>div]:bg-green-600"
                                     />
                                 </div>
                             </CardContent>
