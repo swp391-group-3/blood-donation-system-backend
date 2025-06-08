@@ -18,46 +18,8 @@ import {
     Droplet,
     CheckCircle,
 } from 'lucide-react';
+import { mockHealthRecords } from '../../../../constants/sample-data'
 
-// Mock health records data
-const mockHealthRecords = [
-    {
-        id: '1',
-        date: '2025-06-03',
-        appointmentId: 'apt-001',
-        temperature: 36.8,
-        weight: 75,
-        bloodPressure: '120/80',
-        pulse: 72,
-        hemoglobin: 14.2,
-        status: 'approved',
-        notes: 'All vitals normal. Approved for donation.',
-    },
-    {
-        id: '2',
-        date: '2025-04-15',
-        appointmentId: 'apt-002',
-        temperature: 36.5,
-        weight: 74,
-        bloodPressure: '118/78',
-        pulse: 68,
-        hemoglobin: 13.8,
-        status: 'approved',
-        notes: 'Excellent health parameters.',
-    },
-    {
-        id: '3',
-        date: '2025-02-20',
-        appointmentId: 'apt-003',
-        temperature: 37.1,
-        weight: 73,
-        bloodPressure: '125/82',
-        pulse: 75,
-        hemoglobin: 14.0,
-        status: 'approved',
-        notes: 'Slightly elevated temperature but within acceptable range.',
-    },
-];
 
 const mockHealthTrends = {
     weight: [73, 74, 75],
