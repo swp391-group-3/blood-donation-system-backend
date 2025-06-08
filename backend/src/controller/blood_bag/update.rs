@@ -22,7 +22,6 @@ use crate::{error::Result, state::ApiState};
 #[schema(as = blood_bag::update::Request)]
 pub struct Request {
     pub component: Option<BloodComponent>,
-    pub is_used: Option<bool>,
     #[validate(range(min = 1))]
     pub amount: Option<i32>,
     pub expired_time: Option<DateTime<Utc>>,
@@ -31,7 +30,6 @@ pub struct Request {
 fn into_update_params(payload: Request, id: Uuid) -> UpdateParams {
     UpdateParams {
         component: payload.component,
-        is_used: payload.is_used,
         amount: payload.amount,
         expired_time: payload
             .expired_time
