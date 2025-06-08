@@ -250,7 +250,6 @@ export const completedAppointments = [
 ];
 
 // sample data for health profile page
-// Mock health records data
 export const mockHealthRecords = [
     {
         id: '1',
@@ -288,4 +287,74 @@ export const mockHealthRecords = [
         status: 'approved',
         notes: 'Slightly elevated temperature but within acceptable range.',
     },
+    {
+        id: '4',
+        date: '2025-02-20',
+        appointmentId: 'apt-004',
+        temperature: 37.1,
+        weight: 73,
+        bloodPressure: '125/82',
+        pulse: 75,
+        hemoglobin: 14.0,
+        status: 'approved',
+        notes: 'Slightly elevated temperature but within acceptable range.',
+    },
+    {
+        id: '4',
+        date: '2025-02-20',
+        appointmentId: 'apt-004',
+        temperature: 37.1,
+        weight: 73,
+        bloodPressure: '125/82',
+        pulse: 75,
+        hemoglobin: 14.0,
+        status: 'approved',
+        notes: 'Slightly elevated temperature but within acceptable range.',
+    },
+    {
+        id: '5',
+        date: '2025-02-20',
+        appointmentId: 'apt-005',
+        temperature: 37.1,
+        weight: 73,
+        bloodPressure: '125/82',
+        pulse: 75,
+        hemoglobin: 14.0,
+        status: 'approved',
+        notes: 'Slightly elevated temperature but within acceptable range.',
+    },
+    {
+        id: '6',
+        date: '2025-02-20',
+        appointmentId: 'apt-006',
+        temperature: 37.1,
+        weight: 73,
+        bloodPressure: '125/82',
+        pulse: 75,
+        hemoglobin: 14.0,
+        status: 'approved',
+        notes: 'Slightly elevated temperature but within acceptable range.',
+    },
+    {
+        id: '7',
+        date: '2025-02-20',
+        appointmentId: 'apt-007',
+        temperature: 37.1,
+        weight: 73,
+        bloodPressure: '125/82',
+        pulse: 75,
+        hemoglobin: 14.0,
+        status: 'approved',
+        notes: 'Slightly elevated temperature but within acceptable range.',
+    },
 ];
+
+export const mockHealthTrends = {
+    weight: [73, 74, 75],
+    hemoglobin: [14.0, 13.8, 14.2],
+    bloodPressure: [
+        { systolic: 125, diastolic: 82 },
+        { systolic: 118, diastolic: 78 },
+        { systolic: 120, diastolic: 80 },
+    ],
+};
