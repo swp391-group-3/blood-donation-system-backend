@@ -675,7 +675,7 @@ export default function BloodRequestPage() {
                                 ).length
                             }
                         </div>
-                        <p className="text-sm text-gray-600">Urgent Requests</p>
+                        <p className="text-sm text-zinc-600">Urgent Requests</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -683,7 +683,7 @@ export default function BloodRequestPage() {
                         <div className="text-3xl font-bold text-blue-600 mb-2">
                             {getRecommendedRequests().length}
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-zinc-600">
                             Recommended for You
                         </p>
                     </CardContent>
@@ -697,7 +697,7 @@ export default function BloodRequestPage() {
                                 0,
                             )}
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-zinc-600">
                             Donors Still Needed
                         </p>
                     </CardContent>
