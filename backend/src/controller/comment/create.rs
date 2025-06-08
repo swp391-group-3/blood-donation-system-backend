@@ -24,14 +24,14 @@ use crate::{error::Result, state::ApiState, util::jwt::Claims};
 pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
-    Path(blog_id): Path<Uuid>,
+    Path(id): Path<Uuid>,
     Json(content): Json<String>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
 
     let params = queries::comment::CreateParams {
         account_id: claims.sub,
-        blog_id,
+        blog_id: id,
         content,
     };
 

@@ -6,6 +6,11 @@ pub struct CreateParams<T1: crate::StringSql> {
     pub account_id: uuid::Uuid,
     pub content: T1,
 }
+#[derive(Debug)]
+pub struct UpdateParams<T1: crate::StringSql> {
+    pub content: Option<T1>,
+    pub id: uuid::Uuid,
+}
 use crate::client::async_::GenericClient;
 use futures::{self, StreamExt, TryStreamExt};
 pub struct UuidUuidQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
@@ -108,5 +113,60 @@ impl<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>
         params: &'a CreateParams<T1>,
     ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 3> {
         self.bind(client, &params.blog_id, &params.account_id, &params.content)
+    }
+}
+pub fn delete() -> DeleteStmt {
+    DeleteStmt(crate::client::async_::Stmt::new(
+        "DELETE FROM comments WHERE id = $1",
+    ))
+}
+pub struct DeleteStmt(crate::client::async_::Stmt);
+impl DeleteStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient>(
+        &'s mut self,
+        client: &'c C,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[id]).await
+    }
+}
+pub fn update() -> UpdateStmt {
+    UpdateStmt(crate::client::async_::Stmt::new(
+        "UPDATE comments SET content = COALESCE($1, content) WHERE id = $2",
+    ))
+}
+pub struct UpdateStmt(crate::client::async_::Stmt);
+impl UpdateStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
+        &'s mut self,
+        client: &'c C,
+        content: &'a Option<T1>,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client.execute(stmt, &[content, id]).await
+    }
+}
+impl<'a, C: GenericClient + Send + Sync, T1: crate::StringSql>
+    crate::client::async_::Params<
+        'a,
+        'a,
+        'a,
+        UpdateParams<T1>,
+        std::pin::Pin<
+            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+        >,
+        C,
+    > for UpdateStmt
+{
+    fn params(
+        &'a mut self,
+        client: &'a C,
+        params: &'a UpdateParams<T1>,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+    > {
+        Box::pin(self.bind(client, &params.content, &params.id))
     }
 }
