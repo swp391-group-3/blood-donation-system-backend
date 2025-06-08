@@ -1,5 +1,8 @@
 'use client';
 import { useState } from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
     Search,
     Calendar,
@@ -8,11 +11,13 @@ import {
     Filter,
     Eye,
     CheckCircle,
+    Droplet,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Select,
@@ -88,10 +93,31 @@ const completedAppointments = [
     },
 ];
 
+const schema = z.object({
+    searchTerm: z.string().optional().default(''),
+    priority: z.string().default('all'),
+    bloodGroup: z.string().default('all'),
+});
+
+export type SearchFormValues = z.infer<typeof schema>;
+
 export default function AppointmentsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [priorityFilter, setPriorityFilter] = useState('all');
+
+    const form = useForm({
+            resolver: zodResolver(schema),
+            defaultValues: {
+                searchTerm: '',
+                priority: 'all',
+                bloodGroup: 'all',
+            },
+        });
+
+    function handleSearch(data: SearchFormValues) {
+            // Come in future
+        }
 
     const getPriorityColor = (priority: string) => {
         switch (priority.toLowerCase()) {
