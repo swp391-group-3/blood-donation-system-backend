@@ -53,7 +53,7 @@ export default function HealthRecordsPage() {
                 <h1 className="text-3xl font-bold tracking-tight">
                     Health Records
                 </h1>
-                <p className="text-gray-500">
+                <p className="text-zinc-500">
                     Track your health data and donation eligibility
                 </p>
             </div>
