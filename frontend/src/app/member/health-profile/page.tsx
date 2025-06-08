@@ -1,5 +1,5 @@
 'use client';
-import React ,{ useState } from 'react';
+import React, { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -15,9 +15,9 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AnimatePresence, motion } from "framer-motion"
-import { toast } from "sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from 'sonner';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,7 +25,7 @@ import {
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-  } from "@/components/ui/tooltip"
+} from '@/components/ui/tooltip';
 import {
     Expandable,
     ExpandableCard,
@@ -34,7 +34,7 @@ import {
     ExpandableCardHeader,
     ExpandableContent,
     ExpandableTrigger,
-} from "@/components/ui/expandable"
+} from '@/components/ui/expandable';
 import {
     Heart,
     Activity,
@@ -197,38 +197,83 @@ export default function HealthRecordsPage() {
                         <CardContent>
                             <div className="space-y-4">
                                 {mockHealthRecords.map((record) => (
-                                    <Expandable expandDirection='vertical' expandBehavior='push'>
+                                    <Expandable
+                                        expandDirection="vertical"
+                                        expandBehavior="push"
+                                    >
                                         <ExpandableTrigger>
                                             <ExpandableCard
-                                                collapsedSize={{ width: "100%", height: 100 }}
-                                                expandedSize={{ width: "100%", height: 420 }}
+                                                collapsedSize={{
+                                                    width: '100%',
+                                                    height: 100,
+                                                }}
+                                                expandedSize={{
+                                                    width: '100%',
+                                                    height: 420,
+                                                }}
                                                 hoverToExpand={false}
                                                 expandDelay={100}
                                                 collapseDelay={400}
                                             >
                                                 <ExpandableCardHeader className="p-2 flex justify-between">
                                                     <div className="flex items-center gap-4">
-                                                    <div>
-                                                        <p className="font-medium">{new Date(record.date).toLocaleDateString()}</p>
-                                                        <p className="text-sm text-gray-500">Appointment {record.appointmentId}</p>
-                                                    </div>
-                                                    <Badge className={getStatusColor(record.status)}>
-                                                        {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
-                                                    </Badge>
+                                                        <div>
+                                                            <p className="font-medium">
+                                                                {new Date(
+                                                                    record.date,
+                                                                ).toLocaleDateString()}
+                                                            </p>
+                                                            <p className="text-sm text-gray-500">
+                                                                Appointment{' '}
+                                                                {
+                                                                    record.appointmentId
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                        <Badge
+                                                            className={getStatusColor(
+                                                                record.status,
+                                                            )}
+                                                        >
+                                                            {record.status
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                                record.status.slice(
+                                                                    1,
+                                                                )}
+                                                        </Badge>
                                                     </div>
                                                     <div className="flex items-center gap-4 text-sm">
-                                                    <div className="text-center">
-                                                        <p className="font-medium">{record.temperature}°C</p>
-                                                        <p className="text-gray-500">Temp</p>
-                                                    </div>
-                                                    <div className="text-center">
-                                                        <p className="font-medium">{record.weight}kg</p>
-                                                        <p className="text-gray-500">Weight</p>
-                                                    </div>
-                                                    <div className="text-center">
-                                                        <p className="font-medium">{record.hemoglobin}</p>
-                                                        <p className="text-gray-500">Hb g/dL</p>
-                                                    </div>
+                                                        <div className="text-center">
+                                                            <p className="font-medium">
+                                                                {
+                                                                    record.temperature
+                                                                }
+                                                                °C
+                                                            </p>
+                                                            <p className="text-gray-500">
+                                                                Temp
+                                                            </p>
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <p className="font-medium">
+                                                                {record.weight}
+                                                                kg
+                                                            </p>
+                                                            <p className="text-gray-500">
+                                                                Weight
+                                                            </p>
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <p className="font-medium">
+                                                                {
+                                                                    record.hemoglobin
+                                                                }
+                                                            </p>
+                                                            <p className="text-gray-500">
+                                                                Hb g/dL
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </ExpandableCardHeader>
                                             </ExpandableCard>
