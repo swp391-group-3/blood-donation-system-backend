@@ -107,17 +107,17 @@ export default function AppointmentsPage() {
     const [priorityFilter, setPriorityFilter] = useState('all');
 
     const form = useForm({
-            resolver: zodResolver(schema),
-            defaultValues: {
-                searchTerm: '',
-                priority: 'all',
-                bloodGroup: 'all',
-            },
-        });
+        resolver: zodResolver(schema),
+        defaultValues: {
+            searchTerm: '',
+            priority: 'all',
+            bloodGroup: 'all',
+        },
+    });
 
     function handleSearch(data: SearchFormValues) {
-            // Come in future
-        }
+        // Come in future
+    }
 
     const getPriorityColor = (priority: string) => {
         switch (priority.toLowerCase()) {
