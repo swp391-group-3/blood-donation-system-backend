@@ -18,18 +18,7 @@ import {
     Droplet,
     CheckCircle,
 } from 'lucide-react';
-import { mockHealthRecords } from '../../../../constants/sample-data'
-
-
-const mockHealthTrends = {
-    weight: [73, 74, 75],
-    hemoglobin: [14.0, 13.8, 14.2],
-    bloodPressure: [
-        { systolic: 125, diastolic: 82 },
-        { systolic: 118, diastolic: 78 },
-        { systolic: 120, diastolic: 80 },
-    ],
-};
+import { mockHealthRecords, mockHealthTrends } from '../../../../constants/sample-data'
 
 export default function HealthRecordsPage() {
     const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
