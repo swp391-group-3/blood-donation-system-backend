@@ -210,6 +210,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "backend"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "axum-extra",
+ "axum-test",
+ "bcrypt",
+ "chrono",
+ "config",
+ "ctypes",
+ "database",
+ "futures",
+ "jsonwebtoken",
+ "model-mapper",
+ "openidconnect",
+ "rand 0.9.1",
+ "serde",
+ "strum",
+ "thiserror 2.0.12",
+ "tokio",
+ "tower-http",
+ "tower-sessions",
+ "tracing",
+ "tracing-subscriber",
+ "utoipa",
+ "utoipa-swagger-ui",
+ "uuid",
+]
+
+[[package]]
 name = "axum-valid"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
