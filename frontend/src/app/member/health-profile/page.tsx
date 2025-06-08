@@ -96,7 +96,7 @@ export default function HealthRecordsPage() {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">36.8°C</div>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-zinc-500">
                                     Normal range
                                 </p>
                             </CardContent>
@@ -111,7 +111,7 @@ export default function HealthRecordsPage() {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">75kg</div>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-zinc-500">
                                     +1kg from last visit
                                 </p>
                             </CardContent>
@@ -128,14 +128,13 @@ export default function HealthRecordsPage() {
                                 <div className="text-2xl font-bold">
                                     14.2 g/dL
                                 </div>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-zinc-500">
                                     Excellent level
                                 </p>
                             </CardContent>
                         </Card>
                     </div>
 
-                    {/* Health Records List */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Health Screening History</CardTitle>
