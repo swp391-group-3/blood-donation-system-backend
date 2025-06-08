@@ -25,6 +25,7 @@ import {
     Clock,
     AlertTriangle,
     Heart,
+    Eye,
 } from 'lucide-react';
 import Link from 'next/link';
 import { mockRequests } from '../../../../constants/sample-data';
@@ -424,6 +425,7 @@ export default function BloodRequestPage() {
                                                         <Link
                                                             href={`/member/request/${request.id}`}
                                                         >
+                                                            <Eye className="h-4 w-4 mr-1" />
                                                             View Details
                                                         </Link>
                                                     </Button>
