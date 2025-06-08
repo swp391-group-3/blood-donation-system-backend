@@ -62,13 +62,10 @@ export default function HealthRecordsPage() {
                 <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="records">Health Records</TabsTrigger>
                     <TabsTrigger value="trends">Health Trends</TabsTrigger>
-                    <TabsTrigger value="eligibility">
-                        Eligibility Status
-                    </TabsTrigger>
+                    <TabsTrigger value="eligibility">Eligibility Status</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="records" className="space-y-6">
-                    {/* Current Health Status */}
                     <div className="grid gap-6 md:grid-cols-4">
                         <Card>
                             <CardHeader className="pb-2">
@@ -84,7 +81,7 @@ export default function HealthRecordsPage() {
                                         Excellent
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-1">
+                                <p className="text-sm text-zinc-500 mt-1">
                                     Eligible for donation
                                 </p>
                             </CardContent>
