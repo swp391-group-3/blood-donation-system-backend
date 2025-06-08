@@ -159,7 +159,6 @@ export default function BloodRequestPage() {
                             </CardContent>
                         </Card>
 
-                        {/* Cannot Apply Alert */}
                         <Alert className="bg-yellow-50 border-yellow-200">
                             <AlertTriangle className="h-4 w-4 text-yellow-600" />
                             <AlertDescription className="text-yellow-800">
@@ -172,9 +171,7 @@ export default function BloodRequestPage() {
                         </Alert>
                     </div>
 
-                    {/* Right Column - Sidebar Info */}
                     <div className="w-80 space-y-6">
-                        {/* Request Created By Card */}
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold">
@@ -185,7 +182,7 @@ export default function BloodRequestPage() {
                                 <div className="flex items-center gap-3 mb-4">
                                     <Avatar className="h-10 w-10">
                                         <AvatarFallback className="bg-blue-500 text-white font-medium">
-                                            DD
+                                            ND
                                         </AvatarFallback>
                                     </Avatar>
                                     <div>
@@ -208,7 +205,6 @@ export default function BloodRequestPage() {
                             </CardContent>
                         </Card>
 
-                        {/* Registered Donors Card */}
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold">
