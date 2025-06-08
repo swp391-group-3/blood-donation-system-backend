@@ -136,64 +136,16 @@ export default function AppointmentsPage() {
                     </Button>
                 </div>
 
-                {/* Search and Filters */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            placeholder="Search appointments..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-10"
-                        />
-                    </div>
-                    <Select
-                        value={statusFilter}
-                        onValueChange={setStatusFilter}
-                    >
-                        <SelectTrigger className="w-full sm:w-[180px]">
-                            <Filter className="h-4 w-4 mr-2" />
-                            <SelectValue placeholder="All Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Status</SelectItem>
-                            <SelectItem value="confirmed">Confirmed</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="completed">Completed</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Select
-                        value={priorityFilter}
-                        onValueChange={setPriorityFilter}
-                    >
-                        <SelectTrigger className="w-full sm:w-[180px]">
-                            <SelectValue placeholder="All Priority" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Priority</SelectItem>
-                            <SelectItem value="high">High Priority</SelectItem>
-                            <SelectItem value="medium">
-                                Medium Priority
-                            </SelectItem>
-                            <SelectItem value="standard">Standard</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Appointments Tabs */}
-                <Tabs defaultValue="upcoming" className="space-y-4">
-                    <TabsList>
-                        <TabsTrigger
-                            value="upcoming"
-                            className="flex items-center gap-2"
-                        >
+                <Tabs 
+                    defaultValue="upcoming" 
+                    className="space-y-6"
+                >
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="upcoming" className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
                             Upcoming ({upcomingAppointments.length})
                         </TabsTrigger>
-                        <TabsTrigger
-                            value="completed"
-                            className="flex items-center gap-2"
-                        >
+                        <TabsTrigger value="completed" className="flex items-center gap-2">
                             <CheckCircle className="h-4 w-4" />
                             Completed ({completedAppointments.length})
                         </TabsTrigger>
