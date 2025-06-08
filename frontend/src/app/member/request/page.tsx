@@ -422,7 +422,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/dashboard/requests/${request.id}`}
+                                                            href={`/member/request/${request.id}`}
                                                         >
                                                             View Details
                                                         </Link>
@@ -434,7 +434,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/dashboard/requests/${request.id}`}
+                                                            href={`/member/request/${request.id}`}
                                                         >
                                                             Apply Now
                                                         </Link>
@@ -625,7 +625,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/dashboard/requests/${request.id}`}
+                                                            href={`/member/request/${request.id}`}
                                                         >
                                                             View Details
                                                         </Link>
@@ -637,7 +637,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/dashboard/requests/${request.id}`}
+                                                            href={`/member/request/${request.id}`}
                                                         >
                                                             Apply Now
                                                         </Link>
