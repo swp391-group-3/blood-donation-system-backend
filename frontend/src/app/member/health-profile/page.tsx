@@ -206,8 +206,7 @@ export default function HealthRecordsPage() {
                                                 expandDelay={100}
                                                 collapseDelay={400}
                                             >
-                                                <ExpandableCardHeader className="p-2">
-                                                <div className="flex items-center justify-between">
+                                                <ExpandableCardHeader className="p-2 flex justify-between">
                                                     <div className="flex items-center gap-4">
                                                     <div>
                                                         <p className="font-medium">{new Date(record.date).toLocaleDateString()}</p>
@@ -231,8 +230,6 @@ export default function HealthRecordsPage() {
                                                         <p className="text-gray-500">Hb g/dL</p>
                                                     </div>
                                                     </div>
-                                                </div>
-
                                                 </ExpandableCardHeader>
                                             </ExpandableCard>
                                         </ExpandableTrigger>
