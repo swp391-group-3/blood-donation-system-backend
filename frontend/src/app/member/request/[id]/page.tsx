@@ -10,7 +10,7 @@ import {
     CalendarDays,
     Clock,
     AlertTriangle,
-    CheckCircle
+    CheckCircle,
 } from 'lucide-react';
 
 export default function BloodRequestPage() {
@@ -153,7 +153,8 @@ export default function BloodRequestPage() {
                                     <div className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                         <span className="text-sm text-zinc-700">
-                                            No tattoos or piercings in the last 6 months
+                                            No tattoos or piercings in the last
+                                            6 months
                                         </span>
                                     </div>
                                 </div>
