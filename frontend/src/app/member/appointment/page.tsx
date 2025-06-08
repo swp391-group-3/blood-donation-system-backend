@@ -12,6 +12,7 @@ import {
     Eye,
     CheckCircle,
     Droplet,
+    ChartLine,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,7 @@ import Link from 'next/link';
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),
+    status: z.string().default('all'),
     priority: z.string().default('all'),
     bloodGroup: z.string().default('all'),
 });
@@ -40,14 +42,12 @@ const schema = z.object({
 export type SearchFormValues = z.infer<typeof schema>;
 
 export default function AppointmentsPage() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');
-    const [priorityFilter, setPriorityFilter] = useState('all');
 
     const form = useForm({
         resolver: zodResolver(schema),
         defaultValues: {
             searchTerm: '',
+            status: 'all',
             priority: 'all',
             bloodGroup: 'all',
         },
@@ -143,6 +143,36 @@ export default function AppointmentsPage() {
                             />
 
                             <div className="flex gap-3">
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="w-[180px] h-12">
+                                                        <ChartLine className="mr-2 h-4 w-4" />
+                                                        <SelectValue placeholder="Status" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All Status
+                                                    </SelectItem>
+                                                    <SelectItem value="confirm">
+                                                        Confirm
+                                                    </SelectItem>
+                                                    <SelectItem value="pending">
+                                                        Pending
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={form.control}
                                     name="priority"
