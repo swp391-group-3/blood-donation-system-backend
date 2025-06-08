@@ -3,6 +3,7 @@ use std::sync::Arc;
 use axum::{Json, extract::State};
 use chrono::NaiveDate;
 use ctypes::Gender;
+use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
@@ -10,10 +11,16 @@ use uuid::Uuid;
 use crate::{error::Result, state::ApiState, util::jwt::Claims};
 use database::{
     client::Params,
-    queries::{self, account::UpdateParams},
+    queries::account::UpdateParams,
+    queries::{self},
 };
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Mapper)]
+#[mapper(
+    into(custom = "with_account_id"),
+    ty = UpdateParams::<String, String, String>,
+    add(field = id, ty = Uuid),
+)]
 pub struct Request {
     pub phone: Option<String>,
     pub name: Option<String>,
@@ -22,21 +29,6 @@ pub struct Request {
     pub birthday: Option<NaiveDate>,
 }
 
-impl Request {
-    pub fn with_account_id(
-        self,
-        account_id: Uuid,
-    ) -> queries::account::UpdateParams<String, String, String> {
-        UpdateParams {
-            id: account_id,
-            phone: self.phone,
-            name: self.name,
-            gender: self.gender,
-            address: self.address,
-            birthday: self.birthday,
-        }
-    }
-}
 #[utoipa::path(
     put,
     tag = "Account",
