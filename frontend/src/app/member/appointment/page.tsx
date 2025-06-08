@@ -136,20 +136,133 @@ export default function AppointmentsPage() {
                     </Button>
                 </div>
 
-                <Tabs 
-                    defaultValue="upcoming" 
-                    className="space-y-6"
-                >
+                <Tabs defaultValue="upcoming" className="space-y-6">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="upcoming" className="flex items-center gap-2">
+                        <TabsTrigger
+                            value="upcoming"
+                            className="flex items-center gap-2"
+                        >
                             <Calendar className="h-4 w-4" />
                             Upcoming ({upcomingAppointments.length})
                         </TabsTrigger>
-                        <TabsTrigger value="completed" className="flex items-center gap-2">
+                        <TabsTrigger
+                            value="completed"
+                            className="flex items-center gap-2"
+                        >
                             <CheckCircle className="h-4 w-4" />
                             Completed ({completedAppointments.length})
                         </TabsTrigger>
                     </TabsList>
+
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(handleSearch)}
+                            className="flex flex-col lg:flex-row gap-4"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="searchTerm"
+                                render={({ field }) => (
+                                    <FormItem className="relative flex-1">
+                                        <FormControl>
+                                            <div>
+                                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                                                <Input
+                                                    placeholder="Search requests by tittle"
+                                                    className="pl-10 h-9"
+                                                    {...field}
+                                                />
+                                            </div>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <div className="flex gap-3">
+                                <FormField
+                                    control={form.control}
+                                    name="priority"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="w-[180px] h-12">
+                                                        <Filter className="mr-2 h-4 w-4" />
+                                                        <SelectValue placeholder="Priority" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All Priorities
+                                                    </SelectItem>
+                                                    <SelectItem value="high">
+                                                        High Priorities
+                                                    </SelectItem>
+                                                    <SelectItem value="medium">
+                                                        Medium Priorities
+                                                    </SelectItem>
+                                                    <SelectItem value="low">
+                                                        Low Priority
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="bloodGroup"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="w-[200px] h-12">
+                                                        <Droplet className="mr-2 h-4 w-4" />
+                                                        <SelectValue placeholder="Blood Group" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="all">
+                                                        All Blood Groups
+                                                    </SelectItem>
+                                                    <SelectItem value="A+">
+                                                        A+
+                                                    </SelectItem>
+                                                    <SelectItem value="A-">
+                                                        A-
+                                                    </SelectItem>
+                                                    <SelectItem value="B+">
+                                                        B+
+                                                    </SelectItem>
+                                                    <SelectItem value="B-">
+                                                        B-
+                                                    </SelectItem>
+                                                    <SelectItem value="AB+">
+                                                        AB+
+                                                    </SelectItem>
+                                                    <SelectItem value="AB-">
+                                                        AB-
+                                                    </SelectItem>
+                                                    <SelectItem value="O+">
+                                                        O+
+                                                    </SelectItem>
+                                                    <SelectItem value="O-">
+                                                        O-
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </form>
+                    </Form>
 
                     <TabsContent value="upcoming" className="space-y-4">
                         {upcomingAppointments.map((appointment) => (
