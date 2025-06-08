@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Search, Calendar, Clock, Plus, Filter, Eye, CheckCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,14 +11,10 @@ import { Progress } from "@/components/ui/progress"
 
 const summaryStats = {
   totalDonations: 2,
-  lifetimeDonations: "Lifetime donations",
-  nextMilestone: "4/10 to next milestone",
   bloodDonated: "600ml",
   totalVolume: "Total volume donated",
-  livesEquivalent: "Equivalent to saving 15 lives",
   nextEligible: "Jun 15",
   nextDonationDate: "Next donation date",
-  weeksRemaining: "2 weeks remaining",
 }
 
 const upcomingAppointments = [
@@ -31,7 +26,6 @@ const upcomingAppointments = [
     bloodGroup: "O-",
     date: "6/3/2025",
     time: "10:00 AM",
-    location: "Main Blood Center, 123 Medical Drive",
     duration: "45-60 minutes",
     notes: "Eat well and stay hydrated before your appointment",
     timeUntil: "Past",
@@ -44,7 +38,6 @@ const upcomingAppointments = [
     bloodGroup: "All",
     date: "6/15/2025",
     time: "2:30 PM",
-    location: "South Branch Center",
     duration: "45-60 minutes",
     notes: "Bring a valid ID and eat a healthy meal",
     timeUntil: "In 8 days",
