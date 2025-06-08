@@ -28,9 +28,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { summaryStats, upcomingAppointments, completedAppointments } from '../../../../constants/sample-data';
+import {
+    summaryStats,
+    upcomingAppointments,
+    completedAppointments,
+} from '../../../../constants/sample-data';
 import Link from 'next/link';
-
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),
@@ -42,7 +45,6 @@ const schema = z.object({
 export type SearchFormValues = z.infer<typeof schema>;
 
 export default function AppointmentsPage() {
-
     const form = useForm({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -476,7 +478,9 @@ export default function AppointmentsPage() {
                         <div className="text-3xl font-bold text-blue-600 mb-2">
                             {summaryStats.bloodDonated}
                         </div>
-                        <p className="text-sm text-zinc-600">Total Volume Donated</p>
+                        <p className="text-sm text-zinc-600">
+                            Total Volume Donated
+                        </p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -484,7 +488,9 @@ export default function AppointmentsPage() {
                         <div className="text-3xl font-bold text-green-600 mb-2">
                             {summaryStats.nextEligible}
                         </div>
-                        <p className="text-sm text-zinc-600">Next Donation Date</p>
+                        <p className="text-sm text-zinc-600">
+                            Next Donation Date
+                        </p>
                     </CardContent>
                 </Card>
             </div>
