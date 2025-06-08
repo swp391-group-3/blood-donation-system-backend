@@ -27,7 +27,7 @@ UPDATE blood_bags
 SET is_used = true
 WHERE id = :id;
 
---! update (component?, amount?, is_used?, expired_time?)
+--! update (component?, is_used?, amount?, expired_time?)
 UPDATE blood_bags
 SET
     component = COALESCE(:component, component),
