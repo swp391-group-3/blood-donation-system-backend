@@ -22,13 +22,18 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
 const summaryStats = {
     totalDonations: 2,
+    lifetimeDonations: 'Lifetime donations',
+    nextMilestone: '4/10 to next milestone',
     bloodDonated: '600ml',
     totalVolume: 'Total volume donated',
+    livesEquivalent: 'Equivalent to saving 15 lives',
     nextEligible: 'Jun 15',
     nextDonationDate: 'Next donation date',
+    weeksRemaining: '2 weeks remaining',
 };
 
 const upcomingAppointments = [
@@ -67,7 +72,6 @@ const completedAppointments = [
         bloodGroup: 'O-',
         date: '5/15/2025',
         time: '11:00 AM',
-        location: 'Main Blood Center, 123 Medical Drive',
         duration: '45 minutes',
         notes: 'Successful donation - 450ml collected',
     },
@@ -79,7 +83,6 @@ const completedAppointments = [
         bloodGroup: 'O-',
         date: '4/20/2025',
         time: '3:15 PM',
-        location: 'Emergency Response Unit',
         duration: '50 minutes',
         notes: 'Critical need fulfilled - patient stable',
     },
@@ -114,117 +117,8 @@ export default function AppointmentsPage() {
         }
     };
 
-    const AppointmentCard = ({
-        appointment,
-        showActions = true,
-    }: {
-        appointment: any;
-        showActions?: boolean;
-    }) => (
-        <Card className="mb-4 border-l-4 border-l-red-500">
-            <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                    <h3 className="text-lg font-semibold">
-                        {appointment.title}
-                    </h3>
-                    <Badge className={getStatusColor(appointment.status)}>
-                        {appointment.status}
-                    </Badge>
-                    {appointment.priority && (
-                        <Badge
-                            variant={getPriorityColor(appointment.priority)}
-                            className="text-xs"
-                        >
-                            {appointment.priority}
-                        </Badge>
-                    )}
-                    {appointment.timeUntil && (
-                        <span className="text-sm text-blue-600 font-medium">
-                            {appointment.timeUntil}
-                        </span>
-                    )}
-                    {showActions && (
-                        <div className="flex gap-2 ml-auto">
-                            <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-1" />
-                                View Details
-                            </Button>
-                            <Button variant="outline" size="sm">
-                                Reschedule
-                            </Button>
-                            <Button variant="destructive" size="sm">
-                                Cancel
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
-                        <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
-                            <span className="text-red-600 text-sm">💧</span>
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-gray-600">
-                                Blood Group
-                            </p>
-                            <p className="text-sm font-semibold">
-                                {appointment.bloodGroup}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                        <Calendar className="h-5 w-5 text-blue-600" />
-                        <div>
-                            <p className="text-sm font-medium text-gray-600">
-                                Date
-                            </p>
-                            <p className="text-sm font-semibold">
-                                {appointment.date}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                        <Clock className="h-5 w-5 text-green-600" />
-                        <div>
-                            <p className="text-sm font-medium text-gray-600">
-                                Time
-                            </p>
-                            <p className="text-sm font-semibold">
-                                {appointment.time}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 p-4 bg-zinc-50 rounded-lg">
-                    <div>
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                            Estimated Duration
-                        </p>
-                        <p className="text-sm text-gray-800">
-                            {appointment.duration}
-                        </p>
-                    </div>
-                    <div>
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                            Preparation Notes
-                        </p>
-                        <p className="text-sm text-gray-800">
-                            {appointment.notes}
-                        </p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    );
-
     return (
         <div className="p-6 space-y-6">
-            {/* Main Appointments Section */}
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
@@ -234,9 +128,11 @@ export default function AppointmentsPage() {
                             your donation history
                         </p>
                     </div>
-                    <Button className="bg-red-600 hover:bg-red-700">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Schedule New Donation
+                    <Button asChild className="bg-red-600 hover:bg-red-700">
+                        <Link href="/member/request">
+                            <Plus className="h-4 w-4 mr-2" />
+                            Create New Appointment
+                        </Link>
                     </Button>
                 </div>
 
@@ -305,20 +201,213 @@ export default function AppointmentsPage() {
 
                     <TabsContent value="upcoming" className="space-y-4">
                         {upcomingAppointments.map((appointment) => (
-                            <AppointmentCard
+                            <Card
                                 key={appointment.id}
-                                appointment={appointment}
-                            />
+                                className="mb-4 border-l-4 border-l-red-500"
+                            >
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-center gap-3">
+                                        <h3 className="text-lg font-semibold">
+                                            {appointment.title}
+                                        </h3>
+                                        <Badge
+                                            className={getStatusColor(
+                                                appointment.status,
+                                            )}
+                                        >
+                                            {appointment.status}
+                                        </Badge>
+                                        {appointment.priority && (
+                                            <Badge
+                                                variant={getPriorityColor(
+                                                    appointment.priority,
+                                                )}
+                                                className="text-xs"
+                                            >
+                                                {appointment.priority}
+                                            </Badge>
+                                        )}
+                                        {appointment.timeUntil && (
+                                            <span className="text-sm text-blue-600 font-medium">
+                                                {appointment.timeUntil}
+                                            </span>
+                                        )}
+                                        <div className="flex gap-2 ml-auto">
+                                            <Button variant="outline" size="sm">
+                                                <Eye className="h-4 w-4 mr-1" />
+                                                View Details
+                                            </Button>
+                                            <Button variant="outline" size="sm">
+                                                Reschedule
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+                                            <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
+                                                <span className="text-red-600 text-sm">
+                                                    💧
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Blood Group
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.bloodGroup}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                                            <Calendar className="h-5 w-5 text-blue-600" />
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Date
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.date}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                            <Clock className="h-5 w-5 text-green-600" />
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Time
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.time}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 p-4 bg-zinc-50 rounded-lg">
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-600 mb-1">
+                                                Estimated Duration
+                                            </p>
+                                            <p className="text-sm text-gray-800">
+                                                {appointment.duration}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-600 mb-1">
+                                                Preparation Notes
+                                            </p>
+                                            <p className="text-sm text-gray-800">
+                                                {appointment.notes}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
                         ))}
                     </TabsContent>
 
                     <TabsContent value="completed" className="space-y-4">
                         {completedAppointments.map((appointment) => (
-                            <AppointmentCard
+                            <Card
                                 key={appointment.id}
-                                appointment={appointment}
-                                showActions={false}
-                            />
+                                className="mb-4 border-l-4 border-l-red-500"
+                            >
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-center gap-3">
+                                        <h3 className="text-lg font-semibold">
+                                            {appointment.title}
+                                        </h3>
+                                        <Badge
+                                            className={getStatusColor(
+                                                appointment.status,
+                                            )}
+                                        >
+                                            {appointment.status}
+                                        </Badge>
+                                        {appointment.priority && (
+                                            <Badge
+                                                variant={getPriorityColor(
+                                                    appointment.priority,
+                                                )}
+                                                className="text-xs"
+                                            >
+                                                {appointment.priority}
+                                            </Badge>
+                                        )}
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+                                            <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
+                                                <span className="text-red-600 text-sm">
+                                                    💧
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Blood Group
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.bloodGroup}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                                            <Calendar className="h-5 w-5 text-blue-600" />
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Date
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.date}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                            <Clock className="h-5 w-5 text-green-600" />
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-600">
+                                                    Time
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    {appointment.time}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 p-4 bg-zinc-50 rounded-lg">
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-600 mb-1">
+                                                Estimated Duration
+                                            </p>
+                                            <p className="text-sm text-gray-800">
+                                                {appointment.duration}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-600 mb-1">
+                                                Preparation Notes
+                                            </p>
+                                            <p className="text-sm text-gray-800">
+                                                {appointment.notes}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
                         ))}
                     </TabsContent>
                 </Tabs>
