@@ -183,3 +183,68 @@ export const mockRequests = [
         createdBy: 'staff2',
     },
 ];
+
+// sample-data for appointment page
+export const summaryStats = {
+    totalDonations: 2,
+    lifetimeDonations: 'Lifetime donations',
+    nextMilestone: '4/10 to next milestone',
+    bloodDonated: '600ml',
+    totalVolume: 'Total volume donated',
+    livesEquivalent: 'Equivalent to saving 15 lives',
+    nextEligible: 'Jun 15',
+    nextDonationDate: 'Next donation date',
+    weeksRemaining: '2 weeks remaining',
+};
+
+export const upcomingAppointments = [
+    {
+        id: 1,
+        title: 'Emergency O- needed for surgery',
+        status: 'Confirmed',
+        priority: 'High Priority',
+        bloodGroup: 'O-',
+        date: '6/3/2025',
+        time: '10:00 AM',
+        duration: '45-60 minutes',
+        notes: 'Eat well and stay hydrated before your appointment',
+        timeUntil: 'Past',
+    },
+    {
+        id: 2,
+        title: 'Regular donation drive',
+        status: 'Pending',
+        priority: 'Medium Priority',
+        bloodGroup: 'All',
+        date: '6/15/2025',
+        time: '2:30 PM',
+        duration: '45-60 minutes',
+        notes: 'Bring a valid ID and eat a healthy meal',
+        timeUntil: 'In 8 days',
+    },
+];
+
+export const completedAppointments = [
+    {
+        id: 3,
+        title: 'Regular blood donation',
+        status: 'Completed',
+        priority: 'Standard',
+        bloodGroup: 'O-',
+        date: '5/15/2025',
+        time: '11:00 AM',
+        duration: '45 minutes',
+        notes: 'Successful donation - 450ml collected',
+    },
+    {
+        id: 4,
+        title: 'Emergency donation request',
+        status: 'Completed',
+        priority: 'High Priority',
+        bloodGroup: 'O-',
+        date: '4/20/2025',
+        time: '3:15 PM',
+        duration: '50 minutes',
+        notes: 'Critical need fulfilled - patient stable',
+    },
+];
