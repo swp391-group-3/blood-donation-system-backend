@@ -300,7 +300,7 @@ export const mockHealthRecords = [
         notes: 'Slightly elevated temperature but within acceptable range.',
     },
     {
-        id: '4',
+        id: '5',
         date: '2025-02-20',
         appointmentId: 'apt-004',
         temperature: 37.1,
@@ -312,7 +312,7 @@ export const mockHealthRecords = [
         notes: 'Slightly elevated temperature but within acceptable range.',
     },
     {
-        id: '5',
+        id: '6',
         date: '2025-02-20',
         appointmentId: 'apt-005',
         temperature: 37.1,
@@ -324,7 +324,7 @@ export const mockHealthRecords = [
         notes: 'Slightly elevated temperature but within acceptable range.',
     },
     {
-        id: '6',
+        id: '7',
         date: '2025-02-20',
         appointmentId: 'apt-006',
         temperature: 37.1,
@@ -336,7 +336,7 @@ export const mockHealthRecords = [
         notes: 'Slightly elevated temperature but within acceptable range.',
     },
     {
-        id: '7',
+        id: '8',
         date: '2025-02-20',
         appointmentId: 'apt-007',
         temperature: 37.1,

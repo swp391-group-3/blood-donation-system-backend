@@ -13,10 +13,11 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
+} from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ExpandableCard } from '@/components/ui/expandable';
 import {
     Heart,
     Activity,
@@ -71,7 +72,9 @@ export default function HealthRecordsPage() {
                 <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="records">Health Records</TabsTrigger>
                     <TabsTrigger value="trends">Health Trends</TabsTrigger>
-                    <TabsTrigger value="eligibility">Eligibility Status</TabsTrigger>
+                    <TabsTrigger value="eligibility">
+                        Eligibility Status
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="records" className="space-y-6">
@@ -148,25 +151,31 @@ export default function HealthRecordsPage() {
                         <CardHeader>
                             <div className="flex justify-between">
                                 <div>
-                                    <CardTitle className="pb-2">Health Screening History</CardTitle>
+                                    <CardTitle className="pb-2">
+                                        Health Screening History
+                                    </CardTitle>
                                     <CardDescription>
-                                        Your health records from donation appointments
+                                        Your health records from donation
+                                        appointments
                                     </CardDescription>
                                 </div>
                                 <div>
                                     <Select defaultValue="newest">
                                         <SelectTrigger className="w-[180px]">
                                             <ArrowUpNarrowWide />
-                                            Newest first                                    
+                                            Newest first
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="newest">Newest first</SelectItem>
-                                            <SelectItem value="oldest">Oldest first</SelectItem>
+                                            <SelectItem value="newest">
+                                                Newest first
+                                            </SelectItem>
+                                            <SelectItem value="oldest">
+                                                Oldest first
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
-
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
