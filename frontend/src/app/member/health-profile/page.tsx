@@ -18,7 +18,10 @@ import {
     Droplet,
     CheckCircle,
 } from 'lucide-react';
-import { mockHealthRecords, mockHealthTrends } from '../../../../constants/sample-data'
+import {
+    mockHealthRecords,
+    mockHealthTrends,
+} from '../../../../constants/sample-data';
 
 export default function HealthRecordsPage() {
     const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
@@ -39,7 +42,7 @@ export default function HealthRecordsPage() {
     const getHealthStatus = (record: any) => {
         const tempOk = record.temperature >= 36.1 && record.temperature <= 37.2;
         const hbOk = record.hemoglobin >= 12.5;
-        const bpOk = true; // Simplified check
+        const bpOk = true;
 
         return tempOk && hbOk && bpOk ? 'excellent' : 'good';
     };
