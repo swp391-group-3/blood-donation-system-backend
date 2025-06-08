@@ -299,12 +299,6 @@ export default function AppointmentsPage() {
                                             <Button variant="outline" size="sm">
                                                 Reschedule
                                             </Button>
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                            >
-                                                Cancel
-                                            </Button>
                                         </div>
                                     </div>
                                 </CardHeader>
@@ -312,15 +306,13 @@ export default function AppointmentsPage() {
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
                                             <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
-                                                <span className="text-red-600 text-sm">
-                                                    💧
-                                                </span>
+                                                <Droplet className="h-4 w-4 text-red-500" />
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium text-gray-600">
                                                     Blood Group
                                                 </p>
-                                                <p className="text-sm font-semibold">
+                                                <p className="text-sm font-normal">
                                                     {appointment.bloodGroup}
                                                 </p>
                                             </div>
@@ -332,7 +324,7 @@ export default function AppointmentsPage() {
                                                 <p className="text-sm font-medium text-gray-600">
                                                     Date
                                                 </p>
-                                                <p className="text-sm font-semibold">
+                                                <p className="text-sm font-normal">
                                                     {appointment.date}
                                                 </p>
                                             </div>
@@ -344,7 +336,7 @@ export default function AppointmentsPage() {
                                                 <p className="text-sm font-medium text-gray-600">
                                                     Time
                                                 </p>
-                                                <p className="text-sm font-semibold">
+                                                <p className="text-sm font-normal">
                                                     {appointment.time}
                                                 </p>
                                             </div>
