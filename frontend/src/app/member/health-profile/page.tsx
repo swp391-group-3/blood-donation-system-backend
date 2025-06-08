@@ -7,8 +7,16 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     Heart,
     Activity,
@@ -17,6 +25,7 @@ import {
     Weight,
     Droplet,
     CheckCircle,
+    ArrowUpNarrowWide,
 } from 'lucide-react';
 import {
     mockHealthRecords,
@@ -137,10 +146,27 @@ export default function HealthRecordsPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Health Screening History</CardTitle>
-                            <CardDescription>
-                                Your health records from donation appointments
-                            </CardDescription>
+                            <div className="flex justify-between">
+                                <div>
+                                    <CardTitle className="pb-2">Health Screening History</CardTitle>
+                                    <CardDescription>
+                                        Your health records from donation appointments
+                                    </CardDescription>
+                                </div>
+                                <div>
+                                    <Select defaultValue="newest">
+                                        <SelectTrigger className="w-[180px]">
+                                            <ArrowUpNarrowWide />
+                                            Newest first                                    
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="newest">Newest first</SelectItem>
+                                            <SelectItem value="oldest">Oldest first</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
