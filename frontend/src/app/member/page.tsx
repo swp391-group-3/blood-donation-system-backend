@@ -143,9 +143,7 @@ export default function MemberHomePage() {
                             </div>
                         </div>
                         <Button asChild variant="outline" className="w-full">
-                            <Link href="/member/impact">
-                                View Full Impact
-                            </Link>
+                            <Link href="/member/impact">View Full Impact</Link>
                         </Button>
                     </CardContent>
                 </Card>
@@ -226,9 +224,7 @@ export default function MemberHomePage() {
                         </Card>
                     ))}
                     <Button asChild variant="outline" className="w-full">
-                        <Link href="/member/request">
-                            View All Requests
-                        </Link>
+                        <Link href="/member/request">View All Requests</Link>
                     </Button>
                 </CardContent>
             </Card>

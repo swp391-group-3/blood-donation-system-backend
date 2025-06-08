@@ -10,44 +10,38 @@ import {
 } from 'lucide-react';
 
 export const sidebarItems = [
-    {   icon: House, 
-        label: 'Dashboard',
-        href: "/member", 
-    },
+    { icon: House, label: 'Dashboard', href: '/member' },
     {
         icon: Droplet,
         label: 'Blood Requests',
-        href: "/member/request",
+        href: '/member/request',
     },
     {
         icon: Calendar,
         label: 'Appointments',
-        href: "/member/appointment",
+        href: '/member/appointment',
     },
     {
         icon: Activity,
         label: 'Health Profile',
-        href: "/member/health-profile",
+        href: '/member/health-profile',
     },
-    { 
-        icon: Award, 
-        label: 'Achievements', 
-        href: "/member/achievement",
+    {
+        icon: Award,
+        label: 'Achievements',
+        href: '/member/achievement',
     },
-    { 
-        icon: Heart, 
+    {
+        icon: Heart,
         label: 'Impact Tracker',
-        href: "/member/impact",
+        href: '/member/impact',
     },
     {
         icon: CircleAlert,
         label: 'Emergency Alerts',
-        href: "/member/emergency",
+        href: '/member/emergency',
     },
-    {   icon: Settings, 
-        label: 'Settings', 
-        href: "/member/profile",
-    },
+    { icon: Settings, label: 'Settings', href: '/member/profile' },
 ];
 
 export const requests = [

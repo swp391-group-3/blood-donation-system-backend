@@ -32,74 +32,91 @@ export default function BloodRequestPage() {
 
                 <div className="flex gap-4 h-full">
                     <div className="flex-1 space-y-4">
-                    <Card className="w-full">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-lg font-semibold mb-1">
-                            Request Details
-                            </CardTitle>
-                            <p className="text-zinc-600 text-sm leading-relaxed mb-0">
-                            We urgently need O- blood donors for multiple emergency surgeries scheduled this week.
-                            Your donation could save lives.
-                            </p>
-                        </CardHeader>
-                        <CardContent className="space-y-3 pt-0">
-                            <div className="grid grid-cols-2 gap-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-red-50 rounded-lg">
-                                <Droplets className="h-4 w-4 text-red-500" />
-                                </div>
-                                <div>
-                                <p className="text-xs text-zinc-500 mb-1">Blood Type</p>
-                                <p className="font-medium text-zinc-900">O+</p>
-                                </div>
-                            </div>
+                        <Card className="w-full">
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-lg font-semibold mb-1">
+                                    Request Details
+                                </CardTitle>
+                                <p className="text-zinc-600 text-sm leading-relaxed mb-0">
+                                    We urgently need O- blood donors for
+                                    multiple emergency surgeries scheduled this
+                                    week. Your donation could save lives.
+                                </p>
+                            </CardHeader>
+                            <CardContent className="space-y-3 pt-0">
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-red-50 rounded-lg">
+                                            <Droplets className="h-4 w-4 text-red-500" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-zinc-500 mb-1">
+                                                Blood Type
+                                            </p>
+                                            <p className="font-medium text-zinc-900">
+                                                O+
+                                            </p>
+                                        </div>
+                                    </div>
 
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-50 rounded-lg">
-                                <Users className="h-4 w-4 text-blue-500" />
-                                </div>
-                                <div>
-                                <p className="text-xs text-zinc-500 mb-1">5/5</p>
-                                <p className="font-medium text-zinc-900">Donors</p>
-                                </div>
-                            </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-blue-50 rounded-lg">
+                                            <Users className="h-4 w-4 text-blue-500" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-zinc-500 mb-1">
+                                                5/5
+                                            </p>
+                                            <p className="font-medium text-zinc-900">
+                                                Donors
+                                            </p>
+                                        </div>
+                                    </div>
 
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-green-50 rounded-lg">
-                                <CalendarDays className="h-4 w-4 text-green-500" />
-                                </div>
-                                <div>
-                                <p className="text-xs text-zinc-500 mb-1">Donation Period</p>
-                                <p className="font-medium text-zinc-900">6/1/2025 - 6/3/2025</p>
-                                </div>
-                            </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-green-50 rounded-lg">
+                                            <CalendarDays className="h-4 w-4 text-green-500" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-zinc-500 mb-1">
+                                                Donation Period
+                                            </p>
+                                            <p className="font-medium text-zinc-900">
+                                                6/1/2025 - 6/3/2025
+                                            </p>
+                                        </div>
+                                    </div>
 
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-orange-50 rounded-lg">
-                                <Clock className="h-4 w-4 text-orange-500" />
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-orange-50 rounded-lg">
+                                            <Clock className="h-4 w-4 text-orange-500" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-zinc-500 mb-1">
+                                                Time
+                                            </p>
+                                            <p className="font-medium text-zinc-900">
+                                                8:00 - 18:00
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
-                                <p className="text-xs text-zinc-500 mb-1">Time</p>
-                                <p className="font-medium text-zinc-900">8:00 - 18:00</p>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="text-sm text-zinc-600">
+                                            Progress
+                                        </span>
+                                        <span className="text-sm font-medium text-zinc-900">
+                                            90% of target reached
+                                        </span>
+                                    </div>
+                                    <Progress
+                                        value={90}
+                                        className="h-2 [&>div]:bg-green-600"
+                                    />
                                 </div>
-                            </div>
-                            </div>
-                            <div>
-                            <div className="flex justify-between items-center mb-1">
-                                <span className="text-sm text-zinc-600">Progress</span>
-                                <span className="text-sm font-medium text-zinc-900">
-                                90% of target reached
-                                </span>
-                            </div>
-                            <Progress
-                                value={90}
-                                className="h-2 [&>div]:bg-green-600"
-                            />
-                            </div>
-                        </CardContent>
+                            </CardContent>
                         </Card>
-
-
 
                         {/* Donation Requirements Card */}
                         <Card className="w-full">
