@@ -197,146 +197,46 @@ export default function HealthRecordsPage() {
                         <CardContent>
                             <div className="space-y-4">
                                 {mockHealthRecords.map((record) => (
-                                    <div
-                                        key={record.id}
-                                        className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-                                        onClick={() =>
-                                            setSelectedRecord(
-                                                selectedRecord === record.id
-                                                    ? null
-                                                    : record.id,
-                                            )
-                                        }
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-4">
-                                                <div>
-                                                    <p className="font-medium">
-                                                        {new Date(
-                                                            record.date,
-                                                        ).toLocaleDateString()}
-                                                    </p>
-                                                    <p className="text-sm text-gray-500">
-                                                        Appointment{' '}
-                                                        {record.appointmentId}
-                                                    </p>
+                                    <Expandable expandDirection='vertical' expandBehavior='push'>
+                                        <ExpandableTrigger>
+                                            <ExpandableCard
+                                                collapsedSize={{ width: "100%", height: 100 }}
+                                                expandedSize={{ width: "100%", height: 420 }}
+                                                hoverToExpand={false}
+                                                expandDelay={100}
+                                                collapseDelay={400}
+                                            >
+                                                <ExpandableCardHeader className="p-2">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                    <div>
+                                                        <p className="font-medium">{new Date(record.date).toLocaleDateString()}</p>
+                                                        <p className="text-sm text-gray-500">Appointment {record.appointmentId}</p>
+                                                    </div>
+                                                    <Badge className={getStatusColor(record.status)}>
+                                                        {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                                                    </Badge>
+                                                    </div>
+                                                    <div className="flex items-center gap-4 text-sm">
+                                                    <div className="text-center">
+                                                        <p className="font-medium">{record.temperature}°C</p>
+                                                        <p className="text-gray-500">Temp</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <p className="font-medium">{record.weight}kg</p>
+                                                        <p className="text-gray-500">Weight</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <p className="font-medium">{record.hemoglobin}</p>
+                                                        <p className="text-gray-500">Hb g/dL</p>
+                                                    </div>
+                                                    </div>
                                                 </div>
-                                                <Badge
-                                                    className={getStatusColor(
-                                                        record.status,
-                                                    )}
-                                                >
-                                                    {record.status
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        record.status.slice(1)}
-                                                </Badge>
-                                            </div>
-                                            <div className="flex items-center gap-4 text-sm">
-                                                <div className="text-center">
-                                                    <p className="font-medium">
-                                                        {record.temperature}°C
-                                                    </p>
-                                                    <p className="text-gray-500">
-                                                        Temp
-                                                    </p>
-                                                </div>
-                                                <div className="text-center">
-                                                    <p className="font-medium">
-                                                        {record.weight}kg
-                                                    </p>
-                                                    <p className="text-gray-500">
-                                                        Weight
-                                                    </p>
-                                                </div>
-                                                <div className="text-center">
-                                                    <p className="font-medium">
-                                                        {record.hemoglobin}
-                                                    </p>
-                                                    <p className="text-gray-500">
-                                                        Hb g/dL
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        {selectedRecord === record.id && (
-                                            <div className="mt-4 pt-4 border-t">
-                                                <div className="grid gap-4 md:grid-cols-2">
-                                                    <div>
-                                                        <h4 className="font-medium mb-2">
-                                                            Vital Signs
-                                                        </h4>
-                                                        <div className="space-y-2 text-sm">
-                                                            <div className="flex justify-between">
-                                                                <span>
-                                                                    Temperature:
-                                                                </span>
-                                                                <span>
-                                                                    {
-                                                                        record.temperature
-                                                                    }
-                                                                    °C
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span>
-                                                                    Weight:
-                                                                </span>
-                                                                <span>
-                                                                    {
-                                                                        record.weight
-                                                                    }
-                                                                    kg
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span>
-                                                                    Blood
-                                                                    Pressure:
-                                                                </span>
-                                                                <span>
-                                                                    {
-                                                                        record.bloodPressure
-                                                                    }
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span>
-                                                                    Pulse:
-                                                                </span>
-                                                                <span>
-                                                                    {
-                                                                        record.pulse
-                                                                    }{' '}
-                                                                    bpm
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span>
-                                                                    Hemoglobin:
-                                                                </span>
-                                                                <span>
-                                                                    {
-                                                                        record.hemoglobin
-                                                                    }{' '}
-                                                                    g/dL
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="font-medium mb-2">
-                                                            Medical Notes
-                                                        </h4>
-                                                        <p className="text-sm text-gray-600">
-                                                            {record.notes}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
+                                                </ExpandableCardHeader>
+                                            </ExpandableCard>
+                                        </ExpandableTrigger>
+                                    </Expandable>
                                 ))}
                             </div>
                         </CardContent>
