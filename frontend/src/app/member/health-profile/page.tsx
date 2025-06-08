@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React ,{ useState } from 'react';
 import {
     Card,
     CardContent,
@@ -15,9 +15,26 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AnimatePresence, motion } from "framer-motion"
+import { toast } from "sonner"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExpandableCard } from '@/components/ui/expandable';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
+import {
+    Expandable,
+    ExpandableCard,
+    ExpandableCardContent,
+    ExpandableCardFooter,
+    ExpandableCardHeader,
+    ExpandableContent,
+    ExpandableTrigger,
+} from "@/components/ui/expandable"
 import {
     Heart,
     Activity,
