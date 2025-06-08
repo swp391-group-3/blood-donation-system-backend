@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
@@ -169,6 +170,12 @@ export default function BloodRequestPage() {
                                 This donation period has ended
                             </AlertDescription>
                         </Alert>
+                        <Button
+                            className="w-full mt-2 bg-red-500"
+                            variant="default"
+                        >
+                            Apply Now
+                        </Button>
                     </div>
 
                     <div className="w-80 space-y-6">
