@@ -133,27 +133,26 @@ export default function BloodRequestPage() {
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-sm text-gray-700">
+                                        <span className="text-sm text-zinc-700">
                                             Must be between 18-65 years old
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-sm text-gray-700">
+                                        <span className="text-sm text-zinc-700">
                                             Minimum weight of 50kg
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-sm text-gray-700">
+                                        <span className="text-sm text-zinc-700">
                                             No recent illness or medication
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-sm text-gray-700">
-                                            No tattoos or piercings in the last
-                                            6 months
+                                        <span className="text-sm text-zinc-700">
+                                            No tattoos or piercings in the last 6 months
                                         </span>
                                     </div>
                                 </div>
