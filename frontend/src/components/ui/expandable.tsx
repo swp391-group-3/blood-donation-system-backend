@@ -275,7 +275,12 @@ const ExpandableContent = React.forwardRef<
         const DEFAULT_EXPAND_HEIGHT = 250;
 
         useEffect(() => {
-            console.log('measuredHeight:', measuredHeight, 'isExpanded:', isExpanded);
+            console.log(
+                'measuredHeight:',
+                measuredHeight,
+                'isExpanded:',
+                isExpanded,
+            );
             if (isExpanded) {
                 animatedHeight.set(measuredHeight > 0 ? measuredHeight : 250);
             } else {
