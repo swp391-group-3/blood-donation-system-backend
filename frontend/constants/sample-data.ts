@@ -533,3 +533,25 @@ const blogPosts: BlogPost[] = [
         featured: false,
     },
 ];
+
+// health-profile chart data weight
+export const weightChartData = [
+    {month: "January", weight: 70},
+    {month: "Febuary", weight: 75},
+    {month: "March", weight: 10},
+    {month: "April", weight: 90},
+    {month: "May", weight: 100},
+    {month: "June", weight: 200},
+    {month: "July", weight: 85},
+]
+
+
+export const hemoglobinChartData = [
+    {month: "January", hemoglobin: 1.5},
+    {month: "Febuary", hemoglobin: 1.7},
+    {month: "March", hemoglobin: 2},
+    {month: "April", hemoglobin: 3},
+    {month: "May", hemoglobin: 1},
+    {month: "June", hemoglobin: 1.1},
+    {month: "July", hemoglobin: 1.4},
+]
