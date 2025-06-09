@@ -1,65 +1,14 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertTriangle, Clock, MapPin, Droplet, Zap, Phone, Navigation, Heart, Users, Timer } from "lucide-react"
+import {
+    emergencyRequests
+} from '../../../../constants/sample-data';
 
-const emergencyRequests = [
-  {
-    id: 1,
-    title: "CRITICAL: Multiple Trauma Victims",
-    hospital: "City General Hospital",
-    bloodGroup: "O-",
-    unitsNeeded: 10,
-    unitsSecured: 3,
-    priority: "critical",
-    timePosted: "15 minutes ago",
-    estimatedTime: "2 hours",
-    distance: "2.3 km",
-    description: "Multi-vehicle accident with 4 critical patients requiring immediate blood transfusion",
-    contactPerson: "Dr. Sarah Johnson",
-    contactPhone: "+1-555-0123",
-    address: "123 Medical Drive, Downtown",
-    coordinates: { lat: 40.7128, lng: -74.006 },
-  },
-  {
-    id: 2,
-    title: "URGENT: Pediatric Surgery",
-    hospital: "Children's Hospital",
-    bloodGroup: "A+",
-    unitsNeeded: 5,
-    unitsSecured: 1,
-    priority: "high",
-    timePosted: "32 minutes ago",
-    estimatedTime: "4 hours",
-    distance: "5.1 km",
-    description: "Emergency surgery for 8-year-old patient with internal bleeding",
-    contactPerson: "Dr. Michael Chen",
-    contactPhone: "+1-555-0124",
-    address: "456 Children's Way, Medical District",
-    coordinates: { lat: 40.7589, lng: -73.9851 },
-  },
-  {
-    id: 3,
-    title: "CRITICAL: Cardiac Surgery",
-    hospital: "Heart Institute",
-    bloodGroup: "B-",
-    unitsNeeded: 8,
-    unitsSecured: 2,
-    priority: "critical",
-    timePosted: "1 hour ago",
-    estimatedTime: "6 hours",
-    distance: "8.7 km",
-    description: "Emergency heart surgery requiring rare B- blood type",
-    contactPerson: "Dr. Lisa Rodriguez",
-    contactPhone: "+1-555-0125",
-    address: "789 Cardiac Center Blvd, Uptown",
-    coordinates: { lat: 40.7831, lng: -73.9712 },
-  },
-]
 
 export default function EmergencyPage() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
@@ -117,22 +66,6 @@ export default function EmergencyPage() {
     // In a real app, this would navigate to the emergency response flow
     window.location.href = `/dashboard/emergency/${requestId}/respond`
   }
-
-  const filteredRequests = emergencyRequests
-    .filter((req) => bloodGroupFilter === "all" || req.bloodGroup === bloodGroupFilter)
-    .sort((a, b) => {
-      if (sortBy === "priority") {
-        const priorityOrder = { critical: 3, high: 2, medium: 1, low: 0 }
-        return priorityOrder[b.priority] - priorityOrder[a.priority]
-      }
-      if (sortBy === "distance") {
-        return Number.parseFloat(a.distance) - Number.parseFloat(b.distance)
-      }
-      if (sortBy === "time") {
-        return new Date(a.timePosted).getTime() - new Date(b.timePosted).getTime()
-      }
-      return 0
-    })
 
   return (
       <div className="space-y-6 p-6">
@@ -208,7 +141,7 @@ export default function EmergencyPage() {
 
         {/* Emergency Requests */}
         <div className="space-y-4">
-          {filteredRequests.map((request) => (
+          {emergencyRequests.map((request) => (
             <Card key={request.id} className="border-l-4 border-l-red-500 shadow-lg">
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -313,7 +246,6 @@ export default function EmergencyPage() {
           ))}
         </div>
 
-        {/* Emergency Response Tips */}
         <Card className="bg-blue-50 border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
