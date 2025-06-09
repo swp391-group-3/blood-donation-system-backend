@@ -522,3 +522,15 @@ export const hemoglobinChartData = [
     {month: "June", hemoglobin: 1.1},
     {month: "July", hemoglobin: 1.4},
 ]
+
+// sample data for blood donation blog
+export const bloodDonationTags = [
+    { value: "blood-donation", label: "Blood Donation" },
+    { value: "health-tips", label: "Health Tips" },
+    { value: "blood-types", label: "Blood Types" },
+    { value: "volunteer", label: "Volunteer" },
+    { value: "donor-stories", label: "Donor Stories" },
+    { value: "blood-drive", label: "Blood Drive" },
+    { value: "medical-facts", label: "Medical Facts" },
+    { value: "faq", label: "FAQ" },
+  ];
