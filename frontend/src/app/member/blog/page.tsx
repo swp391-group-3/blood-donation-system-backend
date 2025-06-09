@@ -30,7 +30,7 @@ import {
     Eye,
     Filter,
 } from 'lucide-react';
-
+import {blogPosts} from "../../../../constants/sample-data"
 
 export default function BlogPage() {
     const [role, setRole] = useState<string | null>(null);
@@ -43,151 +43,6 @@ export default function BlogPage() {
         setRole(userRole);
     }, []);
 
-    // Mock blog posts data
-    const blogPosts: BlogPost[] = [
-        {
-            id: 'post-001',
-            title: 'The Importance of Regular Blood Donation',
-            excerpt:
-                'Learn why regular blood donation is crucial for maintaining adequate blood supplies and how it benefits both donors and recipients.',
-            content: 'Full content here...',
-            author: {
-                name: 'Dr. Sarah Johnson',
-                role: 'staff',
-                initials: 'SJ',
-            },
-            category: 'Health & Wellness',
-            tags: ['donation', 'health', 'community'],
-            publishedAt: '2023-05-28',
-            readTime: 5,
-            likes: 24,
-            comments: 8,
-            views: 156,
-            featured: true,
-        },
-        {
-            id: 'post-002',
-            title: 'My First Blood Donation Experience',
-            excerpt:
-                'A personal story about overcoming fears and making a difference through blood donation.',
-            content: 'Full content here...',
-            author: {
-                name: 'Michael Chen',
-                role: 'member',
-                initials: 'MC',
-            },
-            category: 'Personal Stories',
-            tags: ['experience', 'first-time', 'inspiration'],
-            publishedAt: '2023-05-27',
-            readTime: 3,
-            likes: 18,
-            comments: 12,
-            views: 89,
-            featured: false,
-        },
-        {
-            id: 'post-003',
-            title: 'Blood Types and Compatibility: A Complete Guide',
-            excerpt:
-                'Understanding different blood types, compatibility, and why certain types are more in demand.',
-            content: 'Full content here...',
-            author: {
-                name: 'Dr. Emily Rodriguez',
-                role: 'staff',
-                initials: 'ER',
-            },
-            category: 'Education',
-            tags: ['blood-types', 'compatibility', 'education'],
-            publishedAt: '2023-05-26',
-            readTime: 7,
-            likes: 31,
-            comments: 5,
-            views: 203,
-            featured: true,
-        },
-        {
-            id: 'post-004',
-            title: 'Community Blood Drive Success Story',
-            excerpt:
-                'How our recent community blood drive exceeded expectations and made a real impact.',
-            content: 'Full content here...',
-            author: {
-                name: 'Jennifer Adams',
-                role: 'staff',
-                initials: 'JA',
-            },
-            category: 'Community',
-            tags: ['community', 'success', 'impact'],
-            publishedAt: '2023-05-25',
-            readTime: 4,
-            likes: 15,
-            comments: 7,
-            views: 112,
-            featured: false,
-        },
-        {
-            id: 'post-005',
-            title: 'Preparing for Your Blood Donation',
-            excerpt:
-                "Essential tips and guidelines to ensure you're ready for a successful blood donation.",
-            content: 'Full content here...',
-            author: {
-                name: 'Robert Kim',
-                role: 'member',
-                initials: 'RK',
-            },
-            category: 'Tips & Guides',
-            tags: ['preparation', 'tips', 'donation'],
-            publishedAt: '2023-05-24',
-            readTime: 6,
-            likes: 22,
-            comments: 9,
-            views: 134,
-            featured: false,
-        },
-        {
-            id: 'post-006',
-            title: 'The Science Behind Blood Storage',
-            excerpt:
-                'Exploring how blood is processed, stored, and maintained to ensure safety and effectiveness.',
-            content: 'Full content here...',
-            author: {
-                name: 'Dr. Amanda Foster',
-                role: 'staff',
-                initials: 'AF',
-            },
-            category: 'Science & Technology',
-            tags: ['science', 'storage', 'technology'],
-            publishedAt: '2023-05-23',
-            readTime: 8,
-            likes: 19,
-            comments: 4,
-            views: 87,
-            featured: false,
-        },
-    ];
-
-    // Filter posts based on search and category
-    const filteredPosts = blogPosts.filter((post) => {
-        const matchesSearch =
-            post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            post.tags.some((tag) =>
-                tag.toLowerCase().includes(searchQuery.toLowerCase()),
-            );
-
-        const matchesCategory =
-            selectedCategory === 'all' || post.category === selectedCategory;
-
-        const matchesTab =
-            selectedTab === 'all' ||
-            (selectedTab === 'featured' && post.featured) ||
-            (selectedTab === 'my-posts' && post.author.name === 'John Doe'); // Mock current user
-
-        return matchesSearch && matchesCategory && matchesTab;
-    });
-
-    const featuredPosts = blogPosts.filter((post) => post.featured);
 
     return (
         <div className="space-y-6 p-6">
@@ -206,7 +61,6 @@ export default function BlogPage() {
                 </Button>
             </div>
 
-            {/* Search and Filters */}
             <Card>
                 <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -227,88 +81,10 @@ export default function BlogPage() {
                                 <Filter className="mr-2 h-4 w-4" />
                                 <SelectValue placeholder="Category" />
                             </SelectTrigger>
-                            <SelectContent>
-                                {categories.map((category) => (
-                                    <SelectItem key={category} value={category}>
-                                        {category === 'all'
-                                            ? 'All Categories'
-                                            : category}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
                         </Select>
                     </div>
                 </CardContent>
             </Card>
-
-            {/* Featured Posts */}
-            {featuredPosts.length > 0 && selectedTab === 'all' && (
-                <div>
-                    <h2 className="text-lg font-semibold mb-4">
-                        Featured Posts
-                    </h2>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {featuredPosts.slice(0, 2).map((post) => (
-                            <Card
-                                key={post.id}
-                                className="border-2 border-blue-200 bg-blue-50"
-                            >
-                                <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <Badge className="bg-blue-600 text-white">
-                                            Featured
-                                        </Badge>
-                                        <Badge variant="outline">
-                                            {post.category}
-                                        </Badge>
-                                    </div>
-                                    <CardTitle className="line-clamp-2">
-                                        <Link
-                                            href={`/dashboard/blog/${post.id}`}
-                                            className="hover:text-blue-600"
-                                        >
-                                            {post.title}
-                                        </Link>
-                                    </CardTitle>
-                                    <CardDescription className="line-clamp-3">
-                                        {post.excerpt}
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center justify-between text-sm text-gray-500">
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex items-center gap-2">
-                                                <Avatar className="h-6 w-6">
-                                                    <AvatarFallback className="text-xs">
-                                                        {post.author.initials}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <span>{post.author.name}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <Calendar className="h-4 w-4" />
-                                                {new Date(
-                                                    post.publishedAt,
-                                                ).toLocaleDateString()}
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex items-center gap-1">
-                                                <Heart className="h-4 w-4" />
-                                                {post.likes}
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <MessageCircle className="h-4 w-4" />
-                                                {post.comments}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            )}
 
             {/* Blog Posts Tabs */}
             <Tabs value={selectedTab} onValueChange={setSelectedTab}>
@@ -319,9 +95,9 @@ export default function BlogPage() {
                 </TabsList>
 
                 <TabsContent value={selectedTab} className="space-y-6">
-                    {filteredPosts.length > 0 ? (
+                    {blogPosts.length > 0 ? (
                         <div className="grid gap-6">
-                            {filteredPosts.map((post) => (
+                            {blogPosts.map((post) => (
                                 <Card
                                     key={post.id}
                                     className="hover:shadow-md transition-shadow"
@@ -330,14 +106,6 @@ export default function BlogPage() {
                                         <div className="flex items-start justify-between gap-4">
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <Badge variant="outline">
-                                                        {post.category}
-                                                    </Badge>
-                                                    {post.featured && (
-                                                        <Badge className="bg-blue-600 text-white">
-                                                            Featured
-                                                        </Badge>
-                                                    )}
                                                     <Badge
                                                         variant="outline"
                                                         className={
@@ -385,23 +153,6 @@ export default function BlogPage() {
                                                     {new Date(
                                                         post.publishedAt,
                                                     ).toLocaleDateString()}
-                                                </div>
-                                                <span>
-                                                    {post.readTime} min read
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-4 text-sm text-gray-500">
-                                                <div className="flex items-center gap-1">
-                                                    <Eye className="h-4 w-4" />
-                                                    {post.views}
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <Heart className="h-4 w-4" />
-                                                    {post.likes}
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <MessageCircle className="h-4 w-4" />
-                                                    {post.comments}
                                                 </div>
                                             </div>
                                         </div>
