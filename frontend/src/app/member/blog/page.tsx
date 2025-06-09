@@ -1,5 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import {
     Card,
@@ -31,6 +34,12 @@ import {
     Filter,
 } from 'lucide-react';
 import {blogPosts} from "../../../../constants/sample-data"
+
+const schema = z.object({
+    searchTerm: z.string().optional().default(''),
+    tag: z.string().default('all'),
+});
+export type SearchFormValues = z.infer<typeof schema>;
 
 export default function BlogPage() {
     const [role, setRole] = useState<string | null>(null);
