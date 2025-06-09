@@ -38,7 +38,7 @@ import {
     Tags,
     CircleCheckBig,
 } from 'lucide-react';
-import { blogPosts, bloodDonationTags } from "../../../../constants/sample-data"
+import { blogPosts, bloodDonationTags, emptyBlogList } from "../../../../constants/sample-data"
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),
@@ -222,9 +222,7 @@ export default function BlogPage() {
                                     No posts found
                                 </h3>
                                 <p className="text-gray-500 mb-4">
-                                    {searchQuery || selectedCategory !== 'all'
-                                        ? 'Try adjusting your search or filters'
-                                        : 'Be the first to share your story!'}
+                                    "Be the first to share your story!"
                                 </p>
                                 <Button asChild>
                                     <Link href="/dashboard/blog/new">
