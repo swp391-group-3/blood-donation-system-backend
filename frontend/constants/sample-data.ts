@@ -42,10 +42,7 @@ export const sidebarItems = [
         label: 'Emergency Alerts',
         href: '/member/emergency',
     },
-    {   icon: Settings, 
-        label: 'Settings', 
-        href: '/member/profile' 
-    },
+    { icon: Settings, label: 'Settings', href: '/member/profile' },
 ];
 
 export const requests = [
