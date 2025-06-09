@@ -36,6 +36,7 @@ import {
     ChartLine,
     Tag,
     Tags,
+    CircleCheckBig,
 } from 'lucide-react';
 import { blogPosts, bloodDonationTags } from "../../../../constants/sample-data"
 
@@ -142,11 +143,9 @@ export default function BlogPage() {
                 </form>
             </Form>
 
-            {/* Blog Posts Tabs */}
             <Tabs value={selectedTab} onValueChange={setSelectedTab}>
                 <TabsList>
                     <TabsTrigger value="all">All Posts</TabsTrigger>
-                    <TabsTrigger value="featured">Featured</TabsTrigger>
                     <TabsTrigger value="my-posts">My Posts</TabsTrigger>
                 </TabsList>
 
@@ -161,23 +160,10 @@ export default function BlogPage() {
                                     <CardHeader>
                                         <div className="flex items-start justify-between gap-4">
                                             <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Badge
-                                                        variant="outline"
-                                                        className={
-                                                            post.author.role ===
-                                                            'staff'
-                                                                ? 'bg-purple-50 text-purple-700 border-purple-200'
-                                                                : 'bg-green-50 text-green-700 border-green-200'
-                                                        }
-                                                    >
-                                                        {post.author.role}
-                                                    </Badge>
-                                                </div>
                                                 <CardTitle className="line-clamp-2">
                                                     <Link
                                                         href={`/dashboard/blog/${post.id}`}
-                                                        className="hover:text-blue-600"
+                                                        className="hover:text-blue-500"
                                                     >
                                                         {post.title}
                                                     </Link>
@@ -203,6 +189,7 @@ export default function BlogPage() {
                                                     <span>
                                                         {post.author.name}
                                                     </span>
+                                                    {post.author.role === "staff" && <CircleCheckBig className="w-4 h-4 stroke-green-500"/>}
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="h-4 w-4" />
