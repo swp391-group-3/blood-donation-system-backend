@@ -201,7 +201,7 @@ export default function HealthRecordsPage() {
                                         <ExpandableTrigger>
                                             <ExpandableCard
                                                 collapsedSize={{ width: "100%", height: 100 }}
-                                                expandedSize={{ width: "100%", height: 320 }}
+                                                expandedSize={{ width: "100%", height: 360 }}
                                                 hoverToExpand={false}
                                                 expandDelay={100}
                                                 collapseDelay={400}
@@ -233,6 +233,7 @@ export default function HealthRecordsPage() {
                                                 </ExpandableCardHeader>
                                                 <ExpandableCardContent>
                                                     <ExpandableContent
+                                                        //style={{ overflow: 'hidden ' }}
                                                         preset="blur-sm"
                                                         stagger
                                                         staggerChildren={1}
@@ -244,9 +245,8 @@ export default function HealthRecordsPage() {
                                                         }}
                                                     >
                                                         <div className="mt-4 pt-4 border-t">
-                                                            <div className="grid gap-4 md:grid-cols-2">
+                                                            <div className="grid gap-4 md:grid-cols-1">
                                                                 <div>
-                                                                    <h4 className="font-medium mb-2">Vital Signs</h4>
                                                                     <div className="space-y-2 text-sm">
                                                                         <div className="flex justify-between">
                                                                             <span>Temperature:</span>
@@ -275,7 +275,7 @@ export default function HealthRecordsPage() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div>
+                                                                <div className="flex justify-between">
                                                                     <h4 className="font-medium mb-2">Medical Notes</h4>
                                                                     <p className="text-sm text-gray-600">{record.notes}</p>
                                                                 </div>
