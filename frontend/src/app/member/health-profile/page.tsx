@@ -189,77 +189,150 @@ export default function HealthRecordsPage() {
                             <div className="space-y-4">
                                 {mockHealthRecords.map((record) => (
                                     <Card
-                                    key={record.id}
-                                    className={
-                                      "transition-colors cursor-pointer border " +
-                                      (selectedRecord === record.id
-                                        ? "border-primary/60 shadow-lg"
-                                        : "hover:bg-muted/30")
-                                    }
-                                    onClick={() => setSelectedRecord(selectedRecord === record.id ? null : record.id)}
-                                  >
-                                    <CardHeader className="pb-3 flex flex-row items-center justify-between gap-4">
-                                      <div className="flex items-center gap-4">
-                                        <div>
-                                          <CardTitle className="text-base">{new Date(record.date).toLocaleDateString()}</CardTitle>
-                                          <CardDescription>Appointment {record.appointmentId}</CardDescription>
-                                        </div>
-                                        <Badge className={getStatusColor(record.status)}>
-                                          {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
-                                        </Badge>
-                                      </div>
-                                      <div className="flex items-center gap-4 text-sm">
-                                        <div className="text-center">
-                                          <p className="font-medium">{record.temperature}°C</p>
-                                          <p className="text-gray-500">Temp</p>
-                                        </div>
-                                        <div className="text-center">
-                                          <p className="font-medium">{record.weight}kg</p>
-                                          <p className="text-gray-500">Weight</p>
-                                        </div>
-                                        <div className="text-center">
-                                          <p className="font-medium">{record.hemoglobin}</p>
-                                          <p className="text-gray-500">Hb g/dL</p>
-                                        </div>
-                                      </div>
-                                    </CardHeader>
-                          
-                                    {selectedRecord === record.id && (
-                                      <CardContent className="border-t pt-4">
-                                        <div className="grid gap-4 md:grid-cols-2">
-                                          <div>
-                                            <h4 className="font-medium mb-2">Vital Signs</h4>
-                                            <div className="space-y-2 text-sm">
-                                              <div className="flex justify-between">
-                                                <span>Temperature:</span>
-                                                <span>{record.temperature}°C</span>
-                                              </div>
-                                              <div className="flex justify-between">
-                                                <span>Weight:</span>
-                                                <span>{record.weight}kg</span>
-                                              </div>
-                                              <div className="flex justify-between">
-                                                <span>Blood Pressure:</span>
-                                                <span>{record.bloodPressure}</span>
-                                              </div>
-                                              <div className="flex justify-between">
-                                                <span>Pulse:</span>
-                                                <span>{record.pulse} bpm</span>
-                                              </div>
-                                              <div className="flex justify-between">
-                                                <span>Hemoglobin:</span>
-                                                <span>{record.hemoglobin} g/dL</span>
-                                              </div>
+                                        key={record.id}
+                                        className={
+                                            'transition-colors cursor-pointer border ' +
+                                            (selectedRecord === record.id
+                                                ? 'border-primary/60 shadow-lg'
+                                                : 'hover:bg-muted/30')
+                                        }
+                                        onClick={() =>
+                                            setSelectedRecord(
+                                                selectedRecord === record.id
+                                                    ? null
+                                                    : record.id,
+                                            )
+                                        }
+                                    >
+                                        <CardHeader className="pb-3 flex flex-row items-center justify-between gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <CardTitle className="text-base">
+                                                        {new Date(
+                                                            record.date,
+                                                        ).toLocaleDateString()}
+                                                    </CardTitle>
+                                                    <CardDescription>
+                                                        Appointment{' '}
+                                                        {record.appointmentId}
+                                                    </CardDescription>
+                                                </div>
+                                                <Badge
+                                                    className={getStatusColor(
+                                                        record.status,
+                                                    )}
+                                                >
+                                                    {record.status
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        record.status.slice(1)}
+                                                </Badge>
                                             </div>
-                                          </div>
-                                          <div>
-                                            <h4 className="font-medium mb-2">Medical Notes</h4>
-                                            <p className="text-sm text-gray-600">{record.notes}</p>
-                                          </div>
-                                        </div>
-                                      </CardContent>
-                                    )}
-                                  </Card>
+                                            <div className="flex items-center gap-4 text-sm">
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.temperature}°C
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Temp
+                                                    </p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.weight}kg
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Weight
+                                                    </p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.hemoglobin}
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Hb g/dL
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
+
+                                        {selectedRecord === record.id && (
+                                            <CardContent className="border-t pt-4">
+                                                <div className="grid gap-4 md:grid-cols-2">
+                                                    <div>
+                                                        <h4 className="font-medium mb-2">
+                                                            Vital Signs
+                                                        </h4>
+                                                        <div className="space-y-2 text-sm">
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Temperature:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.temperature
+                                                                    }
+                                                                    °C
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Weight:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.weight
+                                                                    }
+                                                                    kg
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Blood
+                                                                    Pressure:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.bloodPressure
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Pulse:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.pulse
+                                                                    }{' '}
+                                                                    bpm
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Hemoglobin:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.hemoglobin
+                                                                    }{' '}
+                                                                    g/dL
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="font-medium mb-2">
+                                                            Medical Notes
+                                                        </h4>
+                                                        <p className="text-sm text-gray-600">
+                                                            {record.notes}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        )}
+                                    </Card>
                                 ))}
                             </div>
                         </CardContent>
