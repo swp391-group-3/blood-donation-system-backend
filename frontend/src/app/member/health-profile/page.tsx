@@ -1,12 +1,20 @@
 'use client';
 import React, { useState } from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis} from "recharts"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
+    CardFooter
 } from '@/components/ui/card';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/components/ui/chart"
 import {
     Select,
     SelectContent,
@@ -39,8 +47,16 @@ import {
 import {
     mockHealthRecords,
     mockHealthTrends,
+    weightChartData,
 } from '../../../../constants/sample-data';
 
+
+const chartConfig = {
+    weight: {
+        label: "Weight",
+        color: "oklch(70.7% 0.165 254.624)" // blue-400 tailwindcss
+    }
+}
 export default function HealthRecordsPage() {
     const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
 
@@ -361,7 +377,7 @@ export default function HealthRecordsPage() {
                                             +2kg (3 months)
                                         </span>
                                     </div>
-                                    <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
+                                    {/* <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
                                         {mockHealthTrends.weight.map(
                                             (weight, index) => (
                                                 <div
@@ -381,7 +397,8 @@ export default function HealthRecordsPage() {
                                                 </div>
                                             ),
                                         )}
-                                    </div>
+                                    </div> */}
+
                                 </div>
                             </CardContent>
                         </Card>
