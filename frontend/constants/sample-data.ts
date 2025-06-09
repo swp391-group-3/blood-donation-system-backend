@@ -410,8 +410,10 @@ export const emergencyRequests = [
         coordinates: { lat: 40.7831, lng: -73.9712 },
     },
 ];
+
 // sample-data of blog
-const blogPosts: BlogPost[] = [
+export const blogPosts = [
+    
     {
         id: 'post-001',
         title: 'The Importance of Regular Blood Donation',
@@ -423,14 +425,8 @@ const blogPosts: BlogPost[] = [
             role: 'staff',
             initials: 'SJ',
         },
-        category: 'Health & Wellness',
         tags: ['donation', 'health', 'community'],
         publishedAt: '2023-05-28',
-        readTime: 5,
-        likes: 24,
-        comments: 8,
-        views: 156,
-        featured: true,
     },
     {
         id: 'post-002',
@@ -443,14 +439,9 @@ const blogPosts: BlogPost[] = [
             role: 'member',
             initials: 'MC',
         },
-        category: 'Personal Stories',
+
         tags: ['experience', 'first-time', 'inspiration'],
         publishedAt: '2023-05-27',
-        readTime: 3,
-        likes: 18,
-        comments: 12,
-        views: 89,
-        featured: false,
     },
     {
         id: 'post-003',
@@ -463,14 +454,8 @@ const blogPosts: BlogPost[] = [
             role: 'staff',
             initials: 'ER',
         },
-        category: 'Education',
         tags: ['blood-types', 'compatibility', 'education'],
         publishedAt: '2023-05-26',
-        readTime: 7,
-        likes: 31,
-        comments: 5,
-        views: 203,
-        featured: true,
     },
     {
         id: 'post-004',
@@ -483,14 +468,8 @@ const blogPosts: BlogPost[] = [
             role: 'staff',
             initials: 'JA',
         },
-        category: 'Community',
         tags: ['community', 'success', 'impact'],
         publishedAt: '2023-05-25',
-        readTime: 4,
-        likes: 15,
-        comments: 7,
-        views: 112,
-        featured: false,
     },
     {
         id: 'post-005',
@@ -503,14 +482,8 @@ const blogPosts: BlogPost[] = [
             role: 'member',
             initials: 'RK',
         },
-        category: 'Tips & Guides',
         tags: ['preparation', 'tips', 'donation'],
         publishedAt: '2023-05-24',
-        readTime: 6,
-        likes: 22,
-        comments: 9,
-        views: 134,
-        featured: false,
     },
     {
         id: 'post-006',
@@ -523,14 +496,8 @@ const blogPosts: BlogPost[] = [
             role: 'staff',
             initials: 'AF',
         },
-        category: 'Science & Technology',
         tags: ['science', 'storage', 'technology'],
         publishedAt: '2023-05-23',
-        readTime: 8,
-        likes: 19,
-        comments: 4,
-        views: 87,
-        featured: false,
     },
 ];
 
