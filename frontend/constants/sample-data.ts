@@ -544,3 +544,14 @@ export const weightChartData = [
     {month: "June", weight: 200},
     {month: "July", weight: 85},
 ]
+
+
+export const hemoglobinChartData = [
+    {month: "January", hemoglobin: 1.5},
+    {month: "Febuary", hemoglobin: 1.7},
+    {month: "March", hemoglobin: 2},
+    {month: "April", hemoglobin: 3},
+    {month: "May", hemoglobin: 1},
+    {month: "June", hemoglobin: 1.1},
+    {month: "July", hemoglobin: 1.4},
+]
