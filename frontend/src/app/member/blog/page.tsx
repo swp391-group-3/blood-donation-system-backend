@@ -42,6 +42,15 @@ const schema = z.object({
 export type SearchFormValues = z.infer<typeof schema>;
 
 export default function BlogPage() {
+
+    const form = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            searchTerm: '',
+            tag: 'all',
+        }
+    });
+    
     const [role, setRole] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
