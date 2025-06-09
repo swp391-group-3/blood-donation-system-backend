@@ -398,7 +398,31 @@ export default function HealthRecordsPage() {
                                             ),
                                         )}
                                     </div> */}
-
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>Bar Chart - Weight</CardTitle>
+                                            <CardDescription>January - July 2025</CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <ChartContainer config={chartConfig}>
+                                                <BarChart accessibilityLayer data={weightChartData}>
+                                                    <CartesianGrid vertical={false}/>
+                                                    <XAxis 
+                                                        dataKey="month"
+                                                        // tickline={false}
+                                                        tickMargin={10}
+                                                        axisLine={false}
+                                                        tickFormatter={(value) => value.slice(0,3)}
+                                                    />
+                                                    <ChartTooltip 
+                                                        cursor={false}
+                                                        content={<ChartTooltipContent hideLabel/>}
+                                                    />
+                                                    <Bar dataKey="weight" fill="oklch(70.7% 0.165 254.624)" radius={8}/>
+                                                </BarChart>
+                                            </ChartContainer>
+                                        </CardContent>
+                                    </Card>
                                 </div>
                             </CardContent>
                         </Card>
