@@ -48,6 +48,7 @@ import {
     mockHealthRecords,
     mockHealthTrends,
     weightChartData,
+    hemoglobinChartData
 } from '../../../../constants/sample-data';
 
 
@@ -377,27 +378,6 @@ export default function HealthRecordsPage() {
                                             +2kg (3 months)
                                         </span>
                                     </div>
-                                    {/* <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
-                                        {mockHealthTrends.weight.map(
-                                            (weight, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex flex-col items-center"
-                                                >
-                                                    <div
-                                                        className="bg-blue-500 rounded-t"
-                                                        style={{
-                                                            height: `${(weight / Math.max(...mockHealthTrends.weight)) * 80}px`,
-                                                            width: '20px',
-                                                        }}
-                                                    />
-                                                    <span className="text-xs mt-1">
-                                                        {weight}kg
-                                                    </span>
-                                                </div>
-                                            ),
-                                        )}
-                                    </div> */}
                                     <Card>
                                         <CardHeader>
                                             <CardTitle>Bar Chart - Weight</CardTitle>
@@ -409,7 +389,6 @@ export default function HealthRecordsPage() {
                                                     <CartesianGrid vertical={false}/>
                                                     <XAxis 
                                                         dataKey="month"
-                                                        // tickline={false}
                                                         tickMargin={10}
                                                         axisLine={false}
                                                         tickFormatter={(value) => value.slice(0,3)}
@@ -444,27 +423,30 @@ export default function HealthRecordsPage() {
                                             Stable
                                         </span>
                                     </div>
-                                    <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
-                                        {mockHealthTrends.hemoglobin.map(
-                                            (hb, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex flex-col items-center"
-                                                >
-                                                    <div
-                                                        className="bg-red-500 rounded-t"
-                                                        style={{
-                                                            height: `${(hb / Math.max(...mockHealthTrends.hemoglobin)) * 80}px`,
-                                                            width: '20px',
-                                                        }}
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>Bar Chart - Hemoglobin</CardTitle>
+                                            <CardDescription>January - July 2025</CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <ChartContainer config={chartConfig}>
+                                                <BarChart accessibilityLayer data={hemoglobinChartData}>
+                                                    <CartesianGrid vertical={false}/>
+                                                    <XAxis 
+                                                        dataKey="month"
+                                                        tickMargin={10}
+                                                        axisLine={false}
+                                                        tickFormatter={(value) => value.slice(0,3)}
                                                     />
-                                                    <span className="text-xs mt-1">
-                                                        {hb}
-                                                    </span>
-                                                </div>
-                                            ),
-                                        )}
-                                    </div>
+                                                    <ChartTooltip 
+                                                        cursor={false}
+                                                        content={<ChartTooltipContent hideLabel/>}
+                                                    />
+                                                    <Bar dataKey="hemoglobin" fill="oklch(63.7% 0.237 25.331)" radius={8}/>
+                                                </BarChart>
+                                            </ChartContainer>
+                                        </CardContent>
+                                    </Card>
                                 </div>
                             </CardContent>
                         </Card>
