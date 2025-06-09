@@ -268,7 +268,7 @@ const ExpandableContent = React.forwardRef<
         // useMeasure is used to measure the height of the content
         const [measureRef, { height: measuredHeight }] = useMeasure();
         // useMotionValue creates a value that can be animated smoothly
-        const animatedHeight = useMotionValue(0);
+        const animatedHeight = useMotionValue(250);
         // useSpring applies a spring animation to the height value
         const smoothHeight = useSpring(animatedHeight, springConfig);
 
@@ -296,7 +296,7 @@ const ExpandableContent = React.forwardRef<
                 ref={ref}
                 style={{
                     height: smoothHeight,
-                    overflow: 'hidden',
+                    overflow: 'auto',
                 }}
                 transition={{ duration: transitionDuration, ease: easeType }}
                 {...props}
@@ -395,7 +395,7 @@ const ExpandableCard = React.forwardRef<HTMLDivElement, ExpandableCardProps>(
 
         // Create motion values for width and height
         const animatedWidth = useMotionValue(collapsedSize.width || 0);
-        const animatedHeight = useMotionValue(collapsedSize.height || 0);
+        const animatedHeight = useMotionValue(225 || 0);
 
         // Apply spring animation to the motion values
         const smoothWidth = useSpring(animatedWidth, springConfig);
