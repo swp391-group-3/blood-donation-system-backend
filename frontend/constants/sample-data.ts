@@ -7,6 +7,7 @@ import {
     Heart,
     CircleAlert,
     Settings,
+    BookOpen,
 } from 'lucide-react';
 
 export const sidebarItems = [
@@ -15,6 +16,11 @@ export const sidebarItems = [
         icon: Droplet,
         label: 'Blood Requests',
         href: '/member/request',
+    },
+    {
+        icon: BookOpen,
+        label: 'Blog',
+        href: '/member/blog',
     },
     {
         icon: Calendar,
