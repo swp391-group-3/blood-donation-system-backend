@@ -272,10 +272,12 @@ const ExpandableContent = React.forwardRef<
         // useSpring applies a spring animation to the height value
         const smoothHeight = useSpring(animatedHeight, springConfig);
 
+        const DEFAULT_EXPAND_HEIGHT = 250;
+
         useEffect(() => {
-            // Animate the height based on whether the content is expanded or collapsed
+            console.log('measuredHeight:', measuredHeight, 'isExpanded:', isExpanded);
             if (isExpanded) {
-                animatedHeight.set(measuredHeight);
+                animatedHeight.set(measuredHeight > 0 ? measuredHeight : 250);
             } else {
                 animatedHeight.set(0);
             }
@@ -300,6 +302,7 @@ const ExpandableContent = React.forwardRef<
                         // This motion.div handles the animation of the content itself
                         <motion.div
                             ref={measureRef}
+                            style={{ height: '250' }}
                             initial={animationProps.initial}
                             animate={animationProps.animate}
                             exit={animationProps.exit}
