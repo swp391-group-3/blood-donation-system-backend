@@ -7,6 +7,13 @@ pub struct CreateParams {
     pub amount: i32,
     pub expired_time: crate::types::time::TimestampTz,
 }
+#[derive(Clone, Copy, Debug)]
+pub struct UpdateParams {
+    pub component: Option<ctypes::BloodComponent>,
+    pub amount: Option<i32>,
+    pub expired_time: Option<crate::types::time::TimestampTz>,
+    pub id: uuid::Uuid,
+}
 #[derive(Debug, Clone, PartialEq, Copy)]
 pub struct Get {
     pub id: uuid::Uuid,
@@ -331,5 +338,54 @@ impl DeleteStmt {
     ) -> Result<u64, tokio_postgres::Error> {
         let stmt = self.0.prepare(client).await?;
         client.execute(stmt, &[id]).await
+    }
+}
+pub fn update() -> UpdateStmt {
+    UpdateStmt(crate::client::async_::Stmt::new(
+        "UPDATE blood_bags SET component = COALESCE($1, component), amount = COALESCE($2, amount), expired_time = COALESCE($3, expired_time) WHERE id = $4",
+    ))
+}
+pub struct UpdateStmt(crate::client::async_::Stmt);
+impl UpdateStmt {
+    pub async fn bind<'c, 'a, 's, C: GenericClient>(
+        &'s mut self,
+        client: &'c C,
+        component: &'a Option<ctypes::BloodComponent>,
+        amount: &'a Option<i32>,
+        expired_time: &'a Option<crate::types::time::TimestampTz>,
+        id: &'a uuid::Uuid,
+    ) -> Result<u64, tokio_postgres::Error> {
+        let stmt = self.0.prepare(client).await?;
+        client
+            .execute(stmt, &[component, amount, expired_time, id])
+            .await
+    }
+}
+impl<'a, C: GenericClient + Send + Sync>
+    crate::client::async_::Params<
+        'a,
+        'a,
+        'a,
+        UpdateParams,
+        std::pin::Pin<
+            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+        >,
+        C,
+    > for UpdateStmt
+{
+    fn params(
+        &'a mut self,
+        client: &'a C,
+        params: &'a UpdateParams,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
+    > {
+        Box::pin(self.bind(
+            client,
+            &params.component,
+            &params.amount,
+            &params.expired_time,
+            &params.id,
+        ))
     }
 }
