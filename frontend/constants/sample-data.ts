@@ -535,3 +535,6 @@ export const bloodDonationTags = [
     { value: "medical-facts", label: "Medical Facts" },
     { value: "faq", label: "FAQ" },
   ];
+
+// empty blog list to test the empty list state
+export const emptyBlogList = [];
