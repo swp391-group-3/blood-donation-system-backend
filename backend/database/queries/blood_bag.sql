@@ -26,3 +26,11 @@ RETURNING id;
 UPDATE blood_bags
 SET is_used = true
 WHERE id = :id;
+
+--! update (component?, amount?, expired_time?)
+UPDATE blood_bags
+SET
+    component = COALESCE(:component, component),
+    amount = COALESCE(:amount, amount),
+    expired_time = COALESCE(:expired_time, expired_time)
+WHERE id = :id;

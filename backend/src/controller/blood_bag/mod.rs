@@ -2,6 +2,7 @@ mod create;
 mod delete;
 mod get;
 mod get_all;
+mod update;
 
 use std::sync::Arc;
 
@@ -20,6 +21,7 @@ pub use create::*;
 pub use delete::*;
 pub use get::*;
 pub use get_all::*;
+pub use update::*;
 
 #[derive(Serialize, ToSchema, Mapper)]
 #[mapper(derive(from(custom = "from_get_all"), ty = GetAll))]
@@ -39,6 +41,7 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .route("/blood-bag/{id}", routing::get(get))
         .route("/donation/{id}/blood-bag", routing::post(create))
         .route("/blood-bag/{id}", routing::delete(delete))
+        .route("/blood-bag/{id}", routing::patch(update))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Staff),
