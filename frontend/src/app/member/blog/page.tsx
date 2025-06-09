@@ -54,15 +54,7 @@ export default function BlogPage() {
         },
     });
 
-    const [role, setRole] = useState<string | null>(null);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedTab, setSelectedTab] = useState('all');
-
-    useEffect(() => {
-        const userRole = localStorage.getItem('userRole') || 'member';
-        setRole(userRole);
-    }, []);
 
     function handleSearch() {
         // come in future
