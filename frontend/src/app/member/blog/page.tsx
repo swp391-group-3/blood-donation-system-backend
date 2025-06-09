@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
@@ -221,7 +220,6 @@ export default function BlogPage() {
 
     return (
         <div className="space-y-6 p-6">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold">Blog</h1>

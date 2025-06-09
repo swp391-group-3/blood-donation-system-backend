@@ -367,18 +367,18 @@ export default function HealthRecordsPage() {
                                                                                 g/dL
                                                                             </span>
                                                                         </div>
+                                                                        <div className="flex justify-between">
+                                                                            <h4 className="font-medium mb-2">
+                                                                                Medical
+                                                                                Notes
+                                                                            </h4>
+                                                                            <p className="text-sm text-gray-600">
+                                                                                {
+                                                                                    record.notes
+                                                                                }
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className="flex justify-between">
-                                                                    <h4 className="font-medium mb-2">
-                                                                        Medical
-                                                                        Notes
-                                                                    </h4>
-                                                                    <p className="text-sm text-gray-600">
-                                                                        {
-                                                                            record.notes
-                                                                        }
-                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
