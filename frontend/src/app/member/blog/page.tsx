@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -50,7 +51,7 @@ export default function BlogPage() {
             tag: 'all',
         }
     });
-    
+
     const [role, setRole] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -60,14 +61,18 @@ export default function BlogPage() {
         const userRole = localStorage.getItem('userRole') || 'member';
         setRole(userRole);
     }, []);
-
+    
+    function handleSearch() {
+        // come in future
+    }
+ 
 
     return (
         <div className="space-y-6 p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold">Blog</h1>
-                    <p className="text-gray-500">
+                    <h1 className="text-3xl font-bold">Blog</h1>
+                    <p className="text-zinc-500">
                         Share stories, tips, and knowledge about blood donation
                     </p>
                 </div>
@@ -79,30 +84,47 @@ export default function BlogPage() {
                 </Button>
             </div>
 
-            <Card>
-                <CardContent className="p-6">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                            <Input
-                                placeholder="Search posts..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10"
-                            />
-                        </div>
-                        <Select
-                            value={selectedCategory}
-                            onValueChange={setSelectedCategory}
-                        >
-                            <SelectTrigger className="w-full sm:w-48">
-                                <Filter className="mr-2 h-4 w-4" />
-                                <SelectValue placeholder="Category" />
-                            </SelectTrigger>
-                        </Select>
+            <Form {...form} >
+                <form
+                    onSubmit={form.handleSubmit(handleSearch)}
+                    className="flex flex-col lg:flex-row gap-4"
+                >
+                    <FormField 
+                        control={form.control}
+                        name="searchTerm"
+                        render={({ field }) => (
+                            <FormItem className="relative flex-1">
+                                <FormControl>
+                                    <div>
+                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none"/>
+                                        <Input 
+                                            placeholder="Search blogs by title"
+                                            className="pl-10 h-9"
+                                            {...field}
+                                        />
+                                    </div>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    <div className="flex gap-3">
+                        <FormField 
+                            control={form.control}
+                            name="tag"
+                            render={({ field }) => (
+                                <FormItem>
+
+                                </FormItem>
+                            )}
+
+                        />
+
                     </div>
-                </CardContent>
-            </Card>
+
+                </form>
+
+            </Form>
 
             {/* Blog Posts Tabs */}
             <Tabs value={selectedTab} onValueChange={setSelectedTab}>
