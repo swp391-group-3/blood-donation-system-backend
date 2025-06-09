@@ -1,8 +1,8 @@
 import z from 'zod';
 import { throwIfError } from '.';
 
-export const schema = z.object({
-    username: z
+export const loginSchema = z.object({
+    email: z
         .string()
         .min(1, { message: 'Username must be at least 1 characters.' }),
     password: z.string().nonempty({
@@ -10,10 +10,15 @@ export const schema = z.object({
     }),
 });
 
-export type Schema = typeof schema;
-
-export async function login(values: Schema) {
-    const response = await fetch(`${process.env.API_URL}/auth/login`);
+export async function login(values: z.infer<typeof loginSchema>) {
+    const response = await fetch(`http://localhost:3000/auth/login`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+    });
 
     throwIfError(response);
 }
