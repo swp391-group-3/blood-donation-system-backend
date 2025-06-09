@@ -31,25 +31,6 @@ import {
     Filter,
 } from 'lucide-react';
 
-interface BlogPost {
-    id: string;
-    title: string;
-    excerpt: string;
-    content: string;
-    author: {
-        name: string;
-        role: string;
-        initials: string;
-    };
-    category: string;
-    tags: string[];
-    publishedAt: string;
-    readTime: number;
-    likes: number;
-    comments: number;
-    views: number;
-    featured: boolean;
-}
 
 export default function BlogPage() {
     const [role, setRole] = useState<string | null>(null);
@@ -184,16 +165,6 @@ export default function BlogPage() {
             views: 87,
             featured: false,
         },
-    ];
-
-    const categories = [
-        'all',
-        'Health & Wellness',
-        'Personal Stories',
-        'Education',
-        'Community',
-        'Tips & Guides',
-        'Science & Technology',
     ];
 
     // Filter posts based on search and category
