@@ -33,8 +33,11 @@ import {
     MessageCircle,
     Eye,
     Filter,
+    ChartLine,
+    Tag,
+    Tags,
 } from 'lucide-react';
-import {blogPosts} from "../../../../constants/sample-data"
+import { blogPosts, bloodDonationTags } from "../../../../constants/sample-data"
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),
@@ -114,16 +117,29 @@ export default function BlogPage() {
                             name="tag"
                             render={({ field }) => (
                                 <FormItem>
-
+                                    <Select
+                                        value={field.value ?? "all"}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="w-[180px] h-12">
+                                                <Tags className="mr-2 w-4 h-4" />
+                                                <SelectValue placeholder="All Tags"/>
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {bloodDonationTags.map((tag) => (
+                                                <SelectItem key={tag.value} value={tag.value}>
+                                                    {tag.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormItem>
                             )}
-
                         />
-
                     </div>
-
                 </form>
-
             </Form>
 
             {/* Blog Posts Tabs */}
