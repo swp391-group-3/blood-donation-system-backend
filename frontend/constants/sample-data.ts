@@ -413,7 +413,6 @@ export const emergencyRequests = [
 
 // sample-data of blog
 export const blogPosts = [
-    
     {
         id: 'post-001',
         title: 'The Importance of Regular Blood Donation',
@@ -503,38 +502,37 @@ export const blogPosts = [
 
 // health-profile chart data weight
 export const weightChartData = [
-    {month: "January", weight: 70},
-    {month: "Febuary", weight: 75},
-    {month: "March", weight: 10},
-    {month: "April", weight: 90},
-    {month: "May", weight: 100},
-    {month: "June", weight: 200},
-    {month: "July", weight: 85},
-]
-
+    { month: 'January', weight: 70 },
+    { month: 'Febuary', weight: 75 },
+    { month: 'March', weight: 10 },
+    { month: 'April', weight: 90 },
+    { month: 'May', weight: 100 },
+    { month: 'June', weight: 200 },
+    { month: 'July', weight: 85 },
+];
 
 export const hemoglobinChartData = [
-    {month: "January", hemoglobin: 1.5},
-    {month: "Febuary", hemoglobin: 1.7},
-    {month: "March", hemoglobin: 2},
-    {month: "April", hemoglobin: 3},
-    {month: "May", hemoglobin: 1},
-    {month: "June", hemoglobin: 1.1},
-    {month: "July", hemoglobin: 1.4},
-]
+    { month: 'January', hemoglobin: 1.5 },
+    { month: 'Febuary', hemoglobin: 1.7 },
+    { month: 'March', hemoglobin: 2 },
+    { month: 'April', hemoglobin: 3 },
+    { month: 'May', hemoglobin: 1 },
+    { month: 'June', hemoglobin: 1.1 },
+    { month: 'July', hemoglobin: 1.4 },
+];
 
 // sample data for blood donation blog
 export const bloodDonationTags = [
-    { value: "all", label: "All Tags" },
-    { value: "blood-donation", label: "Blood Donation" },
-    { value: "health-tips", label: "Health Tips" },
-    { value: "blood-types", label: "Blood Types" },
-    { value: "volunteer", label: "Volunteer" },
-    { value: "donor-stories", label: "Donor Stories" },
-    { value: "blood-drive", label: "Blood Drive" },
-    { value: "medical-facts", label: "Medical Facts" },
-    { value: "faq", label: "FAQ" },
-  ];
+    { value: 'all', label: 'All Tags' },
+    { value: 'blood-donation', label: 'Blood Donation' },
+    { value: 'health-tips', label: 'Health Tips' },
+    { value: 'blood-types', label: 'Blood Types' },
+    { value: 'volunteer', label: 'Volunteer' },
+    { value: 'donor-stories', label: 'Donor Stories' },
+    { value: 'blood-drive', label: 'Blood Drive' },
+    { value: 'medical-facts', label: 'Medical Facts' },
+    { value: 'faq', label: 'FAQ' },
+];
 
 // empty blog list to test the empty list state
 export const emptyBlogList = [];

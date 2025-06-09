@@ -29,16 +29,15 @@ import {
     Plus,
     Search,
     Calendar,
-    Heart,
-    MessageCircle,
-    Eye,
-    Filter,
-    ChartLine,
-    Tag,
     Tags,
     CircleCheckBig,
 } from 'lucide-react';
-import { blogPosts, bloodDonationTags, emptyBlogList } from "../../../../constants/sample-data"
+
+import {
+    blogPosts,
+    bloodDonationTags,
+    emptyBlogList,
+} from '../../../../constants/sample-data';
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),
@@ -47,13 +46,12 @@ const schema = z.object({
 export type SearchFormValues = z.infer<typeof schema>;
 
 export default function BlogPage() {
-
     const form = useForm({
         resolver: zodResolver(schema),
         defaultValues: {
             searchTerm: '',
             tag: 'all',
-        }
+        },
     });
 
     const [role, setRole] = useState<string | null>(null);
@@ -65,11 +63,10 @@ export default function BlogPage() {
         const userRole = localStorage.getItem('userRole') || 'member';
         setRole(userRole);
     }, []);
-    
+
     function handleSearch() {
         // come in future
     }
- 
 
     return (
         <div className="space-y-6 p-6">
@@ -88,20 +85,20 @@ export default function BlogPage() {
                 </Button>
             </div>
 
-            <Form {...form} >
+            <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleSearch)}
                     className="flex flex-col lg:flex-row gap-4"
                 >
-                    <FormField 
+                    <FormField
                         control={form.control}
                         name="searchTerm"
                         render={({ field }) => (
                             <FormItem className="relative flex-1">
                                 <FormControl>
                                     <div>
-                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none"/>
-                                        <Input 
+                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                                        <Input
                                             placeholder="Search blogs by title"
                                             className="pl-10 h-9"
                                             {...field}
@@ -113,24 +110,27 @@ export default function BlogPage() {
                     />
 
                     <div className="flex gap-3">
-                        <FormField 
+                        <FormField
                             control={form.control}
                             name="tag"
                             render={({ field }) => (
                                 <FormItem>
                                     <Select
-                                        value={field.value ?? "all"}
+                                        value={field.value ?? 'all'}
                                         onValueChange={field.onChange}
                                     >
                                         <FormControl>
                                             <SelectTrigger className="w-[180px] h-12">
                                                 <Tags className="mr-2 w-4 h-4" />
-                                                <SelectValue placeholder="All Tags"/>
+                                                <SelectValue placeholder="All Tags" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                             {bloodDonationTags.map((tag) => (
-                                                <SelectItem key={tag.value} value={tag.value}>
+                                                <SelectItem
+                                                    key={tag.value}
+                                                    value={tag.value}
+                                                >
                                                     {tag.label}
                                                 </SelectItem>
                                             ))}
@@ -189,7 +189,10 @@ export default function BlogPage() {
                                                     <span>
                                                         {post.author.name}
                                                     </span>
-                                                    {post.author.role === "staff" && <CircleCheckBig className="w-4 h-4 stroke-green-500"/>}
+                                                    {post.author.role ===
+                                                        'staff' && (
+                                                        <CircleCheckBig className="w-4 h-4 stroke-green-500" />
+                                                    )}
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="h-4 w-4" />
