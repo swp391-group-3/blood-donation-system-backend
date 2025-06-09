@@ -191,7 +191,7 @@ export default function HealthRecordsPage() {
                                     <Card
                                         key={record.id}
                                         className={
-                                            'transition-colors cursor-pointer border ' +
+                                            "transition-colors cursor-pointer shadow" +
                                             (selectedRecord === record.id
                                                 ? 'border-primary/60 shadow-lg'
                                                 : 'hover:bg-muted/30')
@@ -222,10 +222,7 @@ export default function HealthRecordsPage() {
                                                         record.status,
                                                     )}
                                                 >
-                                                    {record.status
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        record.status.slice(1)}
+                                                    Approve
                                                 </Badge>
                                             </div>
                                             <div className="flex items-center gap-4 text-sm">
@@ -257,12 +254,9 @@ export default function HealthRecordsPage() {
                                         </CardHeader>
 
                                         {selectedRecord === record.id && (
-                                            <CardContent className="border-t pt-4">
-                                                <div className="grid gap-4 md:grid-cols-2">
+                                            <CardContent>
+                                                <div className="grid gap-4 md:grid-cols-1 border-t pt-4">
                                                     <div>
-                                                        <h4 className="font-medium mb-2">
-                                                            Vital Signs
-                                                        </h4>
                                                         <div className="space-y-2 text-sm">
                                                             <div className="flex justify-between">
                                                                 <span>
@@ -288,8 +282,17 @@ export default function HealthRecordsPage() {
                                                             </div>
                                                             <div className="flex justify-between">
                                                                 <span>
-                                                                    Blood
-                                                                    Pressure:
+                                                                    Upper Blood Pressure:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.bloodPressure
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Lower Blood Pressure:
                                                                 </span>
                                                                 <span>
                                                                     {
@@ -321,11 +324,11 @@ export default function HealthRecordsPage() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
+                                                    <div className="border-t pt-4 flex justify-between">
                                                         <h4 className="font-medium mb-2">
                                                             Medical Notes
                                                         </h4>
-                                                        <p className="text-sm text-gray-600">
+                                                        <p className="text-sm text-zinc-600">
                                                             {record.notes}
                                                         </p>
                                                     </div>
