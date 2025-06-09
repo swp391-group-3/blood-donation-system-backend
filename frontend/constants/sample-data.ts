@@ -525,6 +525,7 @@ export const hemoglobinChartData = [
 
 // sample data for blood donation blog
 export const bloodDonationTags = [
+    { value: "all", label: "All Tags" },
     { value: "blood-donation", label: "Blood Donation" },
     { value: "health-tips", label: "Health Tips" },
     { value: "blood-types", label: "Blood Types" },
