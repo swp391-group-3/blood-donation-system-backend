@@ -6,7 +6,11 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 FROM base AS builder
+
+ARG API_URL
+ENV NEXT_PUBLIC_API_URL=$API_URL
 ENV NEXT_TELEMETRY_DISABLED=1
+
 WORKDIR /app
 COPY --from=install /app/node_modules ./node_modules
 COPY . .
