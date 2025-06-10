@@ -2,19 +2,23 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 use axum_extra::extract::CookieJar;
+use axum_valid::Valid;
 use database::queries;
 use serde::Deserialize;
 use utoipa::ToSchema;
+use validator::Validate;
 
 use crate::{
     error::{AuthError, Error, Result},
     state::ApiState,
 };
 
-#[derive(Deserialize, ToSchema)]
+#[derive(Deserialize, ToSchema, Validate)]
 #[schema(as = auth::login::Request)]
 pub struct Request {
+    #[validate(email)]
     pub email: String,
+    #[validate(length(min = 1))]
     pub password: String,
 }
 
@@ -27,7 +31,7 @@ pub struct Request {
 pub async fn login(
     state: State<Arc<ApiState>>,
     jar: CookieJar,
-    Json(request): Json<Request>,
+    Valid(Json(request)): Valid<Json<Request>>,
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
@@ -37,7 +41,7 @@ pub async fn login(
         .await?
         .ok_or(AuthError::InvalidLoginData)?;
 
-    let is_password_correct = !state
+    let is_password_correct = state
         .bcrypt_service
         .verify(&request.password, &account.password)
         .map_err(|_| AuthError::InvalidLoginData)?;

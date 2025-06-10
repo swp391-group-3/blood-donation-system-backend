@@ -39,7 +39,7 @@ pub struct Health {
 }
 
 pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
-    Router::new()
+    let staff_route = Router::new()
         .route("/appointment/{id}/health", routing::post(create))
         .route(
             "/appointment/{id}/health",
@@ -49,10 +49,13 @@ pub fn build(state: Arc<ApiState>) -> Router<Arc<ApiState>> {
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::authorize!(Role::Staff),
-        ))
+        ));
+    let member_route = Router::new()
         .route("/health", routing::get(get_by_member_id))
         .layer(axum::middleware::from_fn_with_state(
             state,
             middleware::authorize!(Role::Member),
-        ))
+        ));
+
+    Router::new().merge(staff_route).merge(member_route)
 }

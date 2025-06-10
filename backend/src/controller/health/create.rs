@@ -12,10 +12,11 @@ use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
+use validator::Validate;
 
 use crate::{error::Result, state::ApiState};
 
-#[derive(Deserialize, ToSchema, Mapper)]
+#[derive(Deserialize, ToSchema, Mapper, Validate)]
 #[schema(as = health::create::Request)]
 #[mapper(
     into(custom = "with_appointment_id"),
@@ -23,11 +24,21 @@ use crate::{error::Result, state::ApiState};
     add(field = appointment_id, ty = Uuid)
 )]
 pub struct Request {
+    // TODO: check the temperature range
+    #[validate(range(min = 30., max = 45.))]
     pub temperature: f32,
+    #[validate(range(exclusive_min = 0.))]
     pub weight: f32,
+    // TODO: check blood pressure range
+    #[validate(range(exclusive_min = 0))]
     pub upper_blood_pressure: i32,
+    #[validate(range(exclusive_min = 0))]
     pub lower_blood_pressure: i32,
+    // TODO: check heart pulse range
+    #[validate(range(exclusive_min = 0))]
     pub heart_pulse: i32,
+    // TODO: check hemoglobin range
+    #[validate(range(exclusive_min = 0.))]
     pub hemoglobin: f32,
     pub is_good_health: bool,
     pub note: Option<String>,

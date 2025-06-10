@@ -1,6 +1,11 @@
+use std::{env, sync::LazyLock};
+
 use config::{Config, Environment};
 use openidconnect::{ClientId, ClientSecret, IssuerUrl, RedirectUrl};
 use serde::Deserialize;
+
+pub static FRONTEND_REDIRECT_URL: LazyLock<String> =
+    LazyLock::new(|| env::var("FRONTEND_REDIRECT_URL").unwrap());
 
 #[derive(Deserialize)]
 pub struct OpenIdConnectConfig {

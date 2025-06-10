@@ -43,6 +43,7 @@ impl Modify for SecurityAddon {
         controller::account::get_all,
         controller::account::get,
         controller::account::delete,
+        controller::account::update,
 
         controller::blood_request::create,
         controller::blood_request::get_all,
@@ -55,6 +56,8 @@ impl Modify for SecurityAddon {
         controller::blog::create,
         controller::blog::get,
         controller::blog::get_all,
+        controller::blog::update,
+        controller::blog::delete,
 
         controller::health::create,
         controller::health::update,
@@ -66,6 +69,17 @@ impl Modify for SecurityAddon {
         controller::donation::get_all,
         controller::donation::get_by_member_id,
         controller::donation::update,
+
+        controller::comment::create,
+        controller::comment::delete,
+        controller::comment::update,
+
+        controller::blood_bag::create,
+        controller::blood_bag::get_all,
+        controller::blood_bag::get,
+        controller::blood_bag::delete,
+        controller::blood_bag::update,
+
     ),
     modifiers(&SecurityAddon),
 )]
