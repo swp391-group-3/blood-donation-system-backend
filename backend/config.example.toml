@@ -14,5 +14,8 @@ token_key = "token"
 frontend_redirect_url = "http://localhost:3001"
 oauth2_redirect_url = "http://localhost:3000/auth"
 
-[open_id_connect.clients]
-google = { client_id = "", client_secret = "", issuer_url = "", redirect_utl = "" }
+[open_id_connect.clients.google]
+client_id = ""
+client_secret = ""
+issuer_url = ""
+redirect_utl = ""
