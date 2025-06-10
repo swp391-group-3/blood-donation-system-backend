@@ -19,7 +19,7 @@ services:
     container_name: blood-donation-system-cloudbeaver
     restart: always
     ports:
-       - 8978:8978
+      - 8978:8978
     volumes:
       - cloudbeaver:/opt/cloudbeaver/workspace
     networks:

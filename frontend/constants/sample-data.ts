@@ -32,15 +32,12 @@ export const sidebarItems = [
         href: '/member/health-profile',
     },
     {
-        icon: History, 
-        label: 'History', 
-        href: '/member/history'
+        icon: History,
+        label: 'History',
+        href: '/member/history',
     },
-    
-    {   icon: Settings, 
-        label: 'Settings', 
-        href: '/member/profile' 
-    },
+
+    { icon: Settings, label: 'Settings', href: '/member/profile' },
 ];
 
 export const requests = [
