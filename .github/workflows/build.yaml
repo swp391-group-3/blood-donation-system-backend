@@ -26,8 +26,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Image And Push
         run: |
-          docker compose -f .docker/compose.build.yaml --profile frontend build
-          docker compose -f .docker/compose.build.yaml --profile frontend push
+          docker compose -f compose.build.yaml --profile frontend build
+          docker compose -f compose.build.yaml --profile frontend push
 
   build-backend:
     name: Build backend
@@ -50,5 +50,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Image And Push
         run: |
-          docker compose -f .docker/compose.build.yaml --profile backend build
-          docker compose -f .docker/compose.build.yaml --profile backend push
+          docker compose -f compose.build.yaml --profile backend build
+          docker compose -f compose.build.yaml --profile backend push
