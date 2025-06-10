@@ -37,7 +37,7 @@ services:
       MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
       MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
       MICROSOFT_REDIRECT_URL: ${MICROSOFT_REDIRECT_URL}
-    image: ${REGISTRY}/blood-donation-system-backend:latest
+    image: ${REGISTRY}/backend:latest
     restart: always
     ports:
       - 3000:3000
@@ -48,7 +48,7 @@ services:
       - deploy
   frontend:
     container_name: blood-donation-system-frontend
-    image: ${REGISTRY}/blood-donation-system-frontend:latest
+    image: ${REGISTRY}/frontend:latest
     restart: always
     ports:
       - 3001:3000
