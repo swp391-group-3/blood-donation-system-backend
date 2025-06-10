@@ -6,6 +6,7 @@ import {
     CircleAlert,
     Settings,
     BookOpen,
+    History,
 } from 'lucide-react';
 
 export const sidebarItems = [
@@ -30,7 +31,16 @@ export const sidebarItems = [
         label: 'Health Profile',
         href: '/member/health-profile',
     },
-    { icon: Settings, label: 'Settings', href: '/member/profile' },
+    {
+        icon: History, 
+        label: 'History', 
+        href: '/member/history'
+    },
+    
+    {   icon: Settings, 
+        label: 'Settings', 
+        href: '/member/profile' 
+    },
 ];
 
 export const requests = [
