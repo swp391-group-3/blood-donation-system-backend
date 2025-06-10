@@ -73,14 +73,6 @@ export default function HealthRecordsPage() {
         }
     };
 
-    const getHealthStatus = (record: any) => {
-        const tempOk = record.temperature >= 36.1 && record.temperature <= 37.2;
-        const hbOk = record.hemoglobin >= 12.5;
-        const bpOk = true;
-
-        return tempOk && hbOk && bpOk ? 'excellent' : 'good';
-    };
-
     return (
         <div className="p-6 space-y-6">
             <div>
