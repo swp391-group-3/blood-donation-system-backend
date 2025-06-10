@@ -4,10 +4,7 @@ use database::{deadpool_postgres, tokio_postgres::NoTls};
 use futures::{StreamExt, stream};
 
 use crate::{
-    config::{
-        CONFIG,
-        oidc::{OpenIdConnectConfig, Provider},
-    },
+    config::{CONFIG, oidc::Provider},
     util::{jwt::JwtService, oidc::OpenIdConnectClient},
 };
 
