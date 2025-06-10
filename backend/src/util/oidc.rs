@@ -26,10 +26,7 @@ pub struct OpenIdConnectClient {
 }
 
 impl OpenIdConnectClient {
-    pub async fn from_config(
-        config: crate::config::oidc::ClientConfig,
-        redirect_url: RedirectUrl,
-    ) -> Result<Self> {
+    pub async fn from_config(config: crate::config::oidc::ClientConfig) -> Result<Self> {
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
             .build()?;
@@ -42,7 +39,7 @@ impl OpenIdConnectClient {
             config.client_id,
             Some(config.client_secret),
         )
-        .set_redirect_uri(redirect_url);
+        .set_redirect_uri(config.redirect_url);
 
         Ok(Self {
             inner_client,
