@@ -6,9 +6,8 @@ use crate::{
     config::{
         CONFIG,
         oidc::{OpenIdConnectConfig, Provider},
-        server::ServerConfig,
     },
-    util::{bcrypt::BcryptService, jwt::JwtService, oidc::OpenIdConnectClient},
+    util::{jwt::JwtService, oidc::OpenIdConnectClient},
 };
 
 #[allow(unused)]
@@ -29,16 +28,8 @@ impl ApiState {
         let oidc_clients = CONFIG
             .open_id_connect
             .clients
-            .iter()
-            .map(|(provider, config)| {
-                (
-                    provider,
-                    OpenIdConnectClient::from_config(
-                        config,
-                        CONFIG.open_id_connect.oauth2_redirect_url,
-                    ),
-                )
-            })
+            .into_iter()
+            .map(|(provider, config)| (provider, OpenIdConnectClient::from_config(config)))
             .collect();
 
         Arc::new(Self {
