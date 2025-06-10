@@ -12,6 +12,7 @@ use utoipa::ToSchema;
 use validator::Validate;
 
 use crate::{
+    config::CONFIG,
     error::{AuthError, Error, Result},
     state::ApiState,
 };
@@ -38,13 +39,13 @@ pub async fn register(
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
-    let password = state
-        .bcrypt_service
-        .hash(&request.password)
-        .map_err(|error| {
-            tracing::error!(error =? error);
-            AuthError::InvalidLoginData
-        })?;
+    let password =
+        bcrypt::hash_with_salt(&request.password, CONFIG.bcrypt.cost, CONFIG.bcrypt.salt)
+            .map_err(|error| {
+                tracing::error!(error =? error);
+                AuthError::InvalidLoginData
+            })?
+            .to_string();
 
     let id = queries::account::register()
         .params(
