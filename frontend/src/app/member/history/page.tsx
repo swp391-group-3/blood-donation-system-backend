@@ -39,6 +39,8 @@ export default function MemberHistoryPage() {
     const [searchTerm, setSearchTerm] = useState("")
     const [year, setYear] = useState("")
     const [type, setType] = useState("")
+    const [selectedHistory, setSelectedHistory] = useState<string | null>(null);
+
 
     function handleSearch() {
         // come in future
@@ -67,12 +69,6 @@ export default function MemberHistoryPage() {
                     <p className="text-zinc-600">
                         Your complete record of life-saving donations
                     </p>
-                </div>
-                <div className="flex gap-2">
-                    <Button className="bg-red-600 hover:bg-red-700">
-                        <Award className="mr-2 h-4 w-4" />
-                        View Certificates
-                    </Button>
                 </div>
             </div>
 
@@ -162,94 +158,24 @@ export default function MemberHistoryPage() {
             <Tabs defaultValue="timeline" className="space-y-4">
                 <TabsList>
                     <TabsTrigger value="timeline">Timeline View</TabsTrigger>
-                    <TabsTrigger value="detailed">Detailed View</TabsTrigger>
+                    <TabsTrigger value="summary">Summary</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="timeline">
                     <div className="space-y-4">
                         {donationHistory.map((donation, index) => (
-                            // <Card
-                            //     key={donation.id}
-                            //     className="hover:shadow-md transition-shadow"
-                            // >
-                            //     <CardContent className="p-10">
-                            //         <div className="flex items-start gap-4">
-                            //             <div className="flex flex-col items-center">
-                            //                 <div className="p-2 bg-red-100 rounded-full">
-                            //                     <Droplet className="h-5 w-5 text-red-600" />
-                            //                 </div>
-                            //                 <div className="w-px h-16 bg-gray-200 mt-2"></div>
-                            //             </div>
-                            //             <div className="flex-1">
-                            //                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                            //                     <div className="flex-1">
-                            //                         <div className="flex items-center gap-2 mb-2">
-                            //                             <h3 className="font-semibold text-lg">
-                            //                                 {donation.type}
-                            //                             </h3>
-                            //                             <Badge variant="outline">
-                            //                                 {donation.amount}
-                            //                             </Badge>
-                            //                             <Badge
-                            //                                 className={getUrgencyColor(
-                            //                                     donation.urgency,
-                            //                                 )}
-                            //                             >
-                            //                                 {donation.urgency}
-                            //                             </Badge>
-                            //                         </div>
-                            //                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-zinc-600">
-                            //                             <div className="flex items-center gap-1">
-                            //                                 <Calendar className="h-4 w-4" />
-                            //                                 <span>
-                            //                                     {new Date(
-                            //                                         donation.date,
-                            //                                     ).toLocaleDateString()}
-                            //                                 </span>
-                            //                             </div>
-                            //                             <div className="flex items-center gap-1">
-                            //                                 <CheckCircle className="h-4 w-4" />
-                            //                                 <span>
-                            //                                     Hemoglobin:{' '}
-                            //                                     {
-                            //                                         donation.hemoglobin
-                            //                                     }
-                            //                                 </span>
-                            //                             </div>
-                            //                         </div>
-                            //                     </div>
-                            //                     <div className="flex flex-col items-end gap-2">
-                            //                         <Badge
-                            //                             variant="outline"
-                            //                             className="bg-green-100 text-green-800 border-green-200"
-                            //                         >
-                            //                             Completed
-                            //                         </Badge>
-                            //                         <div className="flex gap-2">
-                            //                             <Button
-                            //                                 variant="outline"
-                            //                                 size="sm"
-                            //                             >
-                            //                                 <FileText className="mr-1 h-3 w-3" />
-                            //                                 View Report
-                            //                             </Button>
-                            //                             <Button
-                            //                                 variant="outline"
-                            //                                 size="sm"
-                            //                             >
-                            //                                 <Download className="mr-1 h-3 w-3" />
-                            //                                 Certificate
-                            //                             </Button>
-                            //                         </div>
-                            //                     </div>
-                            //                 </div>
-                            //             </div>
-                            //         </div>
-                            //     </CardContent>
-                            // </Card>
                             <Card
                                 key={donation.id}
-                                className="transition-colors cursor-pointer shadow"
+                                className={'transition-colors cursor-pointer shadow' +
+                                (selectedHistory === donation.id
+                                    ? 'border-primary/60 shadow-lg'
+                                    : 'hover:bg-muted/30')
+                                }
+                                onClick={() =>
+                                    setSelectedHistory(
+                                        selectedHistory === donation.id ? null : donation.id,
+                                    )
+                                }
                             >
                                 <CardHeader className="pb-3 flex flex-row items-center justify-between gap-4">
                                     <div>
@@ -285,155 +211,57 @@ export default function MemberHistoryPage() {
                                         </Button>
                                     </div>
                                 </CardHeader>
+                                {selectedHistory === donation.id && (
+                                    <CardContent>
+                                        <div className="grid gap-4 md:grid-cols-1 border-t pt-4">
+                                            <div>
+                                                <div className="space-y-2 text-sm">
+                                                    <div className="flex justify-between">
+                                                        <span>
+                                                            Donation ID:
+                                                        </span>
+                                                        <span>
+                                                            don-001
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span>
+                                                            Appointment ID:
+                                                        </span>
+                                                        <span>
+                                                            app-001
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span>
+                                                            Type:
+                                                        </span>
+                                                        <span>
+                                                            Whole Blood
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span>
+                                                            Amount:
+                                                        </span>
+                                                        <span>
+                                                            450ml
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="border-t pt-4 flex justify-between">
+                                                <h4 className="font-medium mb-2">Medical Notes</h4>
+                                                <p className="text-sm text-zinc-600">The donor have a little bit of headache after donation process</p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                )}
                             </Card>
                         ))}
                     </div>
                 </TabsContent>
-
-                <TabsContent value="detailed">
-                    <div className="space-y-4">
-                        {donationHistory.map((donation) => (
-                            <Card key={donation.id}>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Droplet className="h-5 w-5 text-red-500" />
-                                        {donation.type} -{' '}
-                                        {new Date(
-                                            donation.date,
-                                        ).toLocaleDateString()}
-                                    </CardTitle>
-                                    <CardDescription>
-                                        Donation ID: {donation.id} • Request ID:{' '}
-                                        {donation.requestId}
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div>
-                                            <h4 className="font-medium mb-3">
-                                                Donation Details
-                                            </h4>
-                                            <div className="space-y-2 text-sm">
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Type:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.type}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Amount:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.amount}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Location:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.location}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Requested by:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.requestedBy}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Urgency:
-                                                    </span>
-                                                    <Badge
-                                                        className={getUrgencyColor(
-                                                            donation.urgency,
-                                                        )}
-                                                    >
-                                                        {donation.urgency}
-                                                    </Badge>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Patients Helped:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {
-                                                            donation.patientsHelped
-                                                        }
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium mb-3">
-                                                Health Metrics
-                                            </h4>
-                                            <div className="space-y-2 text-sm">
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Hemoglobin:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.hemoglobin}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Blood Pressure:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.bloodPressure}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Pulse:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.pulse}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Temperature:
-                                                    </span>
-                                                    <span className="font-medium">
-                                                        {donation.temperature}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-500">
-                                                        Status:
-                                                    </span>
-                                                    <Badge className="bg-green-500">
-                                                        Completed
-                                                    </Badge>
-                                                </div>
-                                            </div>
-                                            {donation.staffNotes && (
-                                                <div className="mt-4">
-                                                    <h5 className="font-medium text-sm mb-1">
-                                                        Staff Notes:
-                                                    </h5>
-                                                    <p className="text-sm text-gray-600 italic">
-                                                        "{donation.staffNotes}"
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </TabsContent>
-
+                {/* Come in future */}
                 <TabsContent value="summary">
                     <div className="grid md:grid-cols-2 gap-6">
                         <Card>
