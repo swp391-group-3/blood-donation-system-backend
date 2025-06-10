@@ -1,12 +1,20 @@
 'use client';
 import React, { useState } from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
+    CardFooter,
 } from '@/components/ui/card';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/components/ui/chart';
 import {
     Select,
     SelectContent,
@@ -27,15 +35,6 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import {
-    Expandable,
-    ExpandableCard,
-    ExpandableCardContent,
-    ExpandableCardFooter,
-    ExpandableCardHeader,
-    ExpandableContent,
-    ExpandableTrigger,
-} from '@/components/ui/expandable';
-import {
     Heart,
     Activity,
     TrendingUp,
@@ -48,8 +47,16 @@ import {
 import {
     mockHealthRecords,
     mockHealthTrends,
+    weightChartData,
+    hemoglobinChartData,
 } from '../../../../constants/sample-data';
 
+const chartConfig = {
+    weight: {
+        label: 'Weight',
+        color: 'oklch(70.7% 0.165 254.624)', // blue-400 tailwindcss
+    },
+};
 export default function HealthRecordsPage() {
     const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
 
@@ -197,196 +204,156 @@ export default function HealthRecordsPage() {
                         <CardContent>
                             <div className="space-y-4">
                                 {mockHealthRecords.map((record) => (
-                                    <Expandable
-                                        expandDirection="vertical"
-                                        expandBehavior="push"
+                                    <Card
+                                        key={record.id}
+                                        className={
+                                            'transition-colors cursor-pointer shadow' +
+                                            (selectedRecord === record.id
+                                                ? 'border-primary/60 shadow-lg'
+                                                : 'hover:bg-muted/30')
+                                        }
+                                        onClick={() =>
+                                            setSelectedRecord(
+                                                selectedRecord === record.id
+                                                    ? null
+                                                    : record.id,
+                                            )
+                                        }
                                     >
-                                        <ExpandableTrigger>
-                                            <ExpandableCard
-                                                collapsedSize={{
-                                                    width: '100%',
-                                                    height: 100,
-                                                }}
-                                                expandedSize={{
-                                                    width: '100%',
-                                                    height: 360,
-                                                }}
-                                                hoverToExpand={false}
-                                                expandDelay={100}
-                                                collapseDelay={400}
-                                            >
-                                                <ExpandableCardHeader className="p-0.1 flex justify-between">
-                                                    <div className="flex items-center gap-4">
-                                                        <div>
-                                                            <p className="font-medium">
-                                                                10/6/2025
-                                                            </p>
-                                                            <p className="text-sm text-zinc-500">
-                                                                Appointment{' '}
-                                                                {
-                                                                    record.appointmentId
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                        <Badge
-                                                            className={getStatusColor(
-                                                                record.status,
-                                                            )}
-                                                        >
-                                                            Approve
-                                                        </Badge>
-                                                    </div>
-                                                    <div className="flex items-center gap-4 text-sm">
-                                                        <div className="text-center">
-                                                            <p className="font-medium">
-                                                                {
-                                                                    record.temperature
-                                                                }
-                                                                °C
-                                                            </p>
-                                                            <p className="text-zinc-500">
-                                                                Temp
-                                                            </p>
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <p className="font-medium">
-                                                                {record.weight}
-                                                                kg
-                                                            </p>
-                                                            <p className="text-zinc-500">
-                                                                Weight
-                                                            </p>
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <p className="font-medium">
-                                                                {
-                                                                    record.hemoglobin
-                                                                }
-                                                            </p>
-                                                            <p className="text-zinc-500">
-                                                                Hb g/dL
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </ExpandableCardHeader>
-                                                <ExpandableCardContent>
-                                                    <ExpandableContent
-                                                        //style={{ overflow: 'hidden ' }}
-                                                        preset="blur-sm"
-                                                        stagger
-                                                        staggerChildren={1}
-                                                        keepMounted={true}
-                                                        animateIn={{
-                                                            initial: {
-                                                                opacity: 0,
-                                                                y: 20,
-                                                                rotate: -5,
-                                                            },
-                                                            animate: {
-                                                                opacity: 1,
-                                                                y: 0,
-                                                                rotate: 0,
-                                                            },
-                                                            transition: {
-                                                                type: 'spring',
-                                                                stiffness: 300,
-                                                                damping: 20,
-                                                            },
-                                                        }}
-                                                    >
-                                                        <div className="mt-4 pt-4 border-t">
-                                                            <div className="grid gap-4 md:grid-cols-1">
-                                                                <div>
-                                                                    <div className="space-y-2 text-sm">
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Temperature:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.temperature
-                                                                                }
-                                                                                °C
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Weight:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.weight
-                                                                                }
-                                                                                kg
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Upper
-                                                                                Blood
-                                                                                Pressure:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.bloodPressure
-                                                                                }
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Lower
-                                                                                Blood
-                                                                                Pressure:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.bloodPressure
-                                                                                }
-                                                                            </span>
-                                                                        </div>
+                                        <CardHeader className="pb-3 flex flex-row items-center justify-between gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <CardTitle className="text-base">
+                                                        {new Date(
+                                                            record.date,
+                                                        ).toLocaleDateString()}
+                                                    </CardTitle>
+                                                    <CardDescription>
+                                                        Appointment{' '}
+                                                        {record.appointmentId}
+                                                    </CardDescription>
+                                                </div>
+                                                <Badge
+                                                    className={getStatusColor(
+                                                        record.status,
+                                                    )}
+                                                >
+                                                    Approve
+                                                </Badge>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-sm">
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.temperature}°C
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Temp
+                                                    </p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.weight}kg
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Weight
+                                                    </p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className="font-medium">
+                                                        {record.hemoglobin}
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        Hb g/dL
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
 
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Pulse:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.pulse
-                                                                                }{' '}
-                                                                                bpm
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span>
-                                                                                Hemoglobin:
-                                                                            </span>
-                                                                            <span>
-                                                                                {
-                                                                                    record.hemoglobin
-                                                                                }{' '}
-                                                                                g/dL
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <h4 className="font-medium mb-2">
-                                                                                Medical
-                                                                                Notes
-                                                                            </h4>
-                                                                            <p className="text-sm text-gray-600">
-                                                                                {
-                                                                                    record.notes
-                                                                                }
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                        {selectedRecord === record.id && (
+                                            <CardContent>
+                                                <div className="grid gap-4 md:grid-cols-1 border-t pt-4">
+                                                    <div>
+                                                        <div className="space-y-2 text-sm">
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Temperature:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.temperature
+                                                                    }
+                                                                    °C
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Weight:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.weight
+                                                                    }
+                                                                    kg
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Upper Blood
+                                                                    Pressure:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.bloodPressure
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Lower Blood
+                                                                    Pressure:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.bloodPressure
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Pulse:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.pulse
+                                                                    }{' '}
+                                                                    bpm
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span>
+                                                                    Hemoglobin:
+                                                                </span>
+                                                                <span>
+                                                                    {
+                                                                        record.hemoglobin
+                                                                    }{' '}
+                                                                    g/dL
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                    </ExpandableContent>
-                                                </ExpandableCardContent>
-                                            </ExpandableCard>
-                                        </ExpandableTrigger>
-                                    </Expandable>
+                                                    </div>
+                                                    <div className="border-t pt-4 flex justify-between">
+                                                        <h4 className="font-medium mb-2">
+                                                            Medical Notes
+                                                        </h4>
+                                                        <p className="text-sm text-zinc-600">
+                                                            {record.notes}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        )}
+                                    </Card>
                                 ))}
                             </div>
                         </CardContent>
@@ -412,27 +379,51 @@ export default function HealthRecordsPage() {
                                             +2kg (3 months)
                                         </span>
                                     </div>
-                                    <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
-                                        {mockHealthTrends.weight.map(
-                                            (weight, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex flex-col items-center"
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Bar Chart - Weight
+                                            </CardTitle>
+                                            <CardDescription>
+                                                January - July 2025
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <ChartContainer
+                                                config={chartConfig}
+                                            >
+                                                <BarChart
+                                                    accessibilityLayer
+                                                    data={weightChartData}
                                                 >
-                                                    <div
-                                                        className="bg-blue-500 rounded-t"
-                                                        style={{
-                                                            height: `${(weight / Math.max(...mockHealthTrends.weight)) * 80}px`,
-                                                            width: '20px',
-                                                        }}
+                                                    <CartesianGrid
+                                                        vertical={false}
                                                     />
-                                                    <span className="text-xs mt-1">
-                                                        {weight}kg
-                                                    </span>
-                                                </div>
-                                            ),
-                                        )}
-                                    </div>
+                                                    <XAxis
+                                                        dataKey="month"
+                                                        tickMargin={10}
+                                                        axisLine={false}
+                                                        tickFormatter={(
+                                                            value,
+                                                        ) => value.slice(0, 3)}
+                                                    />
+                                                    <ChartTooltip
+                                                        cursor={false}
+                                                        content={
+                                                            <ChartTooltipContent
+                                                                hideLabel
+                                                            />
+                                                        }
+                                                    />
+                                                    <Bar
+                                                        dataKey="weight"
+                                                        fill="oklch(70.7% 0.165 254.624)"
+                                                        radius={8}
+                                                    />
+                                                </BarChart>
+                                            </ChartContainer>
+                                        </CardContent>
+                                    </Card>
                                 </div>
                             </CardContent>
                         </Card>
@@ -454,27 +445,51 @@ export default function HealthRecordsPage() {
                                             Stable
                                         </span>
                                     </div>
-                                    <div className="h-32 bg-gray-50 rounded-lg flex items-end justify-around p-4">
-                                        {mockHealthTrends.hemoglobin.map(
-                                            (hb, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex flex-col items-center"
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Bar Chart - Hemoglobin
+                                            </CardTitle>
+                                            <CardDescription>
+                                                January - July 2025
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <ChartContainer
+                                                config={chartConfig}
+                                            >
+                                                <BarChart
+                                                    accessibilityLayer
+                                                    data={hemoglobinChartData}
                                                 >
-                                                    <div
-                                                        className="bg-red-500 rounded-t"
-                                                        style={{
-                                                            height: `${(hb / Math.max(...mockHealthTrends.hemoglobin)) * 80}px`,
-                                                            width: '20px',
-                                                        }}
+                                                    <CartesianGrid
+                                                        vertical={false}
                                                     />
-                                                    <span className="text-xs mt-1">
-                                                        {hb}
-                                                    </span>
-                                                </div>
-                                            ),
-                                        )}
-                                    </div>
+                                                    <XAxis
+                                                        dataKey="month"
+                                                        tickMargin={10}
+                                                        axisLine={false}
+                                                        tickFormatter={(
+                                                            value,
+                                                        ) => value.slice(0, 3)}
+                                                    />
+                                                    <ChartTooltip
+                                                        cursor={false}
+                                                        content={
+                                                            <ChartTooltipContent
+                                                                hideLabel
+                                                            />
+                                                        }
+                                                    />
+                                                    <Bar
+                                                        dataKey="hemoglobin"
+                                                        fill="oklch(63.7% 0.237 25.331)"
+                                                        radius={8}
+                                                    />
+                                                </BarChart>
+                                            </ChartContainer>
+                                        </CardContent>
+                                    </Card>
                                 </div>
                             </CardContent>
                         </Card>
