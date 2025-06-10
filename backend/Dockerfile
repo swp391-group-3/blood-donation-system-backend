@@ -24,6 +24,6 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY --from=builder /app/target/release/blood-donation-system-backend .
+COPY --from=builder /app/target/release/backend .
 
-CMD ["./blood-donation-system-backend"]
+CMD ["./backend"]
