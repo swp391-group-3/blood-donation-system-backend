@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use openidconnect::{
     AuthenticationFlow, AuthorizationCode, CsrfToken, EndpointMaybeSet, EndpointNotSet,
-    EndpointSet, Nonce, Scope,
+    EndpointSet, Nonce, RedirectUrl, Scope,
     core::{
         CoreClient, CoreIdTokenClaims, CoreIdTokenVerifier, CoreProviderMetadata, CoreResponseType,
     },
@@ -26,7 +26,10 @@ pub struct OpenIdConnectClient {
 }
 
 impl OpenIdConnectClient {
-    pub async fn from_config(config: OpenIdConnectConfig) -> Result<Self> {
+    pub async fn from_config(
+        config: crate::config::oidc::ClientConfig,
+        redirect_url: RedirectUrl,
+    ) -> Result<Self> {
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
             .build()?;
@@ -39,7 +42,7 @@ impl OpenIdConnectClient {
             config.client_id,
             Some(config.client_secret),
         )
-        .set_redirect_uri(config.redirect_url);
+        .set_redirect_uri(redirect_url);
 
         Ok(Self {
             inner_client,
