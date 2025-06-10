@@ -158,125 +158,133 @@ export default function MemberHistoryPage() {
                     </SelectContent>
                 </Select>
             </div>
-            
 
-            {/* Donation History */}
             <Tabs defaultValue="timeline" className="space-y-4">
                 <TabsList>
                     <TabsTrigger value="timeline">Timeline View</TabsTrigger>
                     <TabsTrigger value="detailed">Detailed View</TabsTrigger>
-                    <TabsTrigger value="summary">Summary</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="timeline">
                     <div className="space-y-4">
                         {donationHistory.map((donation, index) => (
+                            // <Card
+                            //     key={donation.id}
+                            //     className="hover:shadow-md transition-shadow"
+                            // >
+                            //     <CardContent className="p-10">
+                            //         <div className="flex items-start gap-4">
+                            //             <div className="flex flex-col items-center">
+                            //                 <div className="p-2 bg-red-100 rounded-full">
+                            //                     <Droplet className="h-5 w-5 text-red-600" />
+                            //                 </div>
+                            //                 <div className="w-px h-16 bg-gray-200 mt-2"></div>
+                            //             </div>
+                            //             <div className="flex-1">
+                            //                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                            //                     <div className="flex-1">
+                            //                         <div className="flex items-center gap-2 mb-2">
+                            //                             <h3 className="font-semibold text-lg">
+                            //                                 {donation.type}
+                            //                             </h3>
+                            //                             <Badge variant="outline">
+                            //                                 {donation.amount}
+                            //                             </Badge>
+                            //                             <Badge
+                            //                                 className={getUrgencyColor(
+                            //                                     donation.urgency,
+                            //                                 )}
+                            //                             >
+                            //                                 {donation.urgency}
+                            //                             </Badge>
+                            //                         </div>
+                            //                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-zinc-600">
+                            //                             <div className="flex items-center gap-1">
+                            //                                 <Calendar className="h-4 w-4" />
+                            //                                 <span>
+                            //                                     {new Date(
+                            //                                         donation.date,
+                            //                                     ).toLocaleDateString()}
+                            //                                 </span>
+                            //                             </div>
+                            //                             <div className="flex items-center gap-1">
+                            //                                 <CheckCircle className="h-4 w-4" />
+                            //                                 <span>
+                            //                                     Hemoglobin:{' '}
+                            //                                     {
+                            //                                         donation.hemoglobin
+                            //                                     }
+                            //                                 </span>
+                            //                             </div>
+                            //                         </div>
+                            //                     </div>
+                            //                     <div className="flex flex-col items-end gap-2">
+                            //                         <Badge
+                            //                             variant="outline"
+                            //                             className="bg-green-100 text-green-800 border-green-200"
+                            //                         >
+                            //                             Completed
+                            //                         </Badge>
+                            //                         <div className="flex gap-2">
+                            //                             <Button
+                            //                                 variant="outline"
+                            //                                 size="sm"
+                            //                             >
+                            //                                 <FileText className="mr-1 h-3 w-3" />
+                            //                                 View Report
+                            //                             </Button>
+                            //                             <Button
+                            //                                 variant="outline"
+                            //                                 size="sm"
+                            //                             >
+                            //                                 <Download className="mr-1 h-3 w-3" />
+                            //                                 Certificate
+                            //                             </Button>
+                            //                         </div>
+                            //                     </div>
+                            //                 </div>
+                            //             </div>
+                            //         </div>
+                            //     </CardContent>
+                            // </Card>
                             <Card
                                 key={donation.id}
-                                className="hover:shadow-md transition-shadow"
+                                className="transition-colors cursor-pointer shadow"
                             >
-                                <CardContent className="p-6">
-                                    <div className="flex items-start gap-4">
-                                        <div className="flex flex-col items-center">
-                                            <div className="p-2 bg-red-100 rounded-full">
-                                                <Droplet className="h-5 w-5 text-red-600" />
-                                            </div>
-                                            {index <
-                                                donationHistory.length - 1 && (
-                                                <div className="w-px h-16 bg-gray-200 mt-2"></div>
-                                            )}
+                                <CardHeader className="pb-3 flex flex-row items-center justify-between gap-4">
+                                    <div>
+                                        <div className="flex flex-row gap-4">
+                                            <CardTitle className="text-base">
+                                                {donation.type}
+                                            </CardTitle>
+                                            <Badge variant="outline">
+                                                {donation.amount}
+                                            </Badge>
+                                            <Badge className={getUrgencyColor(donation.urgency)}>        
+                                                {donation.urgency}
+                                            </Badge>
                                         </div>
-                                        <div className="flex-1">
-                                            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                                                <div className="flex-1">
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <h3 className="font-semibold text-lg">
-                                                            {donation.type}
-                                                        </h3>
-                                                        <Badge variant="outline">
-                                                            {donation.amount}
-                                                        </Badge>
-                                                        <Badge
-                                                            className={getUrgencyColor(
-                                                                donation.urgency,
-                                                            )}
-                                                        >
-                                                            {donation.urgency}
-                                                        </Badge>
-                                                    </div>
-                                                    <p className="text-gray-600 mb-2">
-                                                        Requested by{' '}
-                                                        <span className="font-medium">
-                                                            {
-                                                                donation.requestedBy
-                                                            }
-                                                        </span>
-                                                    </p>
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-                                                        <div className="flex items-center gap-1">
-                                                            <Calendar className="h-4 w-4" />
-                                                            <span>
-                                                                {new Date(
-                                                                    donation.date,
-                                                                ).toLocaleDateString()}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <MapPin className="h-4 w-4" />
-                                                            <span>
-                                                                {
-                                                                    donation.location
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <Heart className="h-4 w-4" />
-                                                            <span>
-                                                                {
-                                                                    donation.patientsHelped
-                                                                }{' '}
-                                                                patients helped
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <CheckCircle className="h-4 w-4" />
-                                                            <span>
-                                                                Hemoglobin:{' '}
-                                                                {
-                                                                    donation.hemoglobin
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex flex-col items-end gap-2">
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="bg-green-100 text-green-800 border-green-200"
-                                                    >
-                                                        Completed
-                                                    </Badge>
-                                                    <div className="flex gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                        >
-                                                            <FileText className="mr-1 h-3 w-3" />
-                                                            View Report
-                                                        </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                        >
-                                                            <Download className="mr-1 h-3 w-3" />
-                                                            Certificate
-                                                        </Button>
-                                                    </div>
-                                                </div>
+                                        <CardDescription className="flex flex-row pt-4 gap-5">
+                                            <div className="flex flex-row gap-3">
+                                                <Calendar className="h-4 w-4" />
+                                                <span> {new Date(donation.date).toLocaleDateString()}</span>
                                             </div>
-                                        </div>
+                                            <div className="flex flex-row gap-2">
+                                                <CheckCircle className="h-4 w-4" />
+                                                <span>Hemoglobin: {donation.hemoglobin}</span>
+                                            </div>
+                                        </CardDescription>
                                     </div>
-                                </CardContent>
+                                    <div className="flex flex-col items-end gap-2">
+                                        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+                                            Complete
+                                        </Badge>
+                                        <Button variant="outline" size="sm">
+                                            <Download className="mr-1 h-3 w-3" />
+                                            View Certificate
+                                        </Button>
+                                    </div>
+                                </CardHeader>
                             </Card>
                         ))}
                     </div>
