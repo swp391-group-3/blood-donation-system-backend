@@ -1,0 +1,19 @@
+services:
+  sui-backend:
+    image: ${REGISTRY}/blood-donation-system-backend:latest
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    profiles:
+      - backend
+      - build
+  sui-frontend:
+    image: ${REGISTRY}/blood-donation-system-frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${API_URL}
+    profiles:
+      - frontend
+      - build
