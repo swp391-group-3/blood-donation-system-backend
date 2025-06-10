@@ -11,8 +11,7 @@ use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::{
-    error::{AuthError, Result},
-    state::ApiState,
+    config::oidc::FRONTEND_REDIRECT_URL, error::{AuthError, Result}, state::ApiState
 };
 
 const KEY: &str = "microsoft";
@@ -80,8 +79,5 @@ pub async fn authorized(
         AuthError::InvalidAuthToken
     })?;
 
-    Ok((
-        jar.add(cookie),
-        Redirect::to(&state.google_client.frontend_redirect_url),
-    ))
+    Ok((jar.add(cookie), Redirect::to(&FRONTEND_REDIRECT_URL)))
 }
