@@ -1,8 +1,0 @@
-services:
-  blood-donation-system-backend:
-    image: ghcr.io/blood-donation-system/backend:latest
-    build:
-      dockerfile: Dockerfile
-    profiles:
-      - backend
-      - build
