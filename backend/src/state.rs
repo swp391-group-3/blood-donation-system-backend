@@ -1,11 +1,12 @@
 use std::{collections::HashMap, sync::Arc};
 
 use database::{deadpool_postgres, tokio_postgres::NoTls};
+use futures::{StreamExt, stream};
 
 use crate::{
     config::{
         CONFIG,
-        oidc::{OpenIdConnectConfig, Provider},
+        oidc::Provider,
     },
     util::{jwt::JwtService, oidc::OpenIdConnectClient},
 };
@@ -25,12 +26,17 @@ impl ApiState {
             .create_pool(Some(deadpool_postgres::Runtime::Tokio1), NoTls)
             .unwrap();
 
-        let oidc_clients = CONFIG
-            .open_id_connect
-            .clients
-            .into_iter()
-            .map(|(provider, config)| (provider, OpenIdConnectClient::from_config(config)))
-            .collect();
+        let oidc_clients = stream::iter(CONFIG.open_id_connect.clients.iter())
+            .then(|(provider, config)| async move {
+                (
+                    provider.clone(),
+                    OpenIdConnectClient::from_config(config.clone())
+                        .await
+                        .unwrap(),
+                )
+            })
+            .collect()
+            .await;
 
         Arc::new(Self {
             database_pool,

@@ -1,7 +1,5 @@
 mod activate;
-pub mod google;
 mod login;
-pub mod microsoft;
 pub mod oauth2;
 mod register;
 mod status;
@@ -26,4 +24,6 @@ pub fn build() -> Router<Arc<ApiState>> {
             "/auth/oauth2/{provider}/authorized",
             routing::get(oauth2::authorized),
         )
+        .route("/auth/activate", routing::post(activate))
+        .route("/auth/status", routing::get(status))
 }

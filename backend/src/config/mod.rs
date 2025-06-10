@@ -4,7 +4,6 @@ pub mod oidc;
 
 use std::sync::LazyLock;
 
-use config::Environment;
 use serde::Deserialize;
 
 use crate::config::{bcrypt::BcryptConfig, jwt::JwtConfig, oidc::OpenIdConnectConfig};

@@ -9,7 +9,7 @@ use tower_sessions::cookie::SameSite;
 use uuid::Uuid;
 
 use crate::{
-    config::{CONFIG, jwt::JwtConfig},
+    config::CONFIG,
     error::AuthError,
     state::ApiState,
 };

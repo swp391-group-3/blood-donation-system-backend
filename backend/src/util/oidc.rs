@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use openidconnect::{
     AuthenticationFlow, AuthorizationCode, CsrfToken, EndpointMaybeSet, EndpointNotSet,
-    EndpointSet, Nonce, RedirectUrl, Scope,
+    EndpointSet, Nonce, Scope,
     core::{
         CoreClient, CoreIdTokenClaims, CoreIdTokenVerifier, CoreProviderMetadata, CoreResponseType,
     },
@@ -9,7 +9,6 @@ use openidconnect::{
     url::Url,
 };
 
-use crate::config::oidc::OpenIdConnectConfig;
 
 type InnerClient = CoreClient<
     EndpointSet,
