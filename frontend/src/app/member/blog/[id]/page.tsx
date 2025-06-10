@@ -1,4 +1,7 @@
 'use client';
+import { useState } from "react"
+import { Content } from "@tiptap/react"
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,9 +11,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Calendar, MessageCircle, Send } from 'lucide-react';
 import { post, comments } from '../../../../../constants/sample-data';
+import { TooltipProvider } from "@/components/ui/tooltip"
+
 
 export default function BlogPostPage() {
+    const [value, setValue] = useState<Content>("")
+
     return (
+      <TooltipProvider>
         <div className="max-w-5xl mx-auto space-y-6 p-6">
             <div className="flex items-center gap-4">
                 <Button variant="ghost" size="sm" asChild>
@@ -74,9 +82,16 @@ export default function BlogPostPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-3">
-                        <Textarea
-                            placeholder="Share your thoughts..."
-                            rows={3}
+                        <MinimalTiptapEditor 
+                          value={value}
+                          onChange={setValue}
+                          className="w-full"
+                          editorContentClassName="p-5"
+                          output="html"
+                          placeholder="Share your though..."
+                          autofocus={true}
+                          editable={true}
+                          editorClassName="focus:outline-hidden"
                         />
                         <div className="flex justify-end">
                             <Button>
@@ -133,5 +148,6 @@ export default function BlogPostPage() {
                 </CardContent>
             </Card>
         </div>
+      </TooltipProvider>
     );
 }
