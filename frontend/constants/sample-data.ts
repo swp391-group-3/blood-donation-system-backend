@@ -3,8 +3,6 @@ import {
     Droplet,
     Calendar,
     Activity,
-    Award,
-    Heart,
     CircleAlert,
     Settings,
     BookOpen,
@@ -31,11 +29,6 @@ export const sidebarItems = [
         icon: Activity,
         label: 'Health Profile',
         href: '/member/health-profile',
-    },
-    {
-        icon: Award,
-        label: 'Achievements',
-        href: '/member/achievement',
     },
     {
         icon: CircleAlert,
