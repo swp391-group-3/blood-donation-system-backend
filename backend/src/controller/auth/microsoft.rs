@@ -11,7 +11,9 @@ use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::{
-    config::oidc::FRONTEND_REDIRECT_URL, error::{AuthError, Result}, state::ApiState
+    config::oidc::FRONTEND_REDIRECT_URL,
+    error::{AuthError, Result},
+    state::ApiState,
 };
 
 const KEY: &str = "microsoft";
