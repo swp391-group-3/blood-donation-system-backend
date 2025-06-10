@@ -1,5 +1,8 @@
+'use client';
+
 import z from 'zod';
-import { throwIfError } from '.';
+import { API_URL, throwIfError } from '.';
+import { redirect } from 'next/navigation';
 
 export const loginSchema = z.object({
     email: z
@@ -11,7 +14,7 @@ export const loginSchema = z.object({
 });
 
 export async function login(values: z.infer<typeof loginSchema>) {
-    const response = await fetch(`http://localhost:3000/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -20,5 +23,13 @@ export async function login(values: z.infer<typeof loginSchema>) {
         body: JSON.stringify(values),
     });
 
-    throwIfError(response);
+    await throwIfError(response);
+}
+
+export async function google() {
+    redirect(`${API_URL}/auth/google`);
+}
+
+export async function microsoft() {
+    redirect(`${API_URL}/auth/microsoft`);
 }

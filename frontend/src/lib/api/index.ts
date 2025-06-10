@@ -1,12 +1,10 @@
-interface ApiError {
-    message: string;
-}
+export const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 export async function throwIfError(response: Response) {
     if (!response.ok) {
-        const error: ApiError = await response.json();
+        const error = await response.text();
 
-        throw Error(error.message);
+        throw new Error(error);
     }
 }
 
