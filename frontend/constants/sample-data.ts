@@ -375,8 +375,6 @@ export const emergencyRequests = [
             'Multi-vehicle accident with 4 critical patients requiring immediate blood transfusion',
         contactPerson: 'Dr. Sarah Johnson',
         contactPhone: '+1-555-0123',
-        address: '123 Medical Drive, Downtown',
-        coordinates: { lat: 40.7128, lng: -74.006 },
     },
     {
         id: 2,
@@ -391,8 +389,6 @@ export const emergencyRequests = [
             'Emergency surgery for 8-year-old patient with internal bleeding',
         contactPerson: 'Dr. Michael Chen',
         contactPhone: '+1-555-0124',
-        address: "456 Children's Way, Medical District",
-        coordinates: { lat: 40.7589, lng: -73.9851 },
     },
     {
         id: 3,
@@ -406,8 +402,6 @@ export const emergencyRequests = [
         description: 'Emergency heart surgery requiring rare B- blood type',
         contactPerson: 'Dr. Lisa Rodriguez',
         contactPhone: '+1-555-0125',
-        address: '789 Cardiac Center Blvd, Uptown',
-        coordinates: { lat: 40.7831, lng: -73.9712 },
     },
 ];
 
