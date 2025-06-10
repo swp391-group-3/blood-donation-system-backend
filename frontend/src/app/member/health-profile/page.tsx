@@ -1,20 +1,20 @@
 'use client';
 import React, { useState } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis} from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-    CardFooter
+    CardFooter,
 } from '@/components/ui/card';
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
-} from "@/components/ui/chart"
+} from '@/components/ui/chart';
 import {
     Select,
     SelectContent,
@@ -48,16 +48,15 @@ import {
     mockHealthRecords,
     mockHealthTrends,
     weightChartData,
-    hemoglobinChartData
+    hemoglobinChartData,
 } from '../../../../constants/sample-data';
-
 
 const chartConfig = {
     weight: {
-        label: "Weight",
-        color: "oklch(70.7% 0.165 254.624)" // blue-400 tailwindcss
-    }
-}
+        label: 'Weight',
+        color: 'oklch(70.7% 0.165 254.624)', // blue-400 tailwindcss
+    },
+};
 export default function HealthRecordsPage() {
     const [selectedRecord, setSelectedRecord] = useState<string | null>(null);
 
@@ -208,7 +207,7 @@ export default function HealthRecordsPage() {
                                     <Card
                                         key={record.id}
                                         className={
-                                            "transition-colors cursor-pointer shadow" +
+                                            'transition-colors cursor-pointer shadow' +
                                             (selectedRecord === record.id
                                                 ? 'border-primary/60 shadow-lg'
                                                 : 'hover:bg-muted/30')
@@ -299,7 +298,8 @@ export default function HealthRecordsPage() {
                                                             </div>
                                                             <div className="flex justify-between">
                                                                 <span>
-                                                                    Upper Blood Pressure:
+                                                                    Upper Blood
+                                                                    Pressure:
                                                                 </span>
                                                                 <span>
                                                                     {
@@ -309,7 +309,8 @@ export default function HealthRecordsPage() {
                                                             </div>
                                                             <div className="flex justify-between">
                                                                 <span>
-                                                                    Lower Blood Pressure:
+                                                                    Lower Blood
+                                                                    Pressure:
                                                                 </span>
                                                                 <span>
                                                                     {
@@ -380,24 +381,45 @@ export default function HealthRecordsPage() {
                                     </div>
                                     <Card>
                                         <CardHeader>
-                                            <CardTitle>Bar Chart - Weight</CardTitle>
-                                            <CardDescription>January - July 2025</CardDescription>
+                                            <CardTitle>
+                                                Bar Chart - Weight
+                                            </CardTitle>
+                                            <CardDescription>
+                                                January - July 2025
+                                            </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <ChartContainer config={chartConfig}>
-                                                <BarChart accessibilityLayer data={weightChartData}>
-                                                    <CartesianGrid vertical={false}/>
-                                                    <XAxis 
+                                            <ChartContainer
+                                                config={chartConfig}
+                                            >
+                                                <BarChart
+                                                    accessibilityLayer
+                                                    data={weightChartData}
+                                                >
+                                                    <CartesianGrid
+                                                        vertical={false}
+                                                    />
+                                                    <XAxis
                                                         dataKey="month"
                                                         tickMargin={10}
                                                         axisLine={false}
-                                                        tickFormatter={(value) => value.slice(0,3)}
+                                                        tickFormatter={(
+                                                            value,
+                                                        ) => value.slice(0, 3)}
                                                     />
-                                                    <ChartTooltip 
+                                                    <ChartTooltip
                                                         cursor={false}
-                                                        content={<ChartTooltipContent hideLabel/>}
+                                                        content={
+                                                            <ChartTooltipContent
+                                                                hideLabel
+                                                            />
+                                                        }
                                                     />
-                                                    <Bar dataKey="weight" fill="oklch(70.7% 0.165 254.624)" radius={8}/>
+                                                    <Bar
+                                                        dataKey="weight"
+                                                        fill="oklch(70.7% 0.165 254.624)"
+                                                        radius={8}
+                                                    />
                                                 </BarChart>
                                             </ChartContainer>
                                         </CardContent>
@@ -425,24 +447,45 @@ export default function HealthRecordsPage() {
                                     </div>
                                     <Card>
                                         <CardHeader>
-                                            <CardTitle>Bar Chart - Hemoglobin</CardTitle>
-                                            <CardDescription>January - July 2025</CardDescription>
+                                            <CardTitle>
+                                                Bar Chart - Hemoglobin
+                                            </CardTitle>
+                                            <CardDescription>
+                                                January - July 2025
+                                            </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <ChartContainer config={chartConfig}>
-                                                <BarChart accessibilityLayer data={hemoglobinChartData}>
-                                                    <CartesianGrid vertical={false}/>
-                                                    <XAxis 
+                                            <ChartContainer
+                                                config={chartConfig}
+                                            >
+                                                <BarChart
+                                                    accessibilityLayer
+                                                    data={hemoglobinChartData}
+                                                >
+                                                    <CartesianGrid
+                                                        vertical={false}
+                                                    />
+                                                    <XAxis
                                                         dataKey="month"
                                                         tickMargin={10}
                                                         axisLine={false}
-                                                        tickFormatter={(value) => value.slice(0,3)}
+                                                        tickFormatter={(
+                                                            value,
+                                                        ) => value.slice(0, 3)}
                                                     />
-                                                    <ChartTooltip 
+                                                    <ChartTooltip
                                                         cursor={false}
-                                                        content={<ChartTooltipContent hideLabel/>}
+                                                        content={
+                                                            <ChartTooltipContent
+                                                                hideLabel
+                                                            />
+                                                        }
                                                     />
-                                                    <Bar dataKey="hemoglobin" fill="oklch(63.7% 0.237 25.331)" radius={8}/>
+                                                    <Bar
+                                                        dataKey="hemoglobin"
+                                                        fill="oklch(63.7% 0.237 25.331)"
+                                                        radius={8}
+                                                    />
                                                 </BarChart>
                                             </ChartContainer>
                                         </CardContent>
