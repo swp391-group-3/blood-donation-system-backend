@@ -1,5 +1,5 @@
 services:
-  sui-backend:
+  backend:
     image: ${REGISTRY}/blood-donation-system-backend:latest
     build:
       context: ../backend
@@ -7,7 +7,7 @@ services:
     profiles:
       - backend
       - build
-  sui-frontend:
+  frontend:
     image: ${REGISTRY}/blood-donation-system-frontend:latest
     build:
       context: ../frontend
