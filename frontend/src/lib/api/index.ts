@@ -15,4 +15,13 @@ export async function deserialize<T>(response: Response): Promise<T> {
     return data;
 }
 
+export const fetchWrapper = (url: RequestInfo | URL, init?: RequestInit) => {
+    const apiUrl = `${API_URL}${url}`;
+
+    return fetch(apiUrl, {
+        ...init,
+        credentials: 'include',
+    });
+};
+
 export * as auth from './auth';

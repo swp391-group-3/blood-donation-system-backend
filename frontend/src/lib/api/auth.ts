@@ -1,7 +1,7 @@
 'use client';
 
 import z from 'zod';
-import { API_URL, throwIfError } from '.';
+import { API_URL, fetchWrapper, throwIfError } from '.';
 import { redirect } from 'next/navigation';
 
 export const loginSchema = z.object({
@@ -14,7 +14,7 @@ export const loginSchema = z.object({
 });
 
 export async function login(values: z.infer<typeof loginSchema>) {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetchWrapper('auth/login', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
