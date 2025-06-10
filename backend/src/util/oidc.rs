@@ -23,7 +23,6 @@ type InnerClient = CoreClient<
 pub struct OpenIdConnectClient {
     inner_client: InnerClient,
     http_client: reqwest::Client,
-    pub frontend_redirect_url: String,
 }
 
 impl OpenIdConnectClient {
@@ -45,7 +44,6 @@ impl OpenIdConnectClient {
         Ok(Self {
             inner_client,
             http_client,
-            frontend_redirect_url: config.frontend_redirect_url,
         })
     }
 
