@@ -1,6 +1,4 @@
 'use client';
-
-import { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -32,110 +30,9 @@ import {
     CheckCircle,
     FileText,
 } from 'lucide-react';
+import { donationHistory } from '../../../../constants/sample-data';
 
 export default function MemberHistoryPage() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [yearFilter, setYearFilter] = useState('all');
-    const [typeFilter, setTypeFilter] = useState('all');
-
-    const donationHistory = [
-        {
-            id: 'don-001',
-            date: '2025-04-15',
-            type: 'Whole Blood',
-            amount: '450ml',
-            location: 'Central Blood Bank',
-            address: '123 Main Street, Downtown',
-            requestId: 'req-001',
-            requestedBy: 'General Hospital',
-            urgency: 'Critical',
-            patientsHelped: 3,
-            hemoglobin: '14.2 g/dL',
-            bloodPressure: '120/80',
-            pulse: '72 bpm',
-            temperature: '98.6°F',
-            status: 'completed',
-            staffNotes: 'Excellent donation, no complications',
-            certificateUrl: '/certificates/don-001.pdf',
-        },
-        {
-            id: 'don-002',
-            date: '2025-01-10',
-            type: 'Plasma',
-            amount: '600ml',
-            location: 'Mobile Blood Drive',
-            address: 'University Campus, Building A',
-            requestId: 'req-002',
-            requestedBy: "Children's Hospital",
-            urgency: 'High',
-            patientsHelped: 2,
-            hemoglobin: '13.8 g/dL',
-            bloodPressure: '118/78',
-            pulse: '68 bpm',
-            temperature: '98.4°F',
-            status: 'completed',
-            staffNotes: 'Good donation, donor felt well throughout',
-            certificateUrl: '/certificates/don-002.pdf',
-        },
-        {
-            id: 'don-003',
-            date: '2024-10-05',
-            type: 'Platelets',
-            amount: '200ml',
-            location: 'University Hospital',
-            address: '789 University Drive',
-            requestId: 'req-003',
-            requestedBy: 'Cancer Treatment Center',
-            urgency: 'Medium',
-            patientsHelped: 1,
-            hemoglobin: '14.0 g/dL',
-            bloodPressure: '122/82',
-            pulse: '75 bpm',
-            temperature: '98.8°F',
-            status: 'completed',
-            staffNotes: 'Platelet donation successful, good recovery',
-            certificateUrl: '/certificates/don-003.pdf',
-        },
-        {
-            id: 'don-004',
-            date: '2024-07-20',
-            type: 'Double Red Cells',
-            amount: '450ml',
-            location: 'Central Blood Bank',
-            address: '123 Main Street, Downtown',
-            requestId: 'req-004',
-            requestedBy: 'Emergency Medical Center',
-            urgency: 'Critical',
-            patientsHelped: 4,
-            hemoglobin: '14.5 g/dL',
-            bloodPressure: '115/75',
-            pulse: '70 bpm',
-            temperature: '98.5°F',
-            status: 'completed',
-            staffNotes: 'Double red cell donation, excellent vitals',
-            certificateUrl: '/certificates/don-004.pdf',
-        },
-        {
-            id: 'don-005',
-            date: '2024-04-12',
-            type: 'Whole Blood',
-            amount: '450ml',
-            location: 'Community Health Center',
-            address: '456 Oak Avenue, Midtown',
-            requestId: 'req-005',
-            requestedBy: 'Metro Hospital',
-            urgency: 'High',
-            patientsHelped: 3,
-            hemoglobin: '13.9 g/dL',
-            bloodPressure: '125/80',
-            pulse: '74 bpm',
-            temperature: '98.7°F',
-            status: 'completed',
-            staffNotes: 'Standard donation, no issues reported',
-            certificateUrl: '/certificates/don-005.pdf',
-        },
-    ];
-
     const getUrgencyColor = (urgency: string) => {
         switch (urgency) {
             case 'Critical':
@@ -149,55 +46,18 @@ export default function MemberHistoryPage() {
         }
     };
 
-    const filteredHistory = donationHistory.filter((donation) => {
-        const matchesSearch =
-            donation.location
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-            donation.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            donation.requestedBy
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase());
-
-        const donationYear = new Date(donation.date).getFullYear().toString();
-        const matchesYear = yearFilter === 'all' || donationYear === yearFilter;
-
-        const matchesType =
-            typeFilter === 'all' || donation.type === typeFilter;
-
-        return matchesSearch && matchesYear && matchesType;
-    });
-
-    const totalDonations = donationHistory.length;
-    const totalVolume = donationHistory.reduce((sum, donation) => {
-        return sum + Number.parseInt(donation.amount.replace('ml', ''));
-    }, 0);
-    const totalPatientsHelped = donationHistory.reduce(
-        (sum, donation) => sum + donation.patientsHelped,
-        0,
-    );
-    const currentYear = new Date().getFullYear();
-    const thisYearDonations = donationHistory.filter(
-        (donation) => new Date(donation.date).getFullYear() === currentYear,
-    ).length;
-
     return (
-        <div className="space-y-6">
-            {/* Header */}
+        <div className="space-y-6 p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">
                         Donation History
                     </h1>
-                    <p className="text-gray-600">
+                    <p className="text-zinc-600">
                         Your complete record of life-saving donations
                     </p>
                 </div>
                 <div className="flex gap-2">
-                    <Button variant="outline">
-                        <Download className="mr-2 h-4 w-4" />
-                        Export History
-                    </Button>
                     <Button className="bg-red-600 hover:bg-red-700">
                         <Award className="mr-2 h-4 w-4" />
                         View Certificates
@@ -205,73 +65,36 @@ export default function MemberHistoryPage() {
                 </div>
             </div>
 
-            {/* Impact Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="border-red-200 bg-red-50">
-                    <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-red-600">
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
+                <Card>
+                    <CardHeader>
+                        <CardTitle> Impact</CardTitle>
+                        <CardDescription>
+                            How your donations have helped community
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <div className="text-center p-4 bg-red-50 rounded-lg">
+                                <div className="text-3xl font-bold text-red-600 mb-1">
+                                    5
+                                </div>
+                                <div className="text-sm text-gray-600">
                                     Total Donations
-                                </p>
-                                <p className="text-2xl font-bold text-red-700">
-                                    {totalDonations}
-                                </p>
+                                </div>
                             </div>
-                            <Droplet className="h-8 w-8 text-red-500" />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-blue-200 bg-blue-50">
-                    <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-blue-600">
+                            <div className="text-center p-4 bg-blue-50 rounded-lg">
+                                <div className="text-3xl font-bold text-blue-600 mb-1">
+                                    2.25L
+                                </div>
+                                <div className="text-sm text-gray-600">
                                     Blood Donated
-                                </p>
-                                <p className="text-2xl font-bold text-blue-700">
-                                    {(totalVolume / 1000).toFixed(1)}L
-                                </p>
+                                </div>
                             </div>
-                            <TrendingUp className="h-8 w-8 text-blue-500" />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-green-200 bg-green-50">
-                    <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-green-600">
-                                    Lives Saved
-                                </p>
-                                <p className="text-2xl font-bold text-green-700">
-                                    {totalPatientsHelped}
-                                </p>
-                            </div>
-                            <Heart className="h-8 w-8 text-green-500" />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-purple-200 bg-purple-50">
-                    <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-purple-600">
-                                    This Year
-                                </p>
-                                <p className="text-2xl font-bold text-purple-700">
-                                    {thisYearDonations}
-                                </p>
-                            </div>
-                            <Calendar className="h-8 w-8 text-purple-500" />
                         </div>
                     </CardContent>
                 </Card>
             </div>
-
             {/* Filters */}
             <Card>
                 <CardContent className="p-4">
@@ -281,19 +104,12 @@ export default function MemberHistoryPage() {
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                                 <Input
                                     placeholder="Search by location, type, or hospital..."
-                                    value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
                                     className="pl-10"
                                 />
                             </div>
                         </div>
                         <div className="flex gap-2">
-                            <Select
-                                value={yearFilter}
-                                onValueChange={setYearFilter}
-                            >
+                            <Select>
                                 <SelectTrigger className="w-32">
                                     <Calendar className="mr-2 h-4 w-4" />
                                     <SelectValue placeholder="Year" />
@@ -308,10 +124,7 @@ export default function MemberHistoryPage() {
                                 </SelectContent>
                             </Select>
 
-                            <Select
-                                value={typeFilter}
-                                onValueChange={setTypeFilter}
-                            >
+                            <Select>
                                 <SelectTrigger className="w-40">
                                     <Filter className="mr-2 h-4 w-4" />
                                     <SelectValue placeholder="Type" />
@@ -349,7 +162,7 @@ export default function MemberHistoryPage() {
 
                 <TabsContent value="timeline">
                     <div className="space-y-4">
-                        {filteredHistory.map((donation, index) => (
+                        {donationHistory.map((donation, index) => (
                             <Card
                                 key={donation.id}
                                 className="hover:shadow-md transition-shadow"
@@ -361,7 +174,7 @@ export default function MemberHistoryPage() {
                                                 <Droplet className="h-5 w-5 text-red-600" />
                                             </div>
                                             {index <
-                                                filteredHistory.length - 1 && (
+                                                donationHistory.length - 1 && (
                                                 <div className="w-px h-16 bg-gray-200 mt-2"></div>
                                             )}
                                         </div>
@@ -463,7 +276,7 @@ export default function MemberHistoryPage() {
 
                 <TabsContent value="detailed">
                     <div className="space-y-4">
-                        {filteredHistory.map((donation) => (
+                        {donationHistory.map((donation) => (
                             <Card key={donation.id}>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -623,7 +436,7 @@ export default function MemberHistoryPage() {
                                             (d) => d.type === type,
                                         ).length;
                                         const percentage =
-                                            (count / totalDonations) * 100;
+                                            (count / 10) * 100;
                                         return (
                                             <div key={type}>
                                                 <div className="flex justify-between text-sm mb-1">
