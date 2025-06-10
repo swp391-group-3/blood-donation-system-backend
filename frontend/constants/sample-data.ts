@@ -529,7 +529,7 @@ export const post = {
     },
     tags: ['donation', 'health', 'community'],
     title: 'The Importance of Regular Blood Donation',
-    publishedAt: '2023-05-28' ,
+    publishedAt: '2023-05-28',
     content: `
     <article>
         <section>
