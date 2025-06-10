@@ -33,19 +33,16 @@ import {
 } from 'lucide-react';
 import { donationHistory } from '../../../../constants/sample-data';
 
-
 export default function MemberHistoryPage() {
-
-    const [searchTerm, setSearchTerm] = useState("")
-    const [year, setYear] = useState("")
-    const [type, setType] = useState("")
+    const [searchTerm, setSearchTerm] = useState('');
+    const [year, setYear] = useState('');
+    const [type, setType] = useState('');
     const [selectedHistory, setSelectedHistory] = useState<string | null>(null);
-
 
     function handleSearch() {
         // come in future
     }
-    
+
     const getUrgencyColor = (urgency: string) => {
         switch (urgency) {
             case 'Critical':
@@ -103,29 +100,29 @@ export default function MemberHistoryPage() {
                 </Card>
             </div>
 
-            <div className="flex w-full items-center gap-2">   
+            <div className="flex w-full items-center gap-2">
                 <div className="relative w-full">
-                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"/>
-                    <Input 
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <Input
                         type="search"
                         placeholder="Search by name"
                         className="pl-9 w-full h-10"
                         value={searchTerm}
                         onChange={(e) => {
-                            setSearchTerm(e.target.value)
-                            handleSearch()
+                            setSearchTerm(e.target.value);
+                            handleSearch();
                         }}
                     />
                 </div>
-                <Select 
+                <Select
                     onValueChange={(value) => {
-                        setYear(value)
-                        handleSearch()
+                        setYear(value);
+                        handleSearch();
                     }}
                 >
                     <SelectTrigger className="w-[180px] h-10">
-                        <Calendar className="mr-2 h-4 w-4"/>
-                        <SelectValue placeholder="Year"/>
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="2025">2025</SelectItem>
@@ -134,15 +131,15 @@ export default function MemberHistoryPage() {
                     </SelectContent>
                 </Select>
 
-                <Select 
+                <Select
                     onValueChange={(value) => {
-                        setType(value)
-                        handleSearch()
+                        setType(value);
+                        handleSearch();
                     }}
                 >
                     <SelectTrigger className="w-[180px] h-10">
-                        <Droplet className="mr-2 h-4 w-4"/>
-                        <SelectValue placeholder="Blood Type"/>
+                        <Droplet className="mr-2 h-4 w-4" />
+                        <SelectValue placeholder="Blood Type" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="O+">O+</SelectItem>
@@ -166,14 +163,17 @@ export default function MemberHistoryPage() {
                         {donationHistory.map((donation, index) => (
                             <Card
                                 key={donation.id}
-                                className={'transition-colors cursor-pointer shadow' +
-                                (selectedHistory === donation.id
-                                    ? 'border-primary/60 shadow-lg'
-                                    : 'hover:bg-muted/30')
+                                className={
+                                    'transition-colors cursor-pointer shadow' +
+                                    (selectedHistory === donation.id
+                                        ? 'border-primary/60 shadow-lg'
+                                        : 'hover:bg-muted/30')
                                 }
                                 onClick={() =>
                                     setSelectedHistory(
-                                        selectedHistory === donation.id ? null : donation.id,
+                                        selectedHistory === donation.id
+                                            ? null
+                                            : donation.id,
                                     )
                                 }
                             >
@@ -186,23 +186,38 @@ export default function MemberHistoryPage() {
                                             <Badge variant="outline">
                                                 {donation.amount}
                                             </Badge>
-                                            <Badge className={getUrgencyColor(donation.urgency)}>        
+                                            <Badge
+                                                className={getUrgencyColor(
+                                                    donation.urgency,
+                                                )}
+                                            >
                                                 {donation.urgency}
                                             </Badge>
                                         </div>
                                         <CardDescription className="flex flex-row pt-4 gap-5">
                                             <div className="flex flex-row gap-3">
                                                 <Calendar className="h-4 w-4" />
-                                                <span> {new Date(donation.date).toLocaleDateString()}</span>
+                                                <span>
+                                                    {' '}
+                                                    {new Date(
+                                                        donation.date,
+                                                    ).toLocaleDateString()}
+                                                </span>
                                             </div>
                                             <div className="flex flex-row gap-2">
                                                 <CheckCircle className="h-4 w-4" />
-                                                <span>Hemoglobin: {donation.hemoglobin}</span>
+                                                <span>
+                                                    Hemoglobin:{' '}
+                                                    {donation.hemoglobin}
+                                                </span>
                                             </div>
                                         </CardDescription>
                                     </div>
                                     <div className="flex flex-col items-end gap-2">
-                                        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+                                        <Badge
+                                            variant="outline"
+                                            className="bg-green-100 text-green-800 border-green-200"
+                                        >
                                             Complete
                                         </Badge>
                                         <Button variant="outline" size="sm">
@@ -220,39 +235,33 @@ export default function MemberHistoryPage() {
                                                         <span>
                                                             Donation ID:
                                                         </span>
-                                                        <span>
-                                                            don-001
-                                                        </span>
+                                                        <span>don-001</span>
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span>
                                                             Appointment ID:
                                                         </span>
-                                                        <span>
-                                                            app-001
-                                                        </span>
+                                                        <span>app-001</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span>
-                                                            Type:
-                                                        </span>
-                                                        <span>
-                                                            Whole Blood
-                                                        </span>
+                                                        <span>Type:</span>
+                                                        <span>Whole Blood</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span>
-                                                            Amount:
-                                                        </span>
-                                                        <span>
-                                                            450ml
-                                                        </span>
+                                                        <span>Amount:</span>
+                                                        <span>450ml</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="border-t pt-4 flex justify-between">
-                                                <h4 className="font-medium mb-2">Medical Notes</h4>
-                                                <p className="text-sm text-zinc-600">The donor have a little bit of headache after donation process</p>
+                                                <h4 className="font-medium mb-2">
+                                                    Medical Notes
+                                                </h4>
+                                                <p className="text-sm text-zinc-600">
+                                                    The donor have a little bit
+                                                    of headache after donation
+                                                    process
+                                                </p>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -279,8 +288,7 @@ export default function MemberHistoryPage() {
                                         const count = donationHistory.filter(
                                             (d) => d.type === type,
                                         ).length;
-                                        const percentage =
-                                            (count / 10) * 100;
+                                        const percentage = (count / 10) * 100;
                                         return (
                                             <div key={type}>
                                                 <div className="flex justify-between text-sm mb-1">
