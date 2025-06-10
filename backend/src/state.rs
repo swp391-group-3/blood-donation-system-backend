@@ -6,7 +6,7 @@ use futures::{StreamExt, stream};
 use crate::{
     config::{
         CONFIG,
-        oidc::Provider,
+        oidc::{OpenIdConnectConfig, Provider},
     },
     util::{jwt::JwtService, oidc::OpenIdConnectClient},
 };
@@ -27,9 +27,9 @@ impl ApiState {
             .unwrap();
 
         let oidc_clients = stream::iter(CONFIG.open_id_connect.clients.iter())
-            .then(|(provider, config)| async move {
+            .then(|(&provider, config)| async move {
                 (
-                    provider.clone(),
+                    provider,
                     OpenIdConnectClient::from_config(config.clone())
                         .await
                         .unwrap(),
