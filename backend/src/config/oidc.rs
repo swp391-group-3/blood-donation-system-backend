@@ -7,7 +7,7 @@ use serde::Deserialize;
 #[serde(rename_all = "snake_case")]
 pub enum Provider {
     Google,
-    Microsoft
+    Microsoft,
 }
 
 #[derive(Debug, Deserialize)]
@@ -15,11 +15,11 @@ pub struct ClientConfig {
     pub client_id: ClientId,
     pub client_secret: ClientSecret,
     pub issuer_url: IssuerUrl,
+    pub redirect_url: String
 }
 
 #[derive(Debug, Deserialize)]
 pub struct OpenIdConnectConfig {
     pub clients: HashMap<Provider, ClientConfig>,
     pub frontend_redirect_url: String,
-    pub oauth2_redirect_url: RedirectUrl,
 }
