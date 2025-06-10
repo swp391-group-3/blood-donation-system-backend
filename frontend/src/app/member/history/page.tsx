@@ -121,6 +121,42 @@ export default function MemberHistoryPage() {
                         }}
                     />
                 </div>
+                <Select 
+                    onValueChange={(value) => {
+                        setYear(value)
+                        handleSearch()
+                    }}
+                >
+                    <SelectTrigger className="w-[180px] h-10">
+                        <Calendar className="mr-2 h-4 w-4"/>
+                        <SelectValue placeholder="Year"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="2025">2025</SelectItem>
+                        <SelectItem value="2024">2024</SelectItem>
+                        <SelectItem value="2023">2023</SelectItem>
+                    </SelectContent>
+                </Select>
+
+                <Select 
+                    onValueChange={(value) => {
+                        setType(value)
+                        handleSearch()
+                    }}
+                >
+                    <SelectTrigger className="w-[180px] h-10">
+                        <Droplet className="mr-2 h-4 w-4"/>
+                        <SelectValue placeholder="Blood Type"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="O+">O+</SelectItem>
+                        <SelectItem value="A">A</SelectItem>
+                        <SelectItem value="B">B</SelectItem>
+                        <SelectItem value="B+">B+</SelectItem>
+                        <SelectItem value="B-">B-</SelectItem>
+                        <SelectItem value="AB">AB</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
             
 
