@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -32,7 +33,17 @@ import {
 } from 'lucide-react';
 import { donationHistory } from '../../../../constants/sample-data';
 
+
 export default function MemberHistoryPage() {
+
+    const [searchTerm, setSearchTerm] = useState("")
+    const [year, setYear] = useState("")
+    const [type, setType] = useState("")
+
+    function handleSearch() {
+        // come in future
+    }
+    
     const getUrgencyColor = (urgency: string) => {
         switch (urgency) {
             case 'Critical':
@@ -79,7 +90,7 @@ export default function MemberHistoryPage() {
                                 <div className="text-3xl font-bold text-red-600 mb-1">
                                     5
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-zinc-600">
                                     Total Donations
                                 </div>
                             </div>
@@ -87,7 +98,7 @@ export default function MemberHistoryPage() {
                                 <div className="text-3xl font-bold text-blue-600 mb-1">
                                     2.25L
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-zinc-600">
                                     Blood Donated
                                 </div>
                             </div>
@@ -95,62 +106,23 @@ export default function MemberHistoryPage() {
                     </CardContent>
                 </Card>
             </div>
-            {/* Filters */}
-            <Card>
-                <CardContent className="p-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="flex-1">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                                <Input
-                                    placeholder="Search by location, type, or hospital..."
-                                    className="pl-10"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex gap-2">
-                            <Select>
-                                <SelectTrigger className="w-32">
-                                    <Calendar className="mr-2 h-4 w-4" />
-                                    <SelectValue placeholder="Year" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">
-                                        All Years
-                                    </SelectItem>
-                                    <SelectItem value="2025">2025</SelectItem>
-                                    <SelectItem value="2024">2024</SelectItem>
-                                    <SelectItem value="2023">2023</SelectItem>
-                                </SelectContent>
-                            </Select>
 
-                            <Select>
-                                <SelectTrigger className="w-40">
-                                    <Filter className="mr-2 h-4 w-4" />
-                                    <SelectValue placeholder="Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">
-                                        All Types
-                                    </SelectItem>
-                                    <SelectItem value="Whole Blood">
-                                        Whole Blood
-                                    </SelectItem>
-                                    <SelectItem value="Plasma">
-                                        Plasma
-                                    </SelectItem>
-                                    <SelectItem value="Platelets">
-                                        Platelets
-                                    </SelectItem>
-                                    <SelectItem value="Double Red Cells">
-                                        Double Red Cells
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            <div className="flex w-full items-center gap-2">   
+                <div className="relative w-full">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"/>
+                    <Input 
+                        type="search"
+                        placeholder="Search by name"
+                        className="pl-9 w-full h-10"
+                        value={searchTerm}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value)
+                            handleSearch()
+                        }}
+                    />
+                </div>
+            </div>
+            
 
             {/* Donation History */}
             <Tabs defaultValue="timeline" className="space-y-4">
