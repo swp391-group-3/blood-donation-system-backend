@@ -2,7 +2,7 @@ services:
   backend:
     image: ${REGISTRY}/blood-donation-system-backend:latest
     build:
-      context: ../backend
+      context: backend
       dockerfile: Dockerfile
     profiles:
       - backend
@@ -10,7 +10,7 @@ services:
   frontend:
     image: ${REGISTRY}/blood-donation-system-frontend:latest
     build:
-      context: ../frontend
+      context: frontend
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${API_URL}
