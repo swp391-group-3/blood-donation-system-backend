@@ -22,7 +22,7 @@ const KEY: &str = "oauth2";
 #[utoipa::path(
     get,
     tag = "Auth",
-    path = "/auth/oauth2/{provider}",
+    path = "/oauth2/{provider}",
     params(
         ("provider" = Provider, description = "OAuth2 Provider"),
     ),
