@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@tanstack/react-query": "^5.80.6",
-    "react-icons": "^5.5.0"
-  }
-}
