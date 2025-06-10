@@ -8,6 +8,7 @@ pub struct OpenIdConnectConfig {
     pub client_secret: ClientSecret,
     pub issuer_url: IssuerUrl,
     pub redirect_url: RedirectUrl,
+    pub frontend_redirect_url: String,
 }
 
 impl OpenIdConnectConfig {
