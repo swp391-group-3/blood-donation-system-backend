@@ -30,11 +30,6 @@ export const sidebarItems = [
         label: 'Health Profile',
         href: '/member/health-profile',
     },
-    {
-        icon: CircleAlert,
-        label: 'Emergency Alerts',
-        href: '/member/emergency',
-    },
     { icon: Settings, label: 'Settings', href: '/member/profile' },
 ];
 
