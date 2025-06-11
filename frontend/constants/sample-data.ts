@@ -3,11 +3,10 @@ import {
     Droplet,
     Calendar,
     Activity,
-    Award,
-    Heart,
     CircleAlert,
     Settings,
     BookOpen,
+    History,
 } from 'lucide-react';
 
 export const sidebarItems = [
@@ -33,15 +32,11 @@ export const sidebarItems = [
         href: '/member/health-profile',
     },
     {
-        icon: Award,
-        label: 'Achievements',
-        href: '/member/achievement',
+        icon: History,
+        label: 'History',
+        href: '/member/history',
     },
-    {
-        icon: CircleAlert,
-        label: 'Emergency Alerts',
-        href: '/member/emergency',
-    },
+
     { icon: Settings, label: 'Settings', href: '/member/profile' },
 ];
 
@@ -375,8 +370,6 @@ export const emergencyRequests = [
             'Multi-vehicle accident with 4 critical patients requiring immediate blood transfusion',
         contactPerson: 'Dr. Sarah Johnson',
         contactPhone: '+1-555-0123',
-        address: '123 Medical Drive, Downtown',
-        coordinates: { lat: 40.7128, lng: -74.006 },
     },
     {
         id: 2,
@@ -391,8 +384,6 @@ export const emergencyRequests = [
             'Emergency surgery for 8-year-old patient with internal bleeding',
         contactPerson: 'Dr. Michael Chen',
         contactPhone: '+1-555-0124',
-        address: "456 Children's Way, Medical District",
-        coordinates: { lat: 40.7589, lng: -73.9851 },
     },
     {
         id: 3,
@@ -406,8 +397,6 @@ export const emergencyRequests = [
         description: 'Emergency heart surgery requiring rare B- blood type',
         contactPerson: 'Dr. Lisa Rodriguez',
         contactPhone: '+1-555-0125',
-        address: '789 Cardiac Center Blvd, Uptown',
-        coordinates: { lat: 40.7831, lng: -73.9712 },
     },
 ];
 
@@ -536,3 +525,219 @@ export const bloodDonationTags = [
 
 // empty blog list to test the empty list state
 export const emptyBlogList = [];
+
+// blog data sample
+
+export const post = {
+    author: {
+        name: 'Dr. Nam Dang',
+        role: 'staff',
+        initials: 'ND',
+    },
+    tags: ['donation', 'health', 'community'],
+    title: 'The Importance of Regular Blood Donation',
+    publishedAt: '2023-05-28',
+    content: `
+    <article>
+        <section>
+            <h2>Introduction</h2>
+            <p>
+            Blood is often called the lifeline of the human body, carrying oxygen, nutrients, and vital cells to every corner of our system.
+            But while it’s something most of us take for granted, every day, thousands of patients depend on donated blood for survival.
+            Thanks to advances in medical software and blood donation management systems, the process of collecting, tracking, and distributing blood is safer, faster, and more efficient than ever before.
+            </p>
+        </section>
+        <section>
+            <h2>The Importance of Regular Blood Donation</h2>
+            <p>
+            Regular blood donation isn’t just a charitable act—it’s a cornerstone of any healthcare system.
+            Hospitals require a constant supply of blood for surgeries, trauma cases, cancer treatments, and chronic illnesses.
+            One donation can save up to three lives, but demand often outpaces supply, especially during emergencies or natural disasters.
+            </p>
+        </section>
+        <section>
+            <h2>Challenges in Traditional Blood Donation</h2>
+            <ul>
+            <li><strong>Manual Records:</strong> Paper-based records were prone to errors, duplication, and data loss.</li>
+            <li><strong>Traceability:</strong> Tracking each blood unit from donor to recipient was complex, making recalls or investigations difficult during transfusion reactions.</li>
+            <li><strong>Donor Management:</strong> Reaching eligible donors for urgent needs or new donation drives was inefficient.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>How Modern Systems Transform Blood Donation</h2>
+            <ol>
+            <li>
+                <strong>End-to-End Traceability</strong><br>
+                Every unit of blood receives a unique barcode or RFID tag. The system tracks it from donation, through testing, processing, storage, and ultimately to the patient. This minimizes the risk of errors and enables quick responses if there are recalls or safety alerts.
+            </li>
+            <li>
+                <strong>Donor Eligibility and Scheduling</strong><br>
+                Donor information—including past donations, deferrals, health screening results, and eligibility—is securely stored. The system automatically calculates when a donor is eligible again, preventing over-donation and ensuring donor health. Online scheduling tools allow donors to book appointments at their convenience, reducing wait times and improving turnout.
+            </li>
+            <li>
+                <strong>Inventory Management</strong><br>
+                Real-time dashboards help staff monitor blood stock levels by type and component (red cells, plasma, platelets). When certain blood types run low, the system can trigger alerts, or even automatically send notifications to registered donors with matching types.
+            </li>
+            <li>
+                <strong>Compliance and Data Security</strong><br>
+                Modern solutions adhere to strict data protection regulations (HIPAA, GDPR, etc.). All sensitive information is encrypted, and access is role-based, ensuring that only authorized personnel can view or edit critical data.
+            </li>
+            <li>
+                <strong>Community Engagement</strong><br>
+                Many platforms integrate with email and SMS systems, making it easy to reach out to donors for upcoming events or urgent needs. Some even provide mobile apps so donors can track their donation history and receive reminders.
+            </li>
+            </ol>
+        </section>
+        <section>
+            <h2>The Human Side: Stories from the Field</h2>
+            <p>
+            Behind every pint of blood is a story—a donor who took the time to help, and a patient whose life was changed.
+            Our system isn’t just about technology; it’s about connecting people in moments of need and fostering a culture of health and generosity.
+            </p>
+        </section>
+        <section>
+            <h2>Conclusion</h2>
+            <p>
+            The evolution of blood donation systems illustrates the power of technology to improve public health outcomes.
+            As more hospitals and blood banks adopt these solutions, we’re better equipped than ever to save lives, respond to emergencies, and ensure that every drop of donated blood counts.
+            </p>
+        </section>
+        </article>
+    `,
+};
+// comment data sample
+export const comments = [
+    {
+        id: 'comment-1',
+        author: {
+            name: 'Michael Chen',
+            initials: 'MC',
+            role: 'member',
+        },
+        content:
+            'This is such an informative post! I had no idea that only 3% of eligible people donate blood. It really puts things into perspective.',
+        publishedAt: '2023-05-28',
+    },
+    {
+        id: 'comment-2',
+        author: {
+            name: 'Jennifer Adams',
+            initials: 'JA',
+            role: 'member',
+        },
+        content:
+            "I've been donating for 5 years now and it's become such a rewarding habit. The health screening is also a nice bonus!",
+        publishedAt: '2023-05-28',
+    },
+    {
+        id: 'comment-3',
+        author: {
+            name: 'Robert Kim',
+            initials: 'RK',
+            role: 'member',
+        },
+        content:
+            "Great article! I'm planning to start donating regularly. Do you have any tips for first-time donors?",
+        publishedAt: '2023-05-29',
+    },
+];
+
+// donation history sample data
+
+export const donationHistory = [
+    {
+        id: 'don-001',
+        date: '2025-04-15',
+        type: 'Whole Blood',
+        amount: '450ml',
+        location: 'Central Blood Bank',
+        address: '123 Main Street, Downtown',
+        requestId: 'req-001',
+        requestedBy: 'General Hospital',
+        urgency: 'Critical',
+        patientsHelped: 3,
+        hemoglobin: '14.2 g/dL',
+        bloodPressure: '120/80',
+        pulse: '72 bpm',
+        temperature: '98.6°F',
+        status: 'completed',
+        staffNotes: 'Excellent donation, no complications',
+        certificateUrl: '/certificates/don-001.pdf',
+    },
+    {
+        id: 'don-002',
+        date: '2025-01-10',
+        type: 'Plasma',
+        amount: '600ml',
+        location: 'Mobile Blood Drive',
+        address: 'University Campus, Building A',
+        requestId: 'req-002',
+        requestedBy: "Children's Hospital",
+        urgency: 'High',
+        patientsHelped: 2,
+        hemoglobin: '13.8 g/dL',
+        bloodPressure: '118/78',
+        pulse: '68 bpm',
+        temperature: '98.4°F',
+        status: 'completed',
+        staffNotes: 'Good donation, donor felt well throughout',
+        certificateUrl: '/certificates/don-002.pdf',
+    },
+    {
+        id: 'don-003',
+        date: '2024-10-05',
+        type: 'Platelets',
+        amount: '200ml',
+        location: 'University Hospital',
+        address: '789 University Drive',
+        requestId: 'req-003',
+        requestedBy: 'Cancer Treatment Center',
+        urgency: 'Medium',
+        patientsHelped: 1,
+        hemoglobin: '14.0 g/dL',
+        bloodPressure: '122/82',
+        pulse: '75 bpm',
+        temperature: '98.8°F',
+        status: 'completed',
+        staffNotes: 'Platelet donation successful, good recovery',
+        certificateUrl: '/certificates/don-003.pdf',
+    },
+    {
+        id: 'don-004',
+        date: '2024-07-20',
+        type: 'Double Red Cells',
+        amount: '450ml',
+        location: 'Central Blood Bank',
+        address: '123 Main Street, Downtown',
+        requestId: 'req-004',
+        requestedBy: 'Emergency Medical Center',
+        urgency: 'Critical',
+        patientsHelped: 4,
+        hemoglobin: '14.5 g/dL',
+        bloodPressure: '115/75',
+        pulse: '70 bpm',
+        temperature: '98.5°F',
+        status: 'completed',
+        staffNotes: 'Double red cell donation, excellent vitals',
+        certificateUrl: '/certificates/don-004.pdf',
+    },
+    {
+        id: 'don-005',
+        date: '2024-04-12',
+        type: 'Whole Blood',
+        amount: '450ml',
+        location: 'Community Health Center',
+        address: '456 Oak Avenue, Midtown',
+        requestId: 'req-005',
+        requestedBy: 'Metro Hospital',
+        urgency: 'High',
+        patientsHelped: 3,
+        hemoglobin: '13.9 g/dL',
+        bloodPressure: '125/80',
+        pulse: '74 bpm',
+        temperature: '98.7°F',
+        status: 'completed',
+        staffNotes: 'Standard donation, no issues reported',
+        certificateUrl: '/certificates/don-005.pdf',
+    },
+];

@@ -154,7 +154,7 @@ export default function BlogPage() {
                                             <div className="flex-1">
                                                 <CardTitle className="line-clamp-2">
                                                     <Link
-                                                        href={`/dashboard/blog/${post.id}`}
+                                                        href={`/member/blog/${post.id}`}
                                                         className="hover:text-blue-500"
                                                     >
                                                         {post.title}

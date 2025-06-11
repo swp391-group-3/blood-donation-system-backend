@@ -9,8 +9,6 @@ use openidconnect::{
     url::Url,
 };
 
-use crate::config::oidc::OpenIdConnectConfig;
-
 type InnerClient = CoreClient<
     EndpointSet,
     EndpointNotSet,
@@ -23,11 +21,10 @@ type InnerClient = CoreClient<
 pub struct OpenIdConnectClient {
     inner_client: InnerClient,
     http_client: reqwest::Client,
-    pub frontend_redirect_url: String,
 }
 
 impl OpenIdConnectClient {
-    pub async fn from_config(config: OpenIdConnectConfig) -> Result<Self> {
+    pub async fn from_config(config: crate::config::oidc::ClientConfig) -> Result<Self> {
         let http_client = reqwest::ClientBuilder::new()
             .redirect(reqwest::redirect::Policy::none())
             .build()?;
@@ -45,7 +42,6 @@ impl OpenIdConnectClient {
         Ok(Self {
             inner_client,
             http_client,
-            frontend_redirect_url: config.frontend_redirect_url,
         })
     }
 

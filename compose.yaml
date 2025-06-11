@@ -1,41 +1,43 @@
 services:
-  database:
-    container_name: blood-donation-system-database
-    image: postgres
+  postgres:
+    container_name: blood-donation-system-postgres
+    image: postgres:latest
+    ports:
+      - 5433:5432
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_DB: ${PG_DB}
     volumes:
-      - data:/var/lib/postgresql/data
-    restart: always
+      - database:/var/lib/postgresql/data
     networks:
       - network
-    profiles:
-      - backend
-      - deploy
 
   cloudbeaver:
     image: dbeaver/cloudbeaver:latest
     container_name: blood-donation-system-cloudbeaver
     restart: always
+    ports:
+      - 8978:8978
     volumes:
-      - zenick:/opt/cloudbeaver/workspace
+      - cloudbeaver:/opt/cloudbeaver/workspace
     networks:
       - network
-    profiles:
-      - backend
-      - deploy
 
   backend:
     container_name: blood-donation-system-backend
     environment:
       DATABASE_URL: postgres://${PG_USER}:${PG_PASSWORD}@database/${PG_DB}
+      CORS_DOMAIN: ${FRONTEND_URL}
+      FRONTEND_REDIRECT_URL: ${FRONTEND_REDIRECT_URL}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
       MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
       MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
-    image: ghcr.io/blood-donation-system/backend:latest
+      MICROSOFT_REDIRECT_URL: ${MICROSOFT_REDIRECT_URL}
+    image: ${REGISTRY}/backend:latest
     restart: always
     ports:
       - 3000:3000
@@ -44,16 +46,26 @@ services:
     profiles:
       - backend
       - deploy
-
+  frontend:
+    container_name: blood-donation-system-frontend
+    image: ${REGISTRY}/frontend:latest
+    restart: always
+    ports:
+      - 3001:3000
+    networks:
+      - network
+    profiles:
+      - frontend
+      - deploy
 networks:
   network:
     name: blood-donation-system-network
     external: true
 
 volumes:
-  data:
-    name: blood-donation-system-data
-    driver: local
+  database:
+    name: blood-donation-system-database
+    external: true
   cloudbeaver:
     name: blood-donation-system-cloudbeaver
     driver: local

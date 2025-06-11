@@ -11,7 +11,6 @@ use std::net::SocketAddr;
 use axum::Router;
 #[cfg(test)]
 use axum_test::TestServer;
-use config::server::ServerConfig;
 use state::ApiState;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
@@ -20,8 +19,10 @@ use tracing_subscriber::{
     EnvFilter, fmt::time::ChronoLocal, layer::SubscriberExt, util::SubscriberInitExt,
 };
 
-async fn build_app(config: &ServerConfig) -> Router {
-    let state = ApiState::new(config).await;
+use crate::config::CONFIG;
+
+async fn build_app() -> Router {
+    let state = ApiState::new().await;
 
     Router::new()
         .merge(controller::build(state.clone()))
@@ -47,13 +48,11 @@ async fn main() -> anyhow::Result<()> {
         )
         .init();
 
-    let config = ServerConfig::default();
+    let app = build_app().await;
 
-    let app = build_app(&config).await;
+    let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), CONFIG.port)).await?;
 
-    let listener = TcpListener::bind(SocketAddr::new([0, 0, 0, 0].into(), config.port)).await?;
-
-    tracing::info!("Listening on port {}", config.port);
+    tracing::info!("Listening on port {}", CONFIG.port);
 
     axum::serve(listener, app)
         .await
@@ -62,9 +61,7 @@ async fn main() -> anyhow::Result<()> {
 
 #[cfg(test)]
 async fn build_test_server() -> TestServer {
-    let config = ServerConfig::default();
-
-    let app = build_app(&config).await;
+    let app = build_app().await;
 
     TestServer::builder()
         .save_cookies()
