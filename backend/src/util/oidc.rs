@@ -9,7 +9,6 @@ use openidconnect::{
     url::Url,
 };
 
-
 type InnerClient = CoreClient<
     EndpointSet,
     EndpointNotSet,

@@ -8,11 +8,7 @@ use serde::{Deserialize, Serialize};
 use tower_sessions::cookie::SameSite;
 use uuid::Uuid;
 
-use crate::{
-    config::CONFIG,
-    error::AuthError,
-    state::ApiState,
-};
+use crate::{config::CONFIG, error::AuthError, state::ApiState};
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
