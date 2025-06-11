@@ -12,6 +12,7 @@ use utoipa::ToSchema;
 use validator::Validate;
 
 use crate::{
+    config::CONFIG,
     error::{AuthError, Result},
     state::ApiState,
 };
@@ -46,14 +47,13 @@ pub async fn create_staff(
 ) -> Result<()> {
     let database = state.database_pool.get().await?;
 
-    let password = state
-        .bcrypt_service
-        .hash(&request.password)
-        .map_err(|error| {
-            tracing::error!(error =? error);
-            AuthError::InvalidLoginData
-        })?
-        .to_string();
+    let password =
+        bcrypt::hash_with_salt(&request.password, CONFIG.bcrypt.cost, CONFIG.bcrypt.salt)
+            .map_err(|error| {
+                tracing::error!(error =? error);
+                AuthError::InvalidLoginData
+            })?
+            .to_string();
     request.password = password;
 
     queries::account::create_staff()

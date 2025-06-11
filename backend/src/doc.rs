@@ -29,8 +29,7 @@ impl Modify for SecurityAddon {
 
         controller::auth::register,
         controller::auth::login,
-        controller::auth::google::google,
-        controller::auth::microsoft::microsoft,
+        controller::auth::oauth2::oauth2,
         controller::auth::activate,
         controller::auth::status,
 

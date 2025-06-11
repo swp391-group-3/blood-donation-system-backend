@@ -34,10 +34,9 @@ jobs:
         working-directory: ./backend
     env:
       PGHOST: localhost
-      PGDATABASE: test
-      PGUSERNAME: test
-      PGPASSWORD: test
-      DATABASE_URL: postgres://test:test@localhost/test
+      PGDATABASE: ${{ secrets.PG_DB }}
+      PGUSERNAME: ${{ secrets.PG_USER }}
+      PGPASSWORD: ${{ secrets.PG_PASS }}
     strategy:
       fail-fast: false
       matrix:
@@ -58,19 +57,12 @@ jobs:
       - name: Init database
         run:  psql ${{ steps.postgres.outputs.connection-uri }} -a -f schema.sql
       - uses: Swatinem/rust-cache@v2
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.3.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
       - name: Test
         env:
           DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_ISSUER_URL: ${{ secrets.GOOGLE_ISSUER_URL }}
-          GOOGLE_REDIRECT_URL: ${{ secrets.GOOGLE_REDIRECT_URL }}
-          GOOGLE_FRONTEND_REDIRECT_URL: ${{ secrets.GOOGLE_FRONTEND_REDIRECT_URL }}
-
-          MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
-          MICROSOFT_CLIENT_SECRET: ${{ secrets.MICROSOFT_CLIENT_SECRET }}
-          MICROSOFT_ISSUER_URL: ${{ secrets.MICROSOFT_ISSUER_URL }}
-          MICROSOFT_REDIRECT_URL: ${{ secrets.MICROSOFT_REDIRECT_URL }}
-          MICROSOFT_FRONTEND_REDIRECT_URL: ${{ secrets.MICROSOFT_FRONTEND_REDIRECT_URL }}
         run: |
           cargo test --target ${{ matrix.target }}

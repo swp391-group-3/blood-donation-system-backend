@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use tower_sessions::cookie::SameSite;
 use uuid::Uuid;
 
-use crate::{config::jwt::JwtConfig, error::AuthError, state::ApiState};
+use crate::{config::CONFIG, error::AuthError, state::ApiState};
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
@@ -19,17 +19,13 @@ pub struct Claims {
 pub struct JwtService {
     encoding_key: EncodingKey,
     decoding_key: DecodingKey,
-    config: JwtConfig,
 }
 
 impl Default for JwtService {
     fn default() -> Self {
-        let config = JwtConfig::default();
-
         Self {
-            encoding_key: EncodingKey::from_secret(config.secret.as_bytes()),
-            decoding_key: DecodingKey::from_secret(config.secret.as_bytes()),
-            config,
+            encoding_key: EncodingKey::from_secret(CONFIG.jwt.secret.as_bytes()),
+            decoding_key: DecodingKey::from_secret(CONFIG.jwt.secret.as_bytes()),
         }
     }
 }
@@ -40,12 +36,12 @@ impl JwtService {
 
         let claims = Claims {
             sub: id,
-            exp: now + self.config.expired_in,
+            exp: now + CONFIG.jwt.expired_in,
         };
 
         let token = jsonwebtoken::encode(&Header::default(), &claims, &self.encoding_key)?;
 
-        let mut cookie = Cookie::new(self.config.token_key.clone(), token);
+        let mut cookie = Cookie::new(CONFIG.jwt.token_key.clone(), token);
         // cookie.set_secure(true);
         cookie.set_same_site(SameSite::Lax);
         // cookie.set_http_only(true);
@@ -64,7 +60,7 @@ impl FromRequestParts<Arc<ApiState>> for Claims {
     ) -> Result<Self, Self::Rejection> {
         let jar = parts.extract::<CookieJar>().await.unwrap();
         let token = jar
-            .get(&state.jwt_service.config.token_key)
+            .get(&CONFIG.jwt.token_key)
             .ok_or(AuthError::MissingAuthToken)?
             .value();
 
