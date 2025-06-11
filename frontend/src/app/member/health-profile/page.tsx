@@ -73,14 +73,6 @@ export default function HealthRecordsPage() {
         }
     };
 
-    const getHealthStatus = (record: any) => {
-        const tempOk = record.temperature >= 36.1 && record.temperature <= 37.2;
-        const hbOk = record.hemoglobin >= 12.5;
-        const bpOk = true;
-
-        return tempOk && hbOk && bpOk ? 'excellent' : 'good';
-    };
-
     return (
         <div className="p-6 space-y-6">
             <div>
@@ -641,43 +633,6 @@ export default function HealthRecordsPage() {
                                                 You can donate today
                                             </p>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Donation History Impact</CardTitle>
-                            <CardDescription>
-                                How your donations have helped save lives
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid gap-4 md:grid-cols-3">
-                                <div className="text-center p-4 bg-red-50 rounded-lg">
-                                    <div className="text-3xl font-bold text-red-600 mb-1">
-                                        5
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        Total Donations
-                                    </div>
-                                </div>
-                                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                                    <div className="text-3xl font-bold text-blue-600 mb-1">
-                                        2.25L
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        Blood Donated
-                                    </div>
-                                </div>
-                                <div className="text-center p-4 bg-green-50 rounded-lg">
-                                    <div className="text-3xl font-bold text-green-600 mb-1">
-                                        15
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        Lives Saved
                                     </div>
                                 </div>
                             </div>
