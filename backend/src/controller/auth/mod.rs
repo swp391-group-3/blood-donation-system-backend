@@ -1,7 +1,6 @@
 mod activate;
-pub mod google;
 mod login;
-pub mod microsoft;
+pub mod oauth2;
 mod register;
 mod status;
 
@@ -20,12 +19,10 @@ pub fn build() -> Router<Arc<ApiState>> {
     Router::new()
         .route("/auth/register", routing::post(register))
         .route("/auth/login", routing::post(login))
-        .route("/auth/google", routing::get(google::google))
-        .route("/auth/google/authorized", routing::get(google::authorized))
-        .route("/auth/microsoft", routing::get(microsoft::microsoft))
+        .route("/oauth2/{provider}", routing::get(oauth2::oauth2))
         .route(
-            "/auth/microsoft/authorized",
-            routing::get(microsoft::authorized),
+            "/oauth2/{provider}/authorized",
+            routing::get(oauth2::authorized),
         )
         .route("/auth/activate", routing::post(activate))
         .route("/auth/status", routing::get(status))
