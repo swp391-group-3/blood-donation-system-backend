@@ -29,6 +29,7 @@ pub struct Config {
     pub bcrypt: BcryptConfig,
     #[serde(default)]
     pub jwt: JwtConfig,
+    #[serde(default)]
     pub oidc: HashMap<Provider, OpenIdConnectConfig>,
 }
 
