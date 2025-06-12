@@ -176,9 +176,7 @@ export default function BloodRequestPage() {
                             className="w-full mt-2 bg-red-500"
                             variant="default"
                         >
-                            <Link
-                                href="/member/request/1/apply"
-                            >
+                            <Link href="/member/request/1/apply">
                                 Apply Now
                             </Link>
                         </Button>
