@@ -5,8 +5,6 @@ use axum::http::{
         ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION, CONTENT_TYPE, ORIGIN,
     },
 };
-use config::{Config, Environment};
-use serde::Deserialize;
 use tower_http::cors::CorsLayer;
 
 use crate::config::CONFIG;
