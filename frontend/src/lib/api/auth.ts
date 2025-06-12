@@ -2,7 +2,7 @@ import z from 'zod';
 import { API_URL, fetchWrapper, throwIfError } from '.';
 import { redirect } from 'next/navigation';
 
-export const blood_groups = [
+export const bloodGroups = [
     'o_plus',
     'o_minus',
     'a_plus',
@@ -12,53 +12,37 @@ export const blood_groups = [
     'a_b_plus',
     'a_b_minus',
 ] as const;
-export const blood_groups_with_label = [
-    {
-        label: 'O+',
-        value: 'o_plus',
-    },
-
-    {
-        label: 'O-',
-        value: 'o_minus',
-    },
-    {
-        label: 'A+',
-        value: 'a_plus',
-    },
-    {
-        label: 'A-',
-        value: 'a_minus',
-    },
-    {
-        label: 'B+',
-        value: 'b_plus',
-    },
-    {
-        label: 'B-',
-        value: 'b_minus',
-    },
-    {
-        label: 'AB+',
-        value: 'a_b_plus',
-    },
-    {
-        label: 'AB-',
-        value: 'a_b_minus',
-    },
-];
+export const displayBloodGroup = (
+    group: (typeof bloodGroups)[number],
+): string => {
+    switch (group) {
+        case 'o_plus':
+            return 'O+';
+        case 'o_minus':
+            return 'O-';
+        case 'a_plus':
+            return 'A+';
+        case 'a_minus':
+            return 'A-';
+        case 'b_plus':
+            return 'B+';
+        case 'b_minus':
+            return 'B-';
+        case 'a_b_plus':
+            return 'AB+';
+        case 'a_b_minus':
+            return 'AB-';
+    }
+};
 
 export const genders = ['male', 'female'] as const;
-export const gender_with_labels = genders.map((gender) => ({
-    label: gender,
-    value: gender,
-}));
 
 export const registerSchema = z.object({
     email: z.string().email(),
     password: z.string().nonempty({
         message: 'Password must not be empty.',
     }),
+    name: z.string().min(1, { message: 'Name must be provided.' }),
     phone: z
         .string()
         .regex(/0[\d]{9,9}/, { message: 'Phone must consist of 10 number' }),
@@ -66,7 +50,7 @@ export const registerSchema = z.object({
     birthday: z.date().refine((date) => date.getTime() < Date.now(), {
         message: 'Date must be in the past',
     }),
-    blood_group: z.enum(blood_groups),
+    blood_group: z.enum(bloodGroups),
     gender: z.enum(genders),
 });
 
