@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
     TimerOff,
     Droplets,
     Users,
@@ -166,37 +172,53 @@ export default function BloodRequestPage() {
                                     </div>
                                 </div>
                             </CardContent>
-                        </Card> 
+                        </Card>
 
-                        <div className="mb-6">
-                            {sampleAnswers.map((answers, index) => {
-                                return(
-                                    <Card
-                                        key={index}
-                                        className="border-l-4 transition-all duration-300 mb-6"
-                                    >
-                                        <CardHeader className="flex flex-row items-start justify-between">
-                                            <div className="flex items-start gap-3">
-                                                <span
-                                                    className="flex shrink-0 w-8 h-8 rounded-full bg-red-50 items-center justify-center text-sm font-medium"
+                        <Accordion
+                            type="single"
+                            collapsible
+                            className="max-w-5xl mx-auto"
+                            defaultValue="item-1"
+                        >
+                            <AccordionItem value="item-1">
+                                <div className="px-6 bg-white shadow border border-zinc-200 rounded-lg mb-6">
+                                    <AccordionTrigger>
+                                        <p className="text-base text-zinc-950"> View all of your answer to request form </p>
+                                    </AccordionTrigger>
+                                </div>
+                                
+                                <AccordionContent>
+                                    <div className="mb-6">
+                                        {sampleAnswers.map((answers, index) => {
+                                            return(
+                                                <Card
+                                                    key={index}
+                                                    className="border-l-4 transition-all duration-300 mb-6 w-full h-full"
                                                 >
-                                                    {index + 1}
-                                                </span>
-                                                <div className="flex-1">
-                                                    <CardTitle className="text-lg">
-                                                        {answers.question}
-                                                    </CardTitle>
-                                                    <CardDescription className="mt-2">
-                                                        {answers.answer}
-                                                    </CardDescription>
-                                                </div>
-                                            </div>
-
-                                        </CardHeader>
-                                    </Card>
-                                )
-                            })}
-                        </div>
+                                                    <CardHeader className="flex flex-row items-start justify-between">
+                                                        <div className="flex items-start gap-3">
+                                                            <span
+                                                                className="flex shrink-0 w-8 h-8 rounded-full bg-red-50 items-center justify-center text-sm font-medium"
+                                                            >
+                                                                {index + 1}
+                                                            </span>
+                                                            <div className="flex-1">
+                                                                <CardTitle className="text-lg">
+                                                                    {answers.question}
+                                                                </CardTitle>
+                                                                <CardDescription className="mt-2">
+                                                                    {answers.answer}
+                                                                </CardDescription>
+                                                            </div>
+                                                        </div>
+                                                    </CardHeader>
+                                                </Card>
+                                            )
+                                        })}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
                     </div>  
                 </div>
             </div>
