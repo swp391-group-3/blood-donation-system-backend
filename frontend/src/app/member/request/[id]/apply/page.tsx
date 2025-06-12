@@ -12,6 +12,7 @@ import {
     CardTitle,
     CardFooter,
 } from '@/components/ui/card';
+import {Form, FormControl, FormItem, FormField, FormLabel, FormMessage } from "@/components/ui/form"
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
@@ -37,55 +38,18 @@ import {
 } from '../../../../../../constants/sample-data';
 import Link from 'next/link';
 
-const preDonationSchema = z.object({
-    generalHealth: z
-        .string()
-        .min(1, 'Please provide information about your current health status'),
-    donationHistory: z
-        .string()
-        .min(1, 'Please describe your blood donation history'),
-    medications: z
-        .string()
-        .min(1, 'Please list any medications you are currently taking'),
-    medicalConditions: z
-        .string()
-        .min(1, 'Please describe any chronic medical conditions you may have'),
-    recentIllness: z
-        .string()
-        .min(1, 'Please describe any recent illnesses or symptoms'),
-    travelHistory: z
-        .string()
-        .min(1, 'Please describe any recent travel outside the country'),
-    lifestyleFactors: z
-        .string()
-        .min(
-            1,
-            'Please describe your lifestyle including sleep, diet, and exercise',
-        ),
-    allergiesAndReactions: z
-        .string()
-        .min(
-            1,
-            "Please describe any allergies or adverse reactions you've experienced",
-        ),
-    infectiousDiseases: z
-        .string()
-        .min(
-            1,
-            'Please provide information about any history of infectious diseases',
-        ),
-    additionalConcerns: z
-        .string()
-        .min(1, 'Please share any additional health concerns or information'),
-    additionalInfo: z.string().optional(),
-});
+
+const preDonationSchema = z.array(z.string().min(1, "Invalid answer field"))
 
 type PreDonationFormData = z.infer<typeof preDonationSchema>;
 
 export default function PreDonationSurveyPage() {
-    const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
-    const formEndRef = useRef<HTMLDivElement>(null);
+    const form = useForm<z.infer<typeof preDonationSchema>>({
+        resolver: zodResolver(preDonationSchema)
+    })
 
+    const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+    const formEndRef = useRef<HTMLDivElement>(null)
     const {
         register,
         handleSubmit,
@@ -94,18 +58,6 @@ export default function PreDonationSurveyPage() {
         getValues,
     } = useForm<PreDonationFormData>({
         resolver: zodResolver(preDonationSchema),
-        defaultValues: {
-            generalHealth: '',
-            donationHistory: '',
-            medications: '',
-            medicalConditions: '',
-            recentIllness: '',
-            travelHistory: '',
-            lifestyleFactors: '',
-            allergiesAndReactions: '',
-            infectiousDiseases: '',
-            additionalConcerns: '',
-        },
         mode: 'onChange',
     });
 
@@ -120,6 +72,9 @@ export default function PreDonationSurveyPage() {
         if (!value || value.length === 0) return 'empty';
         return 'complete';
     };
+    function handleSubmitApply() {
+        // come in future
+    }
 
     return (
         <div className="max-w-4xl mx-auto space-y-6 p-6">
@@ -286,25 +241,28 @@ export default function PreDonationSurveyPage() {
                                 )}
                             </CardHeader>
                             <CardContent>
-                                <div className="space-y-2">
-                                    <Textarea
-                                        {...register(
-                                            question.id as keyof PreDonationFormData,
-                                        )}
-                                        placeholder={question.placeholder}
-                                        className="min-h-[120px] resize-none transition-all"
-                                        onFocus={() => setActiveQuestion(index)}
-                                    />
-                                </div>
+                                <Form {...form}>
+                                    <form
+                                        onSubmit={handleSubmitApply}
+                                    >
+                                        <div className="space-y-2">
+                                            <FormField 
+                                                control={form.control}
+                                                name="1"
+                                                render={() =>(
+                                                    <FormControl>
+                                                        <Textarea
+                                                            placeholder={question.placeholder}
+                                                            className="min-h-[120px] resize-none transition-all"
+                                                            onFocus={() => setActiveQuestion(index)}
+                                                        />
+                                                    </FormControl>
+                                                )}
+                                            />
+                                        </div>
+                                    </form>
+                                </Form>
                             </CardContent>
-                            <CardFooter className="pt-0">
-                                <div className="text-xs text-zinc-500">
-                                    {watchedFields[
-                                        question.id as keyof PreDonationFormData
-                                    ]?.length || 0}{' '}
-                                    characters
-                                </div>
-                            </CardFooter>
                         </Card>
                     );
                 })}
