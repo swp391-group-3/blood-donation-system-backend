@@ -63,6 +63,8 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
     });
 
     await throwIfError(response);
+
+    redirect('/');
 };
 
 export const loginSchema = z.object({
@@ -85,6 +87,8 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     });
 
     await throwIfError(response);
+
+    redirect('/');
 };
 
 export type Provider = 'google' | 'microsoft';
@@ -111,4 +115,6 @@ export const oauth2Complete = async (
     });
 
     await throwIfError(response);
+
+    redirect('/');
 };
