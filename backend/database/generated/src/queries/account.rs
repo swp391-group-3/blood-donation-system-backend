@@ -65,6 +65,7 @@ pub struct Get {
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetBorrowed<'a> {
@@ -76,6 +77,7 @@ pub struct GetBorrowed<'a> {
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetBorrowed<'a>> for Get {
@@ -89,6 +91,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
             address,
             birthday,
             blood_group,
+            is_active,
             created_at,
         }: GetBorrowed<'a>,
     ) -> Self {
@@ -101,6 +104,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
             address: address.map(|v| v.into()),
             birthday,
             blood_group,
+            is_active,
             created_at,
         }
     }
@@ -452,16 +456,16 @@ impl RegisterStmt {
     }
 }
 impl<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-        T4: crate::StringSql,
-        T5: crate::StringSql,
-    >
+    'c,
+    'a,
+    's,
+    C: GenericClient,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+    T5: crate::StringSql,
+>
     crate::client::async_::Params<
         'c,
         'a,
@@ -523,15 +527,15 @@ impl CreateStaffStmt {
     }
 }
 impl<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-        T4: crate::StringSql,
-    >
+    'c,
+    'a,
+    's,
+    C: GenericClient,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+>
     crate::client::async_::Params<
         'c,
         'a,
@@ -584,7 +588,7 @@ impl GetByEmailStmt {
 }
 pub fn get() -> GetStmt {
     GetStmt(crate::client::async_::Stmt::new(
-        "SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at FROM accounts WHERE id = $1",
+        "SELECT role, email, phone, name, gender, address, birthday, blood_group, is_active, created_at FROM accounts WHERE id = $1",
     ))
 }
 pub struct GetStmt(crate::client::async_::Stmt);
@@ -608,7 +612,8 @@ impl GetStmt {
                     address: row.try_get(5)?,
                     birthday: row.try_get(6)?,
                     blood_group: row.try_get(7)?,
-                    created_at: row.try_get(8)?,
+                    is_active: row.try_get(8)?,
+                    created_at: row.try_get(9)?,
                 })
             },
             mapper: |it| Get::from(it),
@@ -680,12 +685,12 @@ impl UpdateStmt {
     }
 }
 impl<
-        'a,
-        C: GenericClient + Send + Sync,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >
+    'a,
+    C: GenericClient + Send + Sync,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+>
     crate::client::async_::Params<
         'a,
         'a,
