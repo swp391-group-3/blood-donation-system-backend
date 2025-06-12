@@ -26,10 +26,8 @@ export async function login(values: z.infer<typeof loginSchema>) {
     await throwIfError(response);
 }
 
-export async function google() {
-    redirect(`${API_URL}/oauth2/google`);
-}
+export type Provider = 'google' | 'microsoft';
 
-export async function microsoft() {
-    redirect(`${API_URL}/oauth2/microsoft`);
+export async function oauth2(provider: Provider) {
+    redirect(`${API_URL}/oauth2/${provider}`);
 }

@@ -23,7 +23,7 @@ import { Loader2 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import Image from 'next/image';
 
-export default function LoginForm() {
+export default function LoginPage() {
     const { mutate: login, status } = useMutation({
         mutationFn: api.auth.login,
         onError: (error) => toast.error(error.message),
@@ -107,7 +107,9 @@ export default function LoginForm() {
                                         <Button
                                             variant="outline"
                                             className="w-full"
-                                            onClick={api.auth.google}
+                                            onClick={() =>
+                                                api.auth.oauth2('google')
+                                            }
                                         >
                                             <FcGoogle className="h-10 w-10" />
                                             <span className="ml-2">
@@ -117,7 +119,9 @@ export default function LoginForm() {
                                         <Button
                                             variant="outline"
                                             className="w-full"
-                                            onClick={api.auth.microsoft}
+                                            onClick={() =>
+                                                api.auth.oauth2('microsoft')
+                                            }
                                         >
                                             <Image
                                                 src="/microsoft.svg"
@@ -135,7 +139,7 @@ export default function LoginForm() {
                             <div className="mt-4 text-center text-sm">
                                 Don&apos;t have an account?{' '}
                                 <Link
-                                    href="/auth/signup"
+                                    href="/auth/register"
                                     className="underline underline-offset-4"
                                 >
                                     Sign up
