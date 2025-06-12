@@ -1,6 +1,6 @@
 services:
-  postgres:
-    container_name: blood-donation-system-postgres
+  database:
+    container_name: blood-donation-system-database
     image: postgres:latest
     ports:
       - 5433:5432
