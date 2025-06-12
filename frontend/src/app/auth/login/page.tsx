@@ -22,6 +22,8 @@ import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import Image from 'next/image';
+import { OAuth2 } from '../components/oauth2';
+import { Separator } from '@/components/separator';
 
 export default function LoginPage() {
     const { mutate: login, status } = useMutation({
@@ -31,10 +33,7 @@ export default function LoginPage() {
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
-        defaultValues: {
-            email: '',
-            password: '',
-        },
+        defaultValues: {},
     });
 
     return (
@@ -99,52 +98,16 @@ export default function LoginPage() {
                                         ) : (
                                             <Button
                                                 type="submit"
-                                                className="w-full"
+                                                className="w-full py-5"
                                             >
                                                 Login
                                             </Button>
                                         )}
-                                        <Button
-                                            variant="outline"
-                                            className="w-full"
-                                            onClick={() =>
-                                                api.auth.oauth2('google')
-                                            }
-                                        >
-                                            <FcGoogle className="h-10 w-10" />
-                                            <span className="ml-2">
-                                                Login with Google
-                                            </span>
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full"
-                                            onClick={() =>
-                                                api.auth.oauth2('microsoft')
-                                            }
-                                        >
-                                            <Image
-                                                src="/microsoft.svg"
-                                                alt="microsoft"
-                                                width={20}
-                                                height={20}
-                                            />
-                                            <span className="ml-2">
-                                                Login with Microsoft
-                                            </span>
-                                        </Button>
                                     </div>
                                 </form>
                             </Form>
-                            <div className="mt-4 text-center text-sm">
-                                Don&apos;t have an account?{' '}
-                                <Link
-                                    href="/auth/register"
-                                    className="underline underline-offset-4"
-                                >
-                                    Sign up
-                                </Link>
-                            </div>
+                            <Separator text="or" />
+                            <OAuth2 />
                         </CardContent>
                     </Card>
                 </div>
