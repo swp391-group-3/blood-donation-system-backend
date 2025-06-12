@@ -1,9 +1,21 @@
 // This file was generated with `clorinde`. Do not modify.
 
 #[derive(Debug)]
-pub struct RegisterParams<T1: crate::StringSql, T2: crate::StringSql> {
+pub struct RegisterParams<
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+    T5: crate::StringSql,
+> {
     pub email: T1,
-    pub password: T2,
+    pub password: Option<T2>,
+    pub phone: T3,
+    pub name: T4,
+    pub gender: ctypes::Gender,
+    pub address: T5,
+    pub birthday: crate::types::time::Date,
+    pub blood_group: ctypes::BloodGroup,
 }
 #[derive(Debug)]
 pub struct CreateStaffParams<
@@ -16,16 +28,6 @@ pub struct CreateStaffParams<
     pub password: T2,
     pub phone: T3,
     pub name: T4,
-}
-#[derive(Debug)]
-pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
-    pub phone: T1,
-    pub name: T2,
-    pub gender: ctypes::Gender,
-    pub address: T3,
-    pub birthday: crate::types::time::Date,
-    pub blood_group: ctypes::BloodGroup,
-    pub id: uuid::Uuid,
 }
 #[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
@@ -470,58 +472,87 @@ where
 }
 pub fn register() -> RegisterStmt {
     RegisterStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO accounts(email, password, role) VALUES( $1, $2, 'member'::role ) RETURNING id",
+        "INSERT INTO accounts( email, password, role, phone, name, gender, address, birthday, blood_group ) VALUES( $1, COALESCE($2, substr(md5(random()::text), 1, 25)), 'member'::role, $3, $4, $5, $6, $7, $8 ) RETURNING id",
     ))
 }
 pub struct RegisterStmt(crate::client::async_::Stmt);
 impl RegisterStmt {
-    pub fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql, T2: crate::StringSql>(
+    pub fn bind<
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+        T5: crate::StringSql,
+    >(
         &'s mut self,
         client: &'c C,
         email: &'a T1,
-        password: &'a T2,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
+        password: &'a Option<T2>,
+        phone: &'a T3,
+        name: &'a T4,
+        gender: &'a ctypes::Gender,
+        address: &'a T5,
+        birthday: &'a crate::types::time::Date,
+        blood_group: &'a ctypes::BloodGroup,
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8> {
         UuidUuidQuery {
             client,
-            params: [email, password],
+            params: [
+                email,
+                password,
+                phone,
+                name,
+                gender,
+                address,
+                birthday,
+                blood_group,
+            ],
             stmt: &mut self.0,
             extractor: |row| Ok(row.try_get(0)?),
             mapper: |it| it,
         }
     }
 }
-impl<'c, 'a, 's, C: GenericClient, T1: crate::StringSql, T2: crate::StringSql>
+impl<
+    'c,
+    'a,
+    's,
+    C: GenericClient,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+    T5: crate::StringSql,
+>
     crate::client::async_::Params<
         'c,
         'a,
         's,
-        RegisterParams<T1, T2>,
-        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2>,
+        RegisterParams<T1, T2, T3, T4, T5>,
+        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8>,
         C,
     > for RegisterStmt
 {
     fn params(
         &'s mut self,
         client: &'c C,
-        params: &'a RegisterParams<T1, T2>,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
-        self.bind(client, &params.email, &params.password)
-    }
-}
-pub fn oauth2_register() -> Oauth2RegisterStmt {
-    Oauth2RegisterStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO accounts(email, password, role) VALUES( $1, substr(md5(random()::text), 1, 25), 'member'::role ) ON CONFLICT DO NOTHING",
-    ))
-}
-pub struct Oauth2RegisterStmt(crate::client::async_::Stmt);
-impl Oauth2RegisterStmt {
-    pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
-        &'s mut self,
-        client: &'c C,
-        email: &'a T1,
-    ) -> Result<u64, tokio_postgres::Error> {
-        let stmt = self.0.prepare(client).await?;
-        client.execute(stmt, &[email]).await
+        params: &'a RegisterParams<T1, T2, T3, T4, T5>,
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8> {
+        self.bind(
+            client,
+            &params.email,
+            &params.password,
+            &params.phone,
+            &params.name,
+            &params.gender,
+            &params.address,
+            &params.birthday,
+            &params.blood_group,
+        )
     }
 }
 pub fn create_staff() -> CreateStaffStmt {
@@ -558,15 +589,15 @@ impl CreateStaffStmt {
     }
 }
 impl<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-        T4: crate::StringSql,
-    >
+    'c,
+    'a,
+    's,
+    C: GenericClient,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+>
     crate::client::async_::Params<
         'c,
         'a,
@@ -710,79 +741,6 @@ impl GetAllStmt {
         }
     }
 }
-/// Naive way to implement 2 stage registering
-pub fn activate() -> ActivateStmt {
-    ActivateStmt(crate::client::async_::Stmt::new(
-        "UPDATE accounts SET phone = $1, name = $2, gender = $3, address = $4, birthday = $5, blood_group = $6, is_active = true WHERE id = $7 AND is_active = false",
-    ))
-}
-pub struct ActivateStmt(crate::client::async_::Stmt);
-impl ActivateStmt {
-    pub async fn bind<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >(
-        &'s mut self,
-        client: &'c C,
-        phone: &'a T1,
-        name: &'a T2,
-        gender: &'a ctypes::Gender,
-        address: &'a T3,
-        birthday: &'a crate::types::time::Date,
-        blood_group: &'a ctypes::BloodGroup,
-        id: &'a uuid::Uuid,
-    ) -> Result<u64, tokio_postgres::Error> {
-        let stmt = self.0.prepare(client).await?;
-        client
-            .execute(
-                stmt,
-                &[phone, name, gender, address, birthday, blood_group, id],
-            )
-            .await
-    }
-}
-impl<
-        'a,
-        C: GenericClient + Send + Sync,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >
-    crate::client::async_::Params<
-        'a,
-        'a,
-        'a,
-        ActivateParams<T1, T2, T3>,
-        std::pin::Pin<
-            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
-        >,
-        C,
-    > for ActivateStmt
-{
-    fn params(
-        &'a mut self,
-        client: &'a C,
-        params: &'a ActivateParams<T1, T2, T3>,
-    ) -> std::pin::Pin<
-        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
-    > {
-        Box::pin(self.bind(
-            client,
-            &params.phone,
-            &params.name,
-            &params.gender,
-            &params.address,
-            &params.birthday,
-            &params.blood_group,
-            &params.id,
-        ))
-    }
-}
 pub fn update() -> UpdateStmt {
     UpdateStmt(crate::client::async_::Stmt::new(
         "UPDATE accounts SET phone = COALESCE($1, phone), name = COALESCE($2, name), gender = COALESCE($3, gender), address = COALESCE($4, address), birthday = COALESCE($5, birthday) WHERE id = $6",
@@ -815,12 +773,12 @@ impl UpdateStmt {
     }
 }
 impl<
-        'a,
-        C: GenericClient + Send + Sync,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >
+    'a,
+    C: GenericClient + Send + Sync,
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+>
     crate::client::async_::Params<
         'a,
         'a,
