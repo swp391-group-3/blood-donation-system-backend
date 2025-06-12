@@ -119,6 +119,7 @@ pub struct GetAll {
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetAllBorrowed<'a> {
@@ -130,6 +131,7 @@ pub struct GetAllBorrowed<'a> {
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetAllBorrowed<'a>> for GetAll {
@@ -143,6 +145,7 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
             address,
             birthday,
             blood_group,
+            is_active,
             created_at,
         }: GetAllBorrowed<'a>,
     ) -> Self {
@@ -155,6 +158,7 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
             address: address.map(|v| v.into()),
             birthday,
             blood_group,
+            is_active,
             created_at,
         }
     }
@@ -622,7 +626,7 @@ impl GetStmt {
 }
 pub fn get_all() -> GetAllStmt {
     GetAllStmt(crate::client::async_::Stmt::new(
-        "SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at FROM accounts",
+        "SELECT role, email, phone, name, gender, address, birthday, blood_group, is_active, created_at FROM accounts",
     ))
 }
 pub struct GetAllStmt(crate::client::async_::Stmt);
@@ -646,7 +650,8 @@ impl GetAllStmt {
                         address: row.try_get(5)?,
                         birthday: row.try_get(6)?,
                         blood_group: row.try_get(7)?,
-                        created_at: row.try_get(8)?,
+                        is_active: row.try_get(8)?,
+                        created_at: row.try_get(9)?,
                     })
                 },
             mapper: |it| GetAll::from(it),

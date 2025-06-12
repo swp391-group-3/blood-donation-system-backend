@@ -51,7 +51,7 @@ FROM accounts
 WHERE id = :id;
 
 --! get_all : (gender?, address?, birthday?, blood_group?)
-SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at
+SELECT role, email, phone, name, gender, address, birthday, blood_group, is_active, created_at
 FROM accounts;
 
 --! update (phone?, name?, gender?, address?, birthday?)
