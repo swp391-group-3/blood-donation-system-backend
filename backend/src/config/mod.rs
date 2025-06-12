@@ -9,10 +9,20 @@ use serde::Deserialize;
 
 use crate::config::{bcrypt::BcryptConfig, jwt::JwtConfig, oidc::OpenIdConnectConfig};
 
+const fn default_port() -> u16 {
+    3000
+}
+
+fn default_frontend_url() -> String {
+    "http://localhost:3001".to_string()
+}
+
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub database_url: String,
+    #[serde(default = "default_port")]
     pub port: u16,
+    #[serde(default = "default_frontend_url")]
     pub frontend_url: String,
 
     pub bcrypt: BcryptConfig,
