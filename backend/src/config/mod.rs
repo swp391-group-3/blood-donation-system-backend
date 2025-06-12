@@ -25,7 +25,9 @@ pub struct Config {
     #[serde(default = "default_frontend_url")]
     pub frontend_url: String,
 
+    #[serde(default)]
     pub bcrypt: BcryptConfig,
+    #[serde(default)]
     pub jwt: JwtConfig,
     pub oidc: HashMap<Provider, OpenIdConnectConfig>,
 }
@@ -36,7 +38,7 @@ pub static CONFIG: LazyLock<Config> = LazyLock::new(|| {
         .add_source(
             ::config::Environment::default()
                 .try_parsing(true)
-                .prefix("__"),
+                .separator("__"),
         )
         .build()
         .unwrap()
