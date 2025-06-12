@@ -47,15 +47,13 @@ export const registerSchema = z.object({
         .string()
         .regex(/0[\d]{9,9}/, { message: 'Phone must consist of 10 number' }),
     address: z.string().min(1, { message: 'Address must be provided.' }),
-    birthday: z.date().refine((date) => date.getTime() < Date.now(), {
-        message: 'Date must be in the past',
-    }),
+    birthday: z.string(),
     blood_group: z.enum(bloodGroups),
     gender: z.enum(genders),
 });
 
 export const register = async (values: z.infer<typeof registerSchema>) => {
-    const response = await fetchWrapper('auth/register', {
+    const response = await fetchWrapper('/auth/register', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -77,7 +75,7 @@ export const loginSchema = z.object({
 });
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
-    const response = await fetchWrapper('auth/login', {
+    const response = await fetchWrapper('/auth/login', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
