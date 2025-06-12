@@ -64,7 +64,7 @@ pub async fn authorized(
         return Ok((jar.add(cookie), Redirect::to(&CONFIG.frontend_url)));
     }
 
-    session.insert(KEY, email);
+    session.insert(KEY, email).await.unwrap();
 
     Ok((
         jar,
