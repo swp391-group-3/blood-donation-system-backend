@@ -452,16 +452,16 @@ impl RegisterStmt {
     }
 }
 impl<
-    'c,
-    'a,
-    's,
-    C: GenericClient,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
-    T4: crate::StringSql,
-    T5: crate::StringSql,
->
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+        T5: crate::StringSql,
+    >
     crate::client::async_::Params<
         'c,
         'a,
@@ -523,15 +523,15 @@ impl CreateStaffStmt {
     }
 }
 impl<
-    'c,
-    'a,
-    's,
-    C: GenericClient,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
-    T4: crate::StringSql,
->
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+    >
     crate::client::async_::Params<
         'c,
         'a,
@@ -680,12 +680,12 @@ impl UpdateStmt {
     }
 }
 impl<
-    'a,
-    C: GenericClient + Send + Sync,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
->
+        'a,
+        C: GenericClient + Send + Sync,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+    >
     crate::client::async_::Params<
         'a,
         'a,
