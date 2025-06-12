@@ -20,8 +20,5 @@ pub fn build() -> Router<Arc<ApiState>> {
             "/oauth2/{provider}/authorized",
             routing::get(oauth2::authorized),
         )
-        .route(
-            "/oauth2/{provider}/authorized",
-            routing::post(oauth2::complete),
-        )
+        .route("/oauth2/complete", routing::post(oauth2::complete))
 }
