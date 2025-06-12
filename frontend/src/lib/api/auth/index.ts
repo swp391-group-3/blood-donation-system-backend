@@ -1,4 +1,5 @@
 import { login } from './login';
+import { me } from './me';
 import { oauth2, oauth2Complete } from './oauth2';
 import { register } from './register';
 
@@ -45,4 +46,5 @@ export const auth = {
     register,
     oauth2,
     oauth2Complete,
+    me,
 };
