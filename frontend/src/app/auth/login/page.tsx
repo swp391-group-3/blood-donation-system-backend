@@ -35,64 +35,53 @@ const LoginForm = () => {
     });
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="text-2xl text-center">Login</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit((values) => login(values))}
-                    >
-                        <div className="flex flex-col gap-6">
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} required />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem className="grid gap-2">
-                                        <FormLabel>Password</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="password"
-                                                {...field}
-                                                required
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit((values) => login(values))}>
+                <div className="flex flex-col gap-6">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} required />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        {...field}
+                                        required
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                            {status === 'pending' ? (
-                                <Button disabled>
-                                    <Loader2 className="animate-spin" />
-                                    Loading
-                                </Button>
-                            ) : (
-                                <Button type="submit" className="w-full py-5">
-                                    Login
-                                </Button>
-                            )}
-                        </div>
-                    </form>
-                </Form>
-                <Separator text="or" />
-                <OAuth2 />
-            </CardContent>
-        </Card>
+                    {status === 'pending' ? (
+                        <Button disabled className="w-full py-5">
+                            <Loader2 className="animate-spin" />
+                            Loading
+                        </Button>
+                    ) : (
+                        <Button type="submit" className="w-full py-5">
+                            Login
+                        </Button>
+                    )}
+                </div>
+            </form>
+        </Form>
     );
 };
 
@@ -101,7 +90,19 @@ export default function LoginPage() {
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">
                 <div className="flex flex-col gap-6">
-                    <LoginForm />
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-2xl text-center">
+                                Login
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <LoginForm />
+
+                            <Separator text="or" />
+                            <OAuth2 />
+                        </CardContent>
+                    </Card>
                     <div className="mt-4 text-center text-sm">
                         Don't have an account?{' '}
                         <Link
