@@ -1,8 +1,3 @@
-import { login } from './login';
-import { me } from './me';
-import { oauth2, oauth2Complete } from './oauth2';
-import { register } from './register';
-
 export const bloodGroups = [
     'o_plus',
     'o_minus',
@@ -13,10 +8,11 @@ export const bloodGroups = [
     'a_b_plus',
     'a_b_minus',
 ] as const;
-export const displayBloodGroup = (
-    group: (typeof bloodGroups)[number],
-): string => {
-    switch (group) {
+
+export type BloodGroup = (typeof bloodGroups)[number];
+
+export const displayBloodGroup = (bloodGroup: BloodGroup): string => {
+    switch (bloodGroup) {
         case 'o_plus':
             return 'O+';
         case 'o_minus':
@@ -37,14 +33,23 @@ export const displayBloodGroup = (
 };
 
 export const genders = ['male', 'female'] as const;
-export const displayGender = (gender: (typeof genders)[number]): string => {
+
+export type Gender = (typeof genders)[number];
+
+export const displayGender = (gender: Gender): string => {
     return gender.toUpperCase();
 };
 
-export const auth = {
-    login,
-    register,
-    oauth2,
-    oauth2Complete,
-    me,
-};
+export type Role = 'member' | 'staff' | 'admin';
+
+export interface Account {
+    role: Role;
+    email: string;
+    name: string;
+    phone: string;
+    address: string;
+    birthday: string;
+    blood_group: BloodGroup;
+    gender: Gender;
+    created_at: Date;
+}
