@@ -35,7 +35,7 @@ pub async fn login(
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
-    let account = queries::account::get_id_and_password()
+    let account = queries::account::get_by_email()
         .bind(&database, &request.email)
         .opt()
         .await?

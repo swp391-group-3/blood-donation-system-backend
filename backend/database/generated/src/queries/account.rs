@@ -1,9 +1,21 @@
 // This file was generated with `clorinde`. Do not modify.
 
 #[derive(Debug)]
-pub struct RegisterParams<T1: crate::StringSql, T2: crate::StringSql> {
+pub struct RegisterParams<
+    T1: crate::StringSql,
+    T2: crate::StringSql,
+    T3: crate::StringSql,
+    T4: crate::StringSql,
+    T5: crate::StringSql,
+> {
     pub email: T1,
-    pub password: T2,
+    pub password: Option<T2>,
+    pub phone: T3,
+    pub name: T4,
+    pub gender: ctypes::Gender,
+    pub address: T5,
+    pub birthday: crate::types::time::Date,
+    pub blood_group: ctypes::BloodGroup,
 }
 #[derive(Debug)]
 pub struct CreateStaffParams<
@@ -18,16 +30,6 @@ pub struct CreateStaffParams<
     pub name: T4,
 }
 #[derive(Debug)]
-pub struct ActivateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
-    pub phone: T1,
-    pub name: T2,
-    pub gender: ctypes::Gender,
-    pub address: T3,
-    pub birthday: crate::types::time::Date,
-    pub blood_group: ctypes::BloodGroup,
-    pub id: uuid::Uuid,
-}
-#[derive(Debug)]
 pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::StringSql> {
     pub phone: Option<T1>,
     pub name: Option<T2>,
@@ -36,22 +38,17 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
     pub birthday: Option<crate::types::time::Date>,
     pub id: uuid::Uuid,
 }
-#[derive(Debug, Clone, PartialEq, Copy)]
-pub struct GetAuthStatus {
-    pub is_active: bool,
-    pub role: ctypes::Role,
-}
 #[derive(Debug, Clone, PartialEq)]
-pub struct GetIdAndPassword {
+pub struct GetByEmail {
     pub id: uuid::Uuid,
     pub password: String,
 }
-pub struct GetIdAndPasswordBorrowed<'a> {
+pub struct GetByEmailBorrowed<'a> {
     pub id: uuid::Uuid,
     pub password: &'a str,
 }
-impl<'a> From<GetIdAndPasswordBorrowed<'a>> for GetIdAndPassword {
-    fn from(GetIdAndPasswordBorrowed { id, password }: GetIdAndPasswordBorrowed<'a>) -> Self {
+impl<'a> From<GetByEmailBorrowed<'a>> for GetByEmail {
+    fn from(GetByEmailBorrowed { id, password }: GetByEmailBorrowed<'a>) -> Self {
         Self {
             id,
             password: password.into(),
@@ -68,6 +65,7 @@ pub struct Get {
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetBorrowed<'a> {
@@ -79,6 +77,7 @@ pub struct GetBorrowed<'a> {
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetBorrowed<'a>> for Get {
@@ -92,6 +91,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
             address,
             birthday,
             blood_group,
+            is_active,
             created_at,
         }: GetBorrowed<'a>,
     ) -> Self {
@@ -104,6 +104,7 @@ impl<'a> From<GetBorrowed<'a>> for Get {
             address: address.map(|v| v.into()),
             birthday,
             blood_group,
+            is_active,
             created_at,
         }
     }
@@ -118,6 +119,7 @@ pub struct GetAll {
     pub address: Option<String>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 pub struct GetAllBorrowed<'a> {
@@ -129,6 +131,7 @@ pub struct GetAllBorrowed<'a> {
     pub address: Option<&'a str>,
     pub birthday: Option<crate::types::time::Date>,
     pub blood_group: Option<ctypes::BloodGroup>,
+    pub is_active: bool,
     pub created_at: crate::types::time::TimestampTz,
 }
 impl<'a> From<GetAllBorrowed<'a>> for GetAll {
@@ -142,6 +145,7 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
             address,
             birthday,
             blood_group,
+            is_active,
             created_at,
         }: GetAllBorrowed<'a>,
     ) -> Self {
@@ -154,6 +158,7 @@ impl<'a> From<GetAllBorrowed<'a>> for GetAll {
             address: address.map(|v| v.into()),
             birthday,
             blood_group,
+            is_active,
             created_at,
         }
     }
@@ -221,83 +226,22 @@ where
         Ok(it)
     }
 }
-pub struct GetAuthStatusQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
+pub struct GetByEmailQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
     client: &'c C,
     params: [&'a (dyn postgres_types::ToSql + Sync); N],
     stmt: &'s mut crate::client::async_::Stmt,
-    extractor: fn(&tokio_postgres::Row) -> Result<GetAuthStatus, tokio_postgres::Error>,
-    mapper: fn(GetAuthStatus) -> T,
+    extractor: fn(&tokio_postgres::Row) -> Result<GetByEmailBorrowed, tokio_postgres::Error>,
+    mapper: fn(GetByEmailBorrowed) -> T,
 }
-impl<'c, 'a, 's, C, T: 'c, const N: usize> GetAuthStatusQuery<'c, 'a, 's, C, T, N>
-where
-    C: GenericClient,
-{
-    pub fn map<R>(self, mapper: fn(GetAuthStatus) -> R) -> GetAuthStatusQuery<'c, 'a, 's, C, R, N> {
-        GetAuthStatusQuery {
-            client: self.client,
-            params: self.params,
-            stmt: self.stmt,
-            extractor: self.extractor,
-            mapper,
-        }
-    }
-    pub async fn one(self) -> Result<T, tokio_postgres::Error> {
-        let stmt = self.stmt.prepare(self.client).await?;
-        let row = self.client.query_one(stmt, &self.params).await?;
-        Ok((self.mapper)((self.extractor)(&row)?))
-    }
-    pub async fn all(self) -> Result<Vec<T>, tokio_postgres::Error> {
-        self.iter().await?.try_collect().await
-    }
-    pub async fn opt(self) -> Result<Option<T>, tokio_postgres::Error> {
-        let stmt = self.stmt.prepare(self.client).await?;
-        Ok(self
-            .client
-            .query_opt(stmt, &self.params)
-            .await?
-            .map(|row| {
-                let extracted = (self.extractor)(&row)?;
-                Ok((self.mapper)(extracted))
-            })
-            .transpose()?)
-    }
-    pub async fn iter(
-        self,
-    ) -> Result<
-        impl futures::Stream<Item = Result<T, tokio_postgres::Error>> + 'c,
-        tokio_postgres::Error,
-    > {
-        let stmt = self.stmt.prepare(self.client).await?;
-        let it = self
-            .client
-            .query_raw(stmt, crate::slice_iter(&self.params))
-            .await?
-            .map(move |res| {
-                res.and_then(|row| {
-                    let extracted = (self.extractor)(&row)?;
-                    Ok((self.mapper)(extracted))
-                })
-            })
-            .into_stream();
-        Ok(it)
-    }
-}
-pub struct GetIdAndPasswordQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
-    client: &'c C,
-    params: [&'a (dyn postgres_types::ToSql + Sync); N],
-    stmt: &'s mut crate::client::async_::Stmt,
-    extractor: fn(&tokio_postgres::Row) -> Result<GetIdAndPasswordBorrowed, tokio_postgres::Error>,
-    mapper: fn(GetIdAndPasswordBorrowed) -> T,
-}
-impl<'c, 'a, 's, C, T: 'c, const N: usize> GetIdAndPasswordQuery<'c, 'a, 's, C, T, N>
+impl<'c, 'a, 's, C, T: 'c, const N: usize> GetByEmailQuery<'c, 'a, 's, C, T, N>
 where
     C: GenericClient,
 {
     pub fn map<R>(
         self,
-        mapper: fn(GetIdAndPasswordBorrowed) -> R,
-    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, R, N> {
-        GetIdAndPasswordQuery {
+        mapper: fn(GetByEmailBorrowed) -> R,
+    ) -> GetByEmailQuery<'c, 'a, 's, C, R, N> {
+        GetByEmailQuery {
             client: self.client,
             params: self.params,
             stmt: self.stmt,
@@ -470,58 +414,87 @@ where
 }
 pub fn register() -> RegisterStmt {
     RegisterStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO accounts(email, password, role) VALUES( $1, $2, 'member'::role ) RETURNING id",
+        "INSERT INTO accounts( email, password, role, phone, name, gender, address, birthday, blood_group ) VALUES( $1, COALESCE($2, substr(md5(random()::text), 1, 25)), 'member'::role, $3, $4, $5, $6, $7, $8 ) RETURNING id",
     ))
 }
 pub struct RegisterStmt(crate::client::async_::Stmt);
 impl RegisterStmt {
-    pub fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql, T2: crate::StringSql>(
+    pub fn bind<
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+        T5: crate::StringSql,
+    >(
         &'s mut self,
         client: &'c C,
         email: &'a T1,
-        password: &'a T2,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
+        password: &'a Option<T2>,
+        phone: &'a T3,
+        name: &'a T4,
+        gender: &'a ctypes::Gender,
+        address: &'a T5,
+        birthday: &'a crate::types::time::Date,
+        blood_group: &'a ctypes::BloodGroup,
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8> {
         UuidUuidQuery {
             client,
-            params: [email, password],
+            params: [
+                email,
+                password,
+                phone,
+                name,
+                gender,
+                address,
+                birthday,
+                blood_group,
+            ],
             stmt: &mut self.0,
             extractor: |row| Ok(row.try_get(0)?),
             mapper: |it| it,
         }
     }
 }
-impl<'c, 'a, 's, C: GenericClient, T1: crate::StringSql, T2: crate::StringSql>
+impl<
+        'c,
+        'a,
+        's,
+        C: GenericClient,
+        T1: crate::StringSql,
+        T2: crate::StringSql,
+        T3: crate::StringSql,
+        T4: crate::StringSql,
+        T5: crate::StringSql,
+    >
     crate::client::async_::Params<
         'c,
         'a,
         's,
-        RegisterParams<T1, T2>,
-        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2>,
+        RegisterParams<T1, T2, T3, T4, T5>,
+        UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8>,
         C,
     > for RegisterStmt
 {
     fn params(
         &'s mut self,
         client: &'c C,
-        params: &'a RegisterParams<T1, T2>,
-    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 2> {
-        self.bind(client, &params.email, &params.password)
-    }
-}
-pub fn oauth2_register() -> Oauth2RegisterStmt {
-    Oauth2RegisterStmt(crate::client::async_::Stmt::new(
-        "INSERT INTO accounts(email, password, role) VALUES( $1, substr(md5(random()::text), 1, 25), 'member'::role ) ON CONFLICT DO NOTHING",
-    ))
-}
-pub struct Oauth2RegisterStmt(crate::client::async_::Stmt);
-impl Oauth2RegisterStmt {
-    pub async fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
-        &'s mut self,
-        client: &'c C,
-        email: &'a T1,
-    ) -> Result<u64, tokio_postgres::Error> {
-        let stmt = self.0.prepare(client).await?;
-        client.execute(stmt, &[email]).await
+        params: &'a RegisterParams<T1, T2, T3, T4, T5>,
+    ) -> UuidUuidQuery<'c, 'a, 's, C, uuid::Uuid, 8> {
+        self.bind(
+            client,
+            &params.email,
+            &params.password,
+            &params.phone,
+            &params.name,
+            &params.gender,
+            &params.address,
+            &params.birthday,
+            &params.blood_group,
+        )
     }
 }
 pub fn create_staff() -> CreateStaffStmt {
@@ -590,63 +563,36 @@ impl<
         )
     }
 }
-pub fn get_auth_status() -> GetAuthStatusStmt {
-    GetAuthStatusStmt(crate::client::async_::Stmt::new(
-        "SELECT is_active, role FROM accounts WHERE id = $1",
-    ))
-}
-pub struct GetAuthStatusStmt(crate::client::async_::Stmt);
-impl GetAuthStatusStmt {
-    pub fn bind<'c, 'a, 's, C: GenericClient>(
-        &'s mut self,
-        client: &'c C,
-        id: &'a uuid::Uuid,
-    ) -> GetAuthStatusQuery<'c, 'a, 's, C, GetAuthStatus, 1> {
-        GetAuthStatusQuery {
-            client,
-            params: [id],
-            stmt: &mut self.0,
-            extractor: |row: &tokio_postgres::Row| -> Result<GetAuthStatus, tokio_postgres::Error> {
-                Ok(GetAuthStatus {
-                    is_active: row.try_get(0)?,
-                    role: row.try_get(1)?,
-                })
-            },
-            mapper: |it| GetAuthStatus::from(it),
-        }
-    }
-}
-pub fn get_id_and_password() -> GetIdAndPasswordStmt {
-    GetIdAndPasswordStmt(crate::client::async_::Stmt::new(
+pub fn get_by_email() -> GetByEmailStmt {
+    GetByEmailStmt(crate::client::async_::Stmt::new(
         "SELECT id, password FROM accounts WHERE email = $1",
     ))
 }
-pub struct GetIdAndPasswordStmt(crate::client::async_::Stmt);
-impl GetIdAndPasswordStmt {
+pub struct GetByEmailStmt(crate::client::async_::Stmt);
+impl GetByEmailStmt {
     pub fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
         email: &'a T1,
-    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, GetIdAndPassword, 1> {
-        GetIdAndPasswordQuery {
+    ) -> GetByEmailQuery<'c, 'a, 's, C, GetByEmail, 1> {
+        GetByEmailQuery {
             client,
             params: [email],
             stmt: &mut self.0,
-            extractor: |
-                row: &tokio_postgres::Row,
-            | -> Result<GetIdAndPasswordBorrowed, tokio_postgres::Error> {
-                Ok(GetIdAndPasswordBorrowed {
-                    id: row.try_get(0)?,
-                    password: row.try_get(1)?,
-                })
-            },
-            mapper: |it| GetIdAndPassword::from(it),
+            extractor:
+                |row: &tokio_postgres::Row| -> Result<GetByEmailBorrowed, tokio_postgres::Error> {
+                    Ok(GetByEmailBorrowed {
+                        id: row.try_get(0)?,
+                        password: row.try_get(1)?,
+                    })
+                },
+            mapper: |it| GetByEmail::from(it),
         }
     }
 }
 pub fn get() -> GetStmt {
     GetStmt(crate::client::async_::Stmt::new(
-        "SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at FROM accounts WHERE id = $1",
+        "SELECT role, email, phone, name, gender, address, birthday, blood_group, is_active, created_at FROM accounts WHERE id = $1",
     ))
 }
 pub struct GetStmt(crate::client::async_::Stmt);
@@ -670,7 +616,8 @@ impl GetStmt {
                     address: row.try_get(5)?,
                     birthday: row.try_get(6)?,
                     blood_group: row.try_get(7)?,
-                    created_at: row.try_get(8)?,
+                    is_active: row.try_get(8)?,
+                    created_at: row.try_get(9)?,
                 })
             },
             mapper: |it| Get::from(it),
@@ -679,7 +626,7 @@ impl GetStmt {
 }
 pub fn get_all() -> GetAllStmt {
     GetAllStmt(crate::client::async_::Stmt::new(
-        "SELECT role, email, phone, name, gender, address, birthday, blood_group, created_at FROM accounts",
+        "SELECT role, email, phone, name, gender, address, birthday, blood_group, is_active, created_at FROM accounts",
     ))
 }
 pub struct GetAllStmt(crate::client::async_::Stmt);
@@ -703,84 +650,12 @@ impl GetAllStmt {
                         address: row.try_get(5)?,
                         birthday: row.try_get(6)?,
                         blood_group: row.try_get(7)?,
-                        created_at: row.try_get(8)?,
+                        is_active: row.try_get(8)?,
+                        created_at: row.try_get(9)?,
                     })
                 },
             mapper: |it| GetAll::from(it),
         }
-    }
-}
-/// Naive way to implement 2 stage registering
-pub fn activate() -> ActivateStmt {
-    ActivateStmt(crate::client::async_::Stmt::new(
-        "UPDATE accounts SET phone = $1, name = $2, gender = $3, address = $4, birthday = $5, blood_group = $6, is_active = true WHERE id = $7 AND is_active = false",
-    ))
-}
-pub struct ActivateStmt(crate::client::async_::Stmt);
-impl ActivateStmt {
-    pub async fn bind<
-        'c,
-        'a,
-        's,
-        C: GenericClient,
-        T1: crate::StringSql,
-        T2: crate::StringSql,
-        T3: crate::StringSql,
-    >(
-        &'s mut self,
-        client: &'c C,
-        phone: &'a T1,
-        name: &'a T2,
-        gender: &'a ctypes::Gender,
-        address: &'a T3,
-        birthday: &'a crate::types::time::Date,
-        blood_group: &'a ctypes::BloodGroup,
-        id: &'a uuid::Uuid,
-    ) -> Result<u64, tokio_postgres::Error> {
-        let stmt = self.0.prepare(client).await?;
-        client
-            .execute(
-                stmt,
-                &[phone, name, gender, address, birthday, blood_group, id],
-            )
-            .await
-    }
-}
-impl<
-    'a,
-    C: GenericClient + Send + Sync,
-    T1: crate::StringSql,
-    T2: crate::StringSql,
-    T3: crate::StringSql,
->
-    crate::client::async_::Params<
-        'a,
-        'a,
-        'a,
-        ActivateParams<T1, T2, T3>,
-        std::pin::Pin<
-            Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
-        >,
-        C,
-    > for ActivateStmt
-{
-    fn params(
-        &'a mut self,
-        client: &'a C,
-        params: &'a ActivateParams<T1, T2, T3>,
-    ) -> std::pin::Pin<
-        Box<dyn futures::Future<Output = Result<u64, tokio_postgres::Error>> + Send + 'a>,
-    > {
-        Box::pin(self.bind(
-            client,
-            &params.phone,
-            &params.name,
-            &params.gender,
-            &params.address,
-            &params.birthday,
-            &params.blood_group,
-            &params.id,
-        ))
     }
 }
 pub fn update() -> UpdateStmt {

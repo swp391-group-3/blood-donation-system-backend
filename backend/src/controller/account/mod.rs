@@ -35,6 +35,7 @@ pub struct Account {
     pub address: Option<String>,
     pub birthday: Option<NaiveDate>,
     pub blood_group: Option<BloodGroup>,
+    pub is_active: bool,
     pub created_at: DateTime<Utc>,
 }
 

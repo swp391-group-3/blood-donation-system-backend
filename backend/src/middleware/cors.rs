@@ -5,9 +5,9 @@ use axum::http::{
         ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION, CONTENT_TYPE, ORIGIN,
     },
 };
-use config::{Config, Environment};
-use serde::Deserialize;
 use tower_http::cors::CorsLayer;
+
+use crate::config::CONFIG;
 
 pub const CORS_ALLOW_HEADERS: [HeaderName; 7] = [
     ORIGIN,
@@ -26,25 +26,8 @@ pub const CORS_ALLOW_METHODS: [Method; 5] = [
     Method::PUT,
 ];
 
-fn default_domain() -> String {
-    "http://localhost:5173".to_string()
-}
-
-#[derive(Deserialize)]
-pub struct CorsConfig {
-    #[serde(default = "default_domain")]
-    pub domain: String,
-}
-
 pub fn cors() -> CorsLayer {
-    let config: CorsConfig = Config::builder()
-        .add_source(Environment::default().prefix("CORS").try_parsing(true))
-        .build()
-        .unwrap()
-        .try_deserialize()
-        .unwrap();
-
-    let allow_origins = [config.domain.parse::<HeaderValue>().unwrap()];
+    let allow_origins = [CONFIG.frontend_url.parse::<HeaderValue>().unwrap()];
 
     CorsLayer::new()
         .allow_origin(allow_origins)

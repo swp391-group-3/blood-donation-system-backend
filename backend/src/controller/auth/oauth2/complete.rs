@@ -11,23 +11,26 @@ use database::{
 };
 use model_mapper::Mapper;
 use serde::Deserialize;
+use tower_sessions::Session;
 use utoipa::ToSchema;
 use validator::Validate;
 
 use crate::{
-    config::CONFIG,
     error::{AuthError, Error, Result},
     state::ApiState,
 };
 
+use super::KEY;
+
 #[derive(Deserialize, ToSchema, Validate, Mapper)]
-#[schema(as = auth::register::request)]
-#[mapper(into, ty = RegisterParams::<String, String, String, String, String>)]
+#[schema(as = oauth2::complete::request)]
+#[mapper(
+    into(custom = "with_email"),
+    ty = RegisterParams::<String, String, String, String, String>,
+    add(field = email, ty = String),
+    add(field = password, ty = Option::<String>, default)
+)]
 pub struct Request {
-    #[validate(email)]
-    pub email: String,
-    #[validate(length(min = 1))]
-    pub password: String,
     pub phone: String,
     pub name: String,
     pub gender: Gender,
@@ -39,27 +42,21 @@ pub struct Request {
 #[utoipa::path(
     post,
     tag = "Auth",
-    path = "/auth/register",
+    path = "/oauth2/complete",
     request_body = Request,
 )]
-pub async fn register(
+pub async fn complete(
     state: State<Arc<ApiState>>,
+    session: Session,
     jar: CookieJar,
-    Valid(Json(mut request)): Valid<Json<Request>>,
+    Valid(Json(request)): Valid<Json<Request>>,
 ) -> Result<CookieJar> {
     let database = state.database_pool.get().await?;
 
-    let password =
-        bcrypt::hash_with_salt(&request.password, CONFIG.bcrypt.cost, CONFIG.bcrypt.salt)
-            .map_err(|error| {
-                tracing::error!(error =? error);
-                AuthError::InvalidLoginData
-            })?
-            .to_string();
-    request.password = password;
+    let email: String = session.remove(KEY).await.unwrap().unwrap();
 
     let id = queries::account::register()
-        .params(&database, &request.into())
+        .params(&database, &request.with_email(email))
         .one()
         .await
         .map_err(|error| {
