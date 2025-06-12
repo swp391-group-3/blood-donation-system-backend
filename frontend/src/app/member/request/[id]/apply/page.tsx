@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,26 +10,19 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-    CardFooter,
 } from '@/components/ui/card';
 import {Form, FormControl, FormItem, FormField, FormLabel, FormMessage } from "@/components/ui/form"
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Label } from '@/components/ui/label';
 import {
     AlertCircle,
     CheckCircle,
     Droplet,
     ArrowLeft,
-    ArrowRight,
     Shield,
-    Heart,
     Clock,
-    AlertTriangle,
-    Loader2,
     Calendar,
 } from 'lucide-react';
 import {
@@ -38,7 +31,10 @@ import {
 } from '../../../../../../constants/sample-data';
 import Link from 'next/link';
 
-
+const items = {
+    id: "admit",
+    label: "I am solely responsible for the accuracy of the above information."
+}
 const preDonationSchema = z.array(z.string().min(1, "Invalid answer field"))
 
 type PreDonationFormData = z.infer<typeof preDonationSchema>;
@@ -67,11 +63,6 @@ export default function PreDonationSurveyPage() {
     ).length;
     const progressPercentage = (filledFields / questionnaire.length) * 100;
 
-    const getQuestionStatus = (questionId: string) => {
-        const value = watchedFields[questionId as keyof PreDonationFormData];
-        if (!value || value.length === 0) return 'empty';
-        return 'complete';
-    };
     function handleSubmitApply() {
         // come in future
     }
@@ -200,7 +191,6 @@ export default function PreDonationSurveyPage() {
                 </Card>
 
                 {questionnaire.map((question, index) => {
-                    const status = getQuestionStatus(question.id);
                     return (
                         <Card
                             key={question.id}
@@ -266,6 +256,8 @@ export default function PreDonationSurveyPage() {
                         </Card>
                     );
                 })}
+
+
 
                 <div
                     className="flex justify-between items-center"
