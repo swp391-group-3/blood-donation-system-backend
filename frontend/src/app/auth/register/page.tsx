@@ -25,8 +25,6 @@ import * as api from '@/lib/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
-import { FcGoogle } from 'react-icons/fc';
-import Image from 'next/image';
 import {
     Popover,
     PopoverContent,
@@ -43,7 +41,7 @@ import {
 } from '@/components/ui/command';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/separator';
-import { OAuth2 } from '../components/oauth2';
+import { OAuth2 } from '@/components/oauth2';
 
 const RegisterForm = () => {
     const { mutate: register, status } = useMutation({

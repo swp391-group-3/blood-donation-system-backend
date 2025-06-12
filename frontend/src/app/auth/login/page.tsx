@@ -20,8 +20,8 @@ import * as api from '@/lib/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
-import { OAuth2 } from '../components/oauth2';
 import { Separator } from '@/components/separator';
+import { OAuth2 } from '@/components/oauth2';
 
 const LoginForm = () => {
     const { mutate: login, status } = useMutation({
