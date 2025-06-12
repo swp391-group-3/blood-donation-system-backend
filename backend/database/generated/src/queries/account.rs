@@ -38,11 +38,6 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
     pub birthday: Option<crate::types::time::Date>,
     pub id: uuid::Uuid,
 }
-#[derive(Debug, Clone, PartialEq, Copy)]
-pub struct GetAuthStatus {
-    pub is_active: bool,
-    pub role: ctypes::Role,
-}
 #[derive(Debug, Clone, PartialEq)]
 pub struct GetIdAndPassword {
     pub id: uuid::Uuid,
@@ -175,67 +170,6 @@ where
 {
     pub fn map<R>(self, mapper: fn(uuid::Uuid) -> R) -> UuidUuidQuery<'c, 'a, 's, C, R, N> {
         UuidUuidQuery {
-            client: self.client,
-            params: self.params,
-            stmt: self.stmt,
-            extractor: self.extractor,
-            mapper,
-        }
-    }
-    pub async fn one(self) -> Result<T, tokio_postgres::Error> {
-        let stmt = self.stmt.prepare(self.client).await?;
-        let row = self.client.query_one(stmt, &self.params).await?;
-        Ok((self.mapper)((self.extractor)(&row)?))
-    }
-    pub async fn all(self) -> Result<Vec<T>, tokio_postgres::Error> {
-        self.iter().await?.try_collect().await
-    }
-    pub async fn opt(self) -> Result<Option<T>, tokio_postgres::Error> {
-        let stmt = self.stmt.prepare(self.client).await?;
-        Ok(self
-            .client
-            .query_opt(stmt, &self.params)
-            .await?
-            .map(|row| {
-                let extracted = (self.extractor)(&row)?;
-                Ok((self.mapper)(extracted))
-            })
-            .transpose()?)
-    }
-    pub async fn iter(
-        self,
-    ) -> Result<
-        impl futures::Stream<Item = Result<T, tokio_postgres::Error>> + 'c,
-        tokio_postgres::Error,
-    > {
-        let stmt = self.stmt.prepare(self.client).await?;
-        let it = self
-            .client
-            .query_raw(stmt, crate::slice_iter(&self.params))
-            .await?
-            .map(move |res| {
-                res.and_then(|row| {
-                    let extracted = (self.extractor)(&row)?;
-                    Ok((self.mapper)(extracted))
-                })
-            })
-            .into_stream();
-        Ok(it)
-    }
-}
-pub struct GetAuthStatusQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
-    client: &'c C,
-    params: [&'a (dyn postgres_types::ToSql + Sync); N],
-    stmt: &'s mut crate::client::async_::Stmt,
-    extractor: fn(&tokio_postgres::Row) -> Result<GetAuthStatus, tokio_postgres::Error>,
-    mapper: fn(GetAuthStatus) -> T,
-}
-impl<'c, 'a, 's, C, T: 'c, const N: usize> GetAuthStatusQuery<'c, 'a, 's, C, T, N>
-where
-    C: GenericClient,
-{
-    pub fn map<R>(self, mapper: fn(GetAuthStatus) -> R) -> GetAuthStatusQuery<'c, 'a, 's, C, R, N> {
-        GetAuthStatusQuery {
             client: self.client,
             params: self.params,
             stmt: self.stmt,
@@ -619,32 +553,6 @@ impl<
             &params.phone,
             &params.name,
         )
-    }
-}
-pub fn get_auth_status() -> GetAuthStatusStmt {
-    GetAuthStatusStmt(crate::client::async_::Stmt::new(
-        "SELECT is_active, role FROM accounts WHERE id = $1",
-    ))
-}
-pub struct GetAuthStatusStmt(crate::client::async_::Stmt);
-impl GetAuthStatusStmt {
-    pub fn bind<'c, 'a, 's, C: GenericClient>(
-        &'s mut self,
-        client: &'c C,
-        id: &'a uuid::Uuid,
-    ) -> GetAuthStatusQuery<'c, 'a, 's, C, GetAuthStatus, 1> {
-        GetAuthStatusQuery {
-            client,
-            params: [id],
-            stmt: &mut self.0,
-            extractor: |row: &tokio_postgres::Row| -> Result<GetAuthStatus, tokio_postgres::Error> {
-                Ok(GetAuthStatus {
-                    is_active: row.try_get(0)?,
-                    role: row.try_get(1)?,
-                })
-            },
-            mapper: |it| GetAuthStatus::from(it),
-        }
     }
 }
 pub fn get_id_and_password() -> GetIdAndPasswordStmt {

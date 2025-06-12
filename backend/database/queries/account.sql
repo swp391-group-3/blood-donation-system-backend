@@ -42,9 +42,6 @@ VALUES (
 )
 RETURNING id;
 
---! get_auth_status
-SELECT is_active, role FROM accounts WHERE id = :id;
-
 --! get_id_and_password
 SELECT id, password FROM accounts WHERE email = :email;
 
