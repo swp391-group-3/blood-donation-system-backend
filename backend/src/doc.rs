@@ -30,7 +30,6 @@ impl Modify for SecurityAddon {
         controller::auth::register,
         controller::auth::login,
         controller::auth::oauth2::oauth2,
-        controller::auth::activate,
         controller::auth::status,
 
         controller::question::create,
