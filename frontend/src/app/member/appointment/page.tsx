@@ -295,7 +295,11 @@ export default function AppointmentsPage() {
                                         <div className="flex gap-2 ml-auto">
                                             <Button variant="outline" size="sm">
                                                 <Eye className="h-4 w-4 mr-1" />
-                                                View Details
+                                                <Link
+                                                    href = "/member/appointment/1"
+                                                >
+                                                    View Details
+                                                </Link>
                                             </Button>
                                             <Button variant="outline" size="sm">
                                                 Reschedule
