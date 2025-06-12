@@ -1,13 +1,13 @@
 services:
-  postgres:
-    container_name: blood-donation-system-postgres
+  database:
+    container_name: blood-donation-system-database
     image: postgres:latest
     ports:
       - 5433:5432
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_PASSWORD: ${PG_PASS}
       POSTGRES_DB: ${PG_DB}
     volumes:
       - database:/var/lib/postgresql/data
@@ -28,15 +28,17 @@ services:
   backend:
     container_name: blood-donation-system-backend
     environment:
-      DATABASE_URL: postgres://${PG_USER}:${PG_PASSWORD}@database/${PG_DB}
-      CORS_DOMAIN: ${FRONTEND_URL}
-      FRONTEND_REDIRECT_URL: ${FRONTEND_REDIRECT_URL}
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
-      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
-      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
-      MICROSOFT_REDIRECT_URL: ${MICROSOFT_REDIRECT_URL}
+      DATABASE_URL: postgres://${PG_USER}:${PG_PASS}@database/${PG_DB}
+      FRONTEND_URL: ${FRONTEND_URL}
+      JWT__SECRET: ${JWT_SECRET}
+      OIDC__GOOGLE__CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      OIDC__GOOGLE__CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      OIDC__GOOGLE__ISSUER_URL: ${GOOGLE_ISSUER_URL}
+      OIDC__GOOGLE__REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
+      OIDC__MICROSOFT__CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      OIDC__MICROSOFT__CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+      OIDC__MICROSOFT__ISSUER_URL: ${MICROSOFT_ISSUER_URL}
+      OIDC__MICROSOFT__REDIRECT_URL: ${MICROSOFT_REDIRECT_URL}
     image: ${REGISTRY}/backend:latest
     restart: always
     ports:
