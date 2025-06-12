@@ -42,11 +42,15 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
+import { useRouter } from 'next/navigation';
 
 const RegisterForm = () => {
+    const router = useRouter();
+
     const { mutate: register, status } = useMutation({
         mutationFn: api.auth.register,
         onError: (error) => toast.error(error.message),
+        onSuccess: () => router.push('/'),
     });
 
     const form = useForm<z.infer<typeof registerSchema>>({

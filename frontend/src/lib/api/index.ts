@@ -1,7 +1,7 @@
 export const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 export const throwIfError = async (response: Response) => {
-    if (!response.ok) {
+    if (!response.ok || !response.redirected) {
         const error = await response.text();
 
         throw new Error(error);

@@ -1,3 +1,5 @@
+'use client';
+
 import z from 'zod';
 import { API_URL, fetchWrapper, throwIfError } from '.';
 import { redirect } from 'next/navigation';
@@ -63,8 +65,6 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
     });
 
     await throwIfError(response);
-
-    redirect('/');
 };
 
 export const loginSchema = z.object({
@@ -87,8 +87,6 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     });
 
     await throwIfError(response);
-
-    redirect('/');
 };
 
 export type Provider = 'google' | 'microsoft';
@@ -115,6 +113,4 @@ export const oauth2Complete = async (
     });
 
     await throwIfError(response);
-
-    redirect('/');
 };

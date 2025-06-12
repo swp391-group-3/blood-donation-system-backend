@@ -22,11 +22,15 @@ import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+    const router = useRouter();
+
     const { mutate: login, status } = useMutation({
         mutationFn: api.auth.login,
         onError: (error) => toast.error(error.message),
+        onSuccess: () => router.push('/'),
     });
 
     const form = useForm<z.infer<typeof loginSchema>>({

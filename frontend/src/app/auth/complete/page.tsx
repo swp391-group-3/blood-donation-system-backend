@@ -14,13 +14,11 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import Link from 'next/link';
 import {
     bloodGroups,
     displayBloodGroup,
     genders,
     oauth2CompleteSchema,
-    registerSchema,
 } from '@/lib/api/auth';
 import * as api from '@/lib/api';
 import { toast } from 'sonner';
@@ -41,11 +39,15 @@ import {
     CommandList,
 } from '@/components/ui/command';
 import { Textarea } from '@/components/ui/textarea';
+import { useRouter } from 'next/navigation';
 
 const CompleteForm = () => {
+    const router = useRouter();
+
     const { mutate: oauth2Complete, status } = useMutation({
         mutationFn: api.auth.oauth2Complete,
         onError: (error) => toast.error(error.message),
+        onSuccess: () => router.push('/'),
     });
 
     const form = useForm<z.infer<typeof oauth2CompleteSchema>>({
