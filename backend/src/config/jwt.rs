@@ -23,3 +23,13 @@ pub struct JwtConfig {
     #[serde(default = "default_token_key")]
     pub token_key: String,
 }
+
+impl Default for JwtConfig {
+    fn default() -> Self {
+        Self {
+            secret: default_secret(),
+            expired_in: default_expired_in(),
+            token_key: default_token_key(),
+        }
+    }
+}

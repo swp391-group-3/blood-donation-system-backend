@@ -16,3 +16,12 @@ pub struct BcryptConfig {
     #[serde(default = "default_salt")]
     pub salt: [u8; 16],
 }
+
+impl Default for BcryptConfig {
+    fn default() -> Self {
+        Self {
+            cost: default_cost(),
+            salt: default_salt(),
+        }
+    }
+}
