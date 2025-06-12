@@ -3,9 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import {
     Form,
     FormControl,
@@ -15,32 +12,21 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import Link from 'next/link';
-import { toast } from 'sonner';
-import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
-import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
-import { loginSchema } from '@/lib/api/auth/login';
+import { useLoginForm } from '@/hooks/auth/useLoginForm';
 
 const LoginForm = () => {
-    const router = useRouter();
-
-    const { mutate: login, status } = useMutation({
-        mutationFn: api.auth.login,
-        onError: (error) => toast.error(error.message),
-        onSuccess: () => router.push('/'),
-    });
-
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
-        defaultValues: {},
-    });
+    const { mutation, form } = useLoginForm();
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit((values) => login(values))}>
+            <form
+                onSubmit={form.handleSubmit((values) =>
+                    mutation.mutate(values),
+                )}
+            >
                 <div className="flex flex-col gap-6">
                     <FormField
                         control={form.control}
@@ -73,7 +59,7 @@ const LoginForm = () => {
                         )}
                     />
 
-                    {status === 'pending' ? (
+                    {mutation.status === 'pending' ? (
                         <Button disabled className="w-full py-5">
                             <Loader2 className="animate-spin" />
                             Loading
