@@ -15,13 +15,6 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import Link from 'next/link';
-import {
-    bloodGroups,
-    displayBloodGroup,
-    genders,
-    registerSchema,
-} from '@/lib/api/auth';
-import * as api from '@/lib/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
@@ -43,6 +36,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
+import { registerSchema } from '@/lib/api/auth/register';
+import {
+    bloodGroups,
+    displayBloodGroup,
+    displayGender,
+    genders,
+} from '@/lib/api/auth';
 
 const RegisterForm = () => {
     const router = useRouter();
@@ -123,7 +124,9 @@ const RegisterForm = () => {
                                                         'text-muted-foreground',
                                                 )}
                                             >
-                                                {field.value ?? 'Select Gender'}
+                                                {field.value
+                                                    ? displayGender(field.value)
+                                                    : 'Select Gender'}
                                                 <ChevronsUpDown className="opacity-50" />
                                             </Button>
                                         </FormControl>
@@ -141,7 +144,9 @@ const RegisterForm = () => {
                                                 <CommandGroup>
                                                     {genders.map((value) => (
                                                         <CommandItem
-                                                            value={value}
+                                                            value={displayGender(
+                                                                value,
+                                                            )}
                                                             key={value}
                                                             onSelect={() => {
                                                                 form.setValue(
@@ -150,7 +155,9 @@ const RegisterForm = () => {
                                                                 );
                                                             }}
                                                         >
-                                                            {value}
+                                                            {displayGender(
+                                                                value,
+                                                            )}
                                                             <Check
                                                                 className={cn(
                                                                     'ml-auto',

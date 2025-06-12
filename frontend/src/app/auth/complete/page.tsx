@@ -14,13 +14,6 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import {
-    bloodGroups,
-    displayBloodGroup,
-    genders,
-    oauth2CompleteSchema,
-} from '@/lib/api/auth';
-import * as api from '@/lib/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
@@ -40,6 +33,14 @@ import {
 } from '@/components/ui/command';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
+import { oauth2CompleteSchema } from '@/lib/api/auth/oauth2';
+import {
+    bloodGroups,
+    displayBloodGroup,
+    displayGender,
+    genders,
+} from '@/lib/api/auth';
 
 const CompleteForm = () => {
     const router = useRouter();
@@ -92,7 +93,9 @@ const CompleteForm = () => {
                                                         'text-muted-foreground',
                                                 )}
                                             >
-                                                {field.value ?? 'Select Gender'}
+                                                {field.value
+                                                    ? displayGender(field.value)
+                                                    : 'Select Gender'}
                                                 <ChevronsUpDown className="opacity-50" />
                                             </Button>
                                         </FormControl>
@@ -110,7 +113,9 @@ const CompleteForm = () => {
                                                 <CommandGroup>
                                                     {genders.map((value) => (
                                                         <CommandItem
-                                                            value={value}
+                                                            value={displayGender(
+                                                                value,
+                                                            )}
                                                             key={value}
                                                             onSelect={() => {
                                                                 form.setValue(
@@ -119,7 +124,9 @@ const CompleteForm = () => {
                                                                 );
                                                             }}
                                                         >
-                                                            {value}
+                                                            {displayGender(
+                                                                value,
+                                                            )}
                                                             <Check
                                                                 className={cn(
                                                                     'ml-auto',

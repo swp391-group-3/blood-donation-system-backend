@@ -1,3 +1,5 @@
+import { auth } from './auth';
+
 export const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 export const throwIfError = async (response: Response) => {
@@ -24,4 +26,6 @@ export const fetchWrapper = (url: RequestInfo | URL, init?: RequestInit) => {
     });
 };
 
-export * as auth from './auth';
+export const api = {
+    auth,
+};

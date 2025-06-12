@@ -15,14 +15,14 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import Link from 'next/link';
-import { loginSchema } from '@/lib/api/auth';
-import * as api from '@/lib/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
+import { loginSchema } from '@/lib/api/auth/login';
 
 const LoginForm = () => {
     const router = useRouter();
