@@ -23,7 +23,7 @@ impl ApiState {
             .create_pool(Some(deadpool_postgres::Runtime::Tokio1), NoTls)
             .unwrap();
 
-        let oidc_clients = stream::iter(CONFIG.open_id_connect.clients.iter())
+        let oidc_clients = stream::iter(CONFIG.oidc.iter())
             .then(|(&provider, config)| async move {
                 (
                     provider,

@@ -7,17 +7,17 @@ macro_rules! authorize {
             request: axum::extract::Request,
             next: axum::middleware::Next,
         | -> $crate::error::Result<axum::response::Response> {
-            let auth_status = database::queries::account::get_auth_status().bind(&state.database_pool.get().await?, &claims.sub)
+            let account = database::queries::account::get().bind(&state.database_pool.get().await?, &claims.sub)
                 .opt()
                 .await?
                 .ok_or($crate::error::AuthError::InvalidAuthToken)?;
 
-            if !auth_status.is_active {
+            if !account.is_active {
                 return Err($crate::error::AuthError::ActivationRequired.into());
             }
 
             $(
-                if $role == auth_status.role {
+                if $role == account.role {
                     return Ok(next.run(request).await)
                 }
             )*
