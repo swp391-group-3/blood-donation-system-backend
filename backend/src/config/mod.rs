@@ -22,9 +22,12 @@ pub struct Config {
 
 pub static CONFIG: LazyLock<Config> = LazyLock::new(|| {
     ::config::Config::builder()
-        .add_source(::config::File::with_name("config.dev").required(false))
-        .add_source(::config::File::with_name("config.production").required(false))
-        .add_source(::config::Environment::default().try_parsing(true))
+        .add_source(::config::File::with_name("config").required(false))
+        .add_source(
+            ::config::Environment::default()
+                .try_parsing(true)
+                .prefix("__"),
+        )
         .build()
         .unwrap()
         .try_deserialize()
