@@ -42,6 +42,8 @@ import {
     CommandList,
 } from '@/components/ui/command';
 import { Textarea } from '@/components/ui/textarea';
+import { Separator } from '@/components/separator';
+import { OAuth2 } from '../components/oauth2';
 
 const RegisterForm = () => {
     const { mutate: register, status } = useMutation({
@@ -182,32 +184,6 @@ const RegisterForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                            <FormItem className="grid gap-2">
-                                <FormLabel>Phone</FormLabel>
-                                <FormControl>
-                                    <Input type="tel" {...field} required />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="address"
-                        render={({ field }) => (
-                            <FormItem className="grid gap-2">
-                                <FormLabel>Address</FormLabel>
-                                <FormControl>
-                                    <Textarea {...field} required />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="blood_group"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
@@ -282,38 +258,43 @@ const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
+                    <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel>Phone</FormLabel>
+                                <FormControl>
+                                    <Input type="tel" {...field} required />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                            <FormItem className="grid gap-2">
+                                <FormLabel>Address</FormLabel>
+                                <FormControl>
+                                    <Textarea {...field} required />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
                     {status === 'pending' ? (
-                        <Button disabled>
+                        <Button disabled className="w-full py-5">
                             <Loader2 className="animate-spin" />
                             Loading
                         </Button>
                     ) : (
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full py-5">
                             Register
                         </Button>
                     )}
-                    <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => api.auth.oauth2('google')}
-                    >
-                        <FcGoogle className="h-10 w-10" />
-                        <span className="ml-2">Continue with Google</span>
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => api.auth.oauth2('microsoft')}
-                    >
-                        <Image
-                            src="/microsoft.svg"
-                            alt="microsoft"
-                            width={20}
-                            height={20}
-                        />
-                        <span className="ml-2">Continue with Microsoft</span>
-                    </Button>
                 </div>
             </form>
         </Form>
@@ -323,7 +304,7 @@ const RegisterForm = () => {
 export default function RegisterPage() {
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-lg">
                 <div className="flex flex-col gap-6">
                     <Card>
                         <CardHeader>
@@ -334,15 +315,19 @@ export default function RegisterPage() {
                         <CardContent>
                             <RegisterForm />
                         </CardContent>
+                        <div className="mx-5">
+                            <Separator text="or" />
+                            <OAuth2 />
+                        </div>
                     </Card>
 
                     <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{' '}
+                        Already have an account?{' '}
                         <Link
-                            href="/auth/register"
+                            href="/auth/login"
                             className="underline underline-offset-4"
                         >
-                            Sign up
+                            Login
                         </Link>
                     </div>
                 </div>
