@@ -137,9 +137,7 @@ export default function MemberHomePage() {
 
                             <div className="flex justify-between text-sm">
                                 <span>Total Donation</span>
-                                <span className="text-zinc-950">
-                                    5
-                                </span>
+                                <span className="text-zinc-950">5</span>
                             </div>
                         </div>
                         <Button asChild variant="outline" className="w-full">
