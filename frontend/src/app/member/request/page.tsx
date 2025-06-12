@@ -436,7 +436,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/member/request/${request.id}`}
+                                                            href={`/member/request/${request.id}/apply`}
                                                         >
                                                             Apply Now
                                                         </Link>
@@ -639,7 +639,7 @@ export default function BloodRequestPage() {
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/member/request/${request.id}`}
+                                                            href={`/member/request/${request.id}/apply`}
                                                         >
                                                             Apply Now
                                                         </Link>

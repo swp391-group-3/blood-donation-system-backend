@@ -297,9 +297,6 @@ export default function AppointmentsPage() {
                                                 <Eye className="h-4 w-4 mr-1" />
                                                 View Details
                                             </Button>
-                                            <Button variant="outline" size="sm">
-                                                Reschedule
-                                            </Button>
                                         </div>
                                     </div>
                                 </CardHeader>

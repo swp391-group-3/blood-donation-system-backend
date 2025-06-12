@@ -12,6 +12,7 @@ import {
     AlertTriangle,
     CheckCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function BloodRequestPage() {
     return (
@@ -175,7 +176,11 @@ export default function BloodRequestPage() {
                             className="w-full mt-2 bg-red-500"
                             variant="default"
                         >
-                            Apply Now
+                            <Link
+                                href="/member/request/1/apply"
+                            >
+                                Apply Now
+                            </Link>
                         </Button>
                     </div>
 

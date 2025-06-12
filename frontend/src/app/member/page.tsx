@@ -136,14 +136,14 @@ export default function MemberHomePage() {
                             </div>
 
                             <div className="flex justify-between text-sm">
-                                <span>Next Achievement</span>
-                                <span className="text-zinc-500">
-                                    2 donations to go
+                                <span>Total Donation</span>
+                                <span className="text-zinc-950">
+                                    5
                                 </span>
                             </div>
                         </div>
                         <Button asChild variant="outline" className="w-full">
-                            <Link href="/member/impact">View Full Impact</Link>
+                            <Link href="/member/history">View Full Impact</Link>
                         </Button>
                     </CardContent>
                 </Card>
