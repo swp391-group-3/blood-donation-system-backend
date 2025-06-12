@@ -186,6 +186,7 @@ export const summaryStats = {
     weeksRemaining: '2 weeks remaining',
 };
 
+
 export const upcomingAppointments = [
     {
         id: 1,
@@ -634,3 +635,62 @@ export const comments = [
         publishedAt: '2023-05-29',
     },
 ];
+
+// sample data for question answer
+export const sampleAnswers = [
+    {
+      id: '1',
+      question: 'How are you feeling today? Describe your current health status.',
+      answer: "I'm feeling well today. I woke up refreshed, have no pain or discomfort, and haven't experienced any symptoms such as fever, fatigue, or cough. I feel generally healthy and energetic.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '2',
+      question: 'What medications, supplements, or vitamins are you currently taking?',
+      answer: "I'm currently taking a daily multivitamin and 1000 IU vitamin D in the mornings. No prescription medications or additional supplements at this time.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '3',
+      question: 'Do you have any chronic medical conditions or ongoing health issues?',
+      answer: "I have mild, well-managed asthma that rarely requires medication. No other ongoing medical issues or chronic conditions.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '4',
+      question: "Describe any recent illnesses, infections, or symptoms you've experienced in the past month.",
+      answer: "Two weeks ago I had a mild sore throat and runny nose for a couple of days but have fully recovered since then. No fever or lingering symptoms. No recent infections or dental procedures.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '5',
+      question: 'Describe any travel outside the country in the last 3 months.',
+      answer: "No international travel in the last 3 months. The last trip abroad was over 6 months ago. No recent exposure to areas with infectious disease outbreaks.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '6',
+      question: 'Describe your lifestyle including sleep, diet, exercise, and substance use.',
+      answer: "I typically sleep 7 hours per night, follow a mostly plant-based diet, and exercise 2-3 times a week (walking and yoga). I don't smoke or use drugs. Alcohol use is limited to an occasional glass of wine on weekends.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '7',
+      question: "Describe any allergies or adverse reactions you've experienced.",
+      answer: "I have a mild allergy to shellfish, which causes a skin rash if eaten. No medication allergies and no adverse reactions to medical treatments or procedures.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '8',
+      question: 'Please provide information about any history of infectious diseases or high-risk exposures.',
+      answer: "No history of infectious diseases. I have tested negative for HIV, Hepatitis B and C during annual screenings. No exposure to tuberculosis, malaria, or other high-risk situations.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+    {
+      id: '9',
+      question: 'Please share any additional health concerns, family history, or information you think is relevant.',
+      answer: "My father has high cholesterol, and my mother has type 2 diabetes. No major health concerns for myself. I have donated blood twice before without any issues and am comfortable with the process.",
+      helpText: "Please describe how you're feeling today, including any symptoms, fatigue, or general wellness concerns"
+    },
+  ];
+  
