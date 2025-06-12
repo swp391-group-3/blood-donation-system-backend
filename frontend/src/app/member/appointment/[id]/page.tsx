@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -14,6 +14,7 @@ import {
     CheckCircle,
     NotebookIcon,
 } from 'lucide-react';
+import { sampleAnswers } from "../../../../../constants/sample-data"
 
 export default function BloodRequestPage() {
     return (
@@ -165,19 +166,37 @@ export default function BloodRequestPage() {
                                     </div>
                                 </div>
                             </CardContent>
-                        </Card>
+                        </Card> 
 
-                        <Alert className="bg-yellow-50 border-yellow-200">
-                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                            <AlertDescription className="text-yellow-800">
-                                <span className="font-medium">
-                                    Cannot Apply
-                                </span>
-                                <br />
-                                This donation period has ended
-                            </AlertDescription>
-                        </Alert>
-                        
+                        <div className="mb-6">
+                            {sampleAnswers.map((answers, index) => {
+                                return(
+                                    <Card
+                                        key={index}
+                                        className="border-l-4 transition-all duration-300 mb-6"
+                                    >
+                                        <CardHeader className="flex flex-row items-start justify-between">
+                                            <div className="flex items-start gap-3">
+                                                <span
+                                                    className="flex shrink-0 w-8 h-8 rounded-full bg-red-50 items-center justify-center text-sm font-medium"
+                                                >
+                                                    {index + 1}
+                                                </span>
+                                                <div className="flex-1">
+                                                    <CardTitle className="text-lg">
+                                                        {answers.question}
+                                                    </CardTitle>
+                                                    <CardDescription className="mt-2">
+                                                        {answers.answer}
+                                                    </CardDescription>
+                                                </div>
+                                            </div>
+
+                                        </CardHeader>
+                                    </Card>
+                                )
+                            })}
+                        </div>
                     </div>  
                 </div>
             </div>
