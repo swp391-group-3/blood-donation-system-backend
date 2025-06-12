@@ -12,6 +12,8 @@ use crate::config::{bcrypt::BcryptConfig, jwt::JwtConfig, oidc::OpenIdConnectCon
 pub struct Config {
     pub database_url: String,
     pub port: u16,
+    pub frontend_url: String,
+
     pub bcrypt: BcryptConfig,
     pub jwt: JwtConfig,
     pub open_id_connect: OpenIdConnectConfig,
