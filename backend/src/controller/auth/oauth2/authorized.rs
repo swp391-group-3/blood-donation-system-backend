@@ -11,34 +11,12 @@ use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::{
-    config::CONFIG,
-    config::oidc::Provider,
+    config::{CONFIG, oidc::Provider},
     error::{AuthError, Result},
     state::ApiState,
 };
 
-const KEY: &str = "oauth2";
-
-#[utoipa::path(
-    get,
-    tag = "Auth",
-    path = "/oauth2/{provider}",
-    params(
-        ("provider" = Provider, description = "OAuth2 Provider"),
-    ),
-)]
-#[axum::debug_handler]
-pub async fn oauth2(
-    state: State<Arc<ApiState>>,
-    session: Session,
-    Path(provider): Path<Provider>,
-) -> impl IntoResponse {
-    let (auth_url, csrf, nonce) = state.oidc_clients[&provider].generate();
-
-    session.insert(KEY, (csrf, nonce)).await.unwrap();
-
-    Redirect::to(auth_url.as_ref())
-}
+use super::KEY;
 
 #[derive(Debug, Deserialize)]
 pub struct AuthRequest {
