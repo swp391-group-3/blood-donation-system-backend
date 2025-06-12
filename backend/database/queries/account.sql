@@ -42,7 +42,7 @@ VALUES (
 )
 RETURNING id;
 
---! get_id_and_password
+--! get_by_email
 SELECT id, password FROM accounts WHERE email = :email;
 
 --! get : (gender?, address?, birthday?, blood_group?)

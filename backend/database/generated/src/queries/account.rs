@@ -39,16 +39,16 @@ pub struct UpdateParams<T1: crate::StringSql, T2: crate::StringSql, T3: crate::S
     pub id: uuid::Uuid,
 }
 #[derive(Debug, Clone, PartialEq)]
-pub struct GetIdAndPassword {
+pub struct GetByEmail {
     pub id: uuid::Uuid,
     pub password: String,
 }
-pub struct GetIdAndPasswordBorrowed<'a> {
+pub struct GetByEmailBorrowed<'a> {
     pub id: uuid::Uuid,
     pub password: &'a str,
 }
-impl<'a> From<GetIdAndPasswordBorrowed<'a>> for GetIdAndPassword {
-    fn from(GetIdAndPasswordBorrowed { id, password }: GetIdAndPasswordBorrowed<'a>) -> Self {
+impl<'a> From<GetByEmailBorrowed<'a>> for GetByEmail {
+    fn from(GetByEmailBorrowed { id, password }: GetByEmailBorrowed<'a>) -> Self {
         Self {
             id,
             password: password.into(),
@@ -218,22 +218,22 @@ where
         Ok(it)
     }
 }
-pub struct GetIdAndPasswordQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
+pub struct GetByEmailQuery<'c, 'a, 's, C: GenericClient, T, const N: usize> {
     client: &'c C,
     params: [&'a (dyn postgres_types::ToSql + Sync); N],
     stmt: &'s mut crate::client::async_::Stmt,
-    extractor: fn(&tokio_postgres::Row) -> Result<GetIdAndPasswordBorrowed, tokio_postgres::Error>,
-    mapper: fn(GetIdAndPasswordBorrowed) -> T,
+    extractor: fn(&tokio_postgres::Row) -> Result<GetByEmailBorrowed, tokio_postgres::Error>,
+    mapper: fn(GetByEmailBorrowed) -> T,
 }
-impl<'c, 'a, 's, C, T: 'c, const N: usize> GetIdAndPasswordQuery<'c, 'a, 's, C, T, N>
+impl<'c, 'a, 's, C, T: 'c, const N: usize> GetByEmailQuery<'c, 'a, 's, C, T, N>
 where
     C: GenericClient,
 {
     pub fn map<R>(
         self,
-        mapper: fn(GetIdAndPasswordBorrowed) -> R,
-    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, R, N> {
-        GetIdAndPasswordQuery {
+        mapper: fn(GetByEmailBorrowed) -> R,
+    ) -> GetByEmailQuery<'c, 'a, 's, C, R, N> {
+        GetByEmailQuery {
             client: self.client,
             params: self.params,
             stmt: self.stmt,
@@ -555,31 +555,30 @@ impl<
         )
     }
 }
-pub fn get_id_and_password() -> GetIdAndPasswordStmt {
-    GetIdAndPasswordStmt(crate::client::async_::Stmt::new(
+pub fn get_by_email() -> GetByEmailStmt {
+    GetByEmailStmt(crate::client::async_::Stmt::new(
         "SELECT id, password FROM accounts WHERE email = $1",
     ))
 }
-pub struct GetIdAndPasswordStmt(crate::client::async_::Stmt);
-impl GetIdAndPasswordStmt {
+pub struct GetByEmailStmt(crate::client::async_::Stmt);
+impl GetByEmailStmt {
     pub fn bind<'c, 'a, 's, C: GenericClient, T1: crate::StringSql>(
         &'s mut self,
         client: &'c C,
         email: &'a T1,
-    ) -> GetIdAndPasswordQuery<'c, 'a, 's, C, GetIdAndPassword, 1> {
-        GetIdAndPasswordQuery {
+    ) -> GetByEmailQuery<'c, 'a, 's, C, GetByEmail, 1> {
+        GetByEmailQuery {
             client,
             params: [email],
             stmt: &mut self.0,
-            extractor: |
-                row: &tokio_postgres::Row,
-            | -> Result<GetIdAndPasswordBorrowed, tokio_postgres::Error> {
-                Ok(GetIdAndPasswordBorrowed {
-                    id: row.try_get(0)?,
-                    password: row.try_get(1)?,
-                })
-            },
-            mapper: |it| GetIdAndPassword::from(it),
+            extractor:
+                |row: &tokio_postgres::Row| -> Result<GetByEmailBorrowed, tokio_postgres::Error> {
+                    Ok(GetByEmailBorrowed {
+                        id: row.try_get(0)?,
+                        password: row.try_get(1)?,
+                    })
+                },
+            mapper: |it| GetByEmail::from(it),
         }
     }
 }
