@@ -26,7 +26,7 @@ export default function MemberHomePage() {
     }
 
     return (
-        <div className="flex-1 space-y-6 p-6">
+        <div className="flex-1 space-y-6 p-5">
             <Card className="p-6">
                 <CardContent className="flex justify-between items-center p-0">
                     <div className="text-2xl font-bold mb-1">
