@@ -171,8 +171,12 @@ export const Header = () => {
                     </NavigationMenuList>
                 </NavigationMenu>
                 <div className="hidden items-center gap-4 md:flex">
-                    <Button variant="outline">Register</Button>
-                    <Button>Login</Button>
+                    <Link href="/auth/register">
+                        <Button variant="outline">Register</Button>
+                    </Link>
+                    <Link href="/auth/login">
+                        <Button>Login</Button>
+                    </Link>
                 </div>
                 <Sheet>
                     <SheetTrigger asChild className="md:hidden">
@@ -199,8 +203,12 @@ export const Header = () => {
                                 ))}
                             </div>
                             <div className="mt-6 flex flex-col gap-4">
-                                <Button variant="outline">Register</Button>
-                                <Button>Login</Button>
+                                <Link href="/auth/register">
+                                    <Button variant="outline">Register</Button>
+                                </Link>
+                                <Link href="/auth/login">
+                                    <Button>Login</Button>
+                                </Link>
                             </div>
                         </div>
                     </SheetContent>

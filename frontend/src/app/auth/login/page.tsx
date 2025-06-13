@@ -77,8 +77,8 @@ const LoginForm = () => {
 
 export default function LoginPage() {
     return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-            <div className="w-full max-w-sm">
+        <div className="w-full p-20">
+            <div className="w-full max-w-md mx-auto">
                 <div className="flex flex-col gap-6">
                     <Card>
                         <CardHeader>
@@ -86,7 +86,7 @@ export default function LoginPage() {
                                 Login
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className='px-10'>
                             <LoginForm />
 
                             <Separator text="or" />
