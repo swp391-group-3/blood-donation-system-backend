@@ -70,7 +70,7 @@ export default function BlogPage() {
                     </p>
                 </div>
                 <Button asChild>
-                    <Link href="/dashboard/blog/new">
+                    <Link href="/member/blog/new">
                         <Plus className="mr-2 h-4 w-4" />
                         Write Post
                     </Link>
