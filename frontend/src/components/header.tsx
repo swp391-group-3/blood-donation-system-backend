@@ -28,6 +28,7 @@ import Link from 'next/link';
 import { Role } from '@/lib/api/dto/account';
 import { useCurrentAccount } from '@/hooks/auth/useCurrentAccount';
 import { useMemo } from 'react';
+import { AccountIndicator } from './account-indicator';
 
 interface MenuItem {
     title: string;
@@ -170,14 +171,10 @@ export const Header = () => {
                         ))}
                     </NavigationMenuList>
                 </NavigationMenu>
-                <div className="justify-self-end hidden gap-4 md:flex items-end">
-                    <Link href="/auth/register">
-                        <Button variant="outline">Register</Button>
-                    </Link>
-                    <Link href="/auth/login">
-                        <Button>Login</Button>
-                    </Link>
+                <div className="justify-self-end hidden md:block">
+                    <AccountIndicator />
                 </div>
+                <AccountIndicator className='md:hidden' />
                 <Sheet>
                     <SheetTrigger asChild className="md:hidden">
                         <Button variant="outline" size="icon">
@@ -204,10 +201,15 @@ export const Header = () => {
                             </div>
                             <div className="mt-6 flex flex-col gap-4">
                                 <Link href="/auth/register">
-                                    <Button className='w-full' variant="outline">Register</Button>
+                                    <Button
+                                        className="w-full"
+                                        variant="outline"
+                                    >
+                                        Register
+                                    </Button>
                                 </Link>
                                 <Link href="/auth/login">
-                                    <Button className='w-full'>Login</Button>
+                                    <Button className="w-full">Login</Button>
                                 </Link>
                             </div>
                         </div>
