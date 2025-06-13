@@ -1,4 +1,5 @@
-import WelcomeSection from '../../components/WelcomeSection';
+'use client';
+
 import {
     requests,
     appointments,
@@ -10,11 +11,55 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Droplet, Heart, Clock, Calendar, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useCurrentAccount } from '@/hooks/auth/useCurrentAccount';
+import { displayBloodGroup } from '@/lib/api/dto/account';
 
 export default function MemberHomePage() {
+    const { data: account, isPending, error } = useCurrentAccount();
+
+    if (isPending) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <div></div>;
+    }
+
     return (
         <div className="flex-1 space-y-6 p-6">
-            <WelcomeSection />
+            <Card className="p-6">
+                <CardContent className="flex justify-between items-center p-0">
+                    <div className="text-2xl font-bold mb-1">
+                        {`Welcome back, ${account.name}!`}
+                    </div>
+
+                    <div className="flex gap-4 items-center">
+                        <div className="flex flex-col items-center  gap-1">
+                            <Badge
+                                variant="outline"
+                                className="bg-red-50 text-zinc-950 border-red-600 rounded-full px-3"
+                            >
+                                {displayBloodGroup(account.blood_group)}
+                            </Badge>
+                            <span className="text-sm text-muted-foreground">
+                                Blood Type
+                            </span>
+                        </div>
+
+                        <div className="flex flex-col items-center  gap-1">
+                            <Badge
+                                variant="outline"
+                                className="bg-blue-100 text-zinc-950 border-blue-600 rounded-full px-3"
+                            >
+                                3
+                            </Badge>
+                            <span className="text-sm text-muted-foreground">
+                                Donations
+                            </span>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader>
