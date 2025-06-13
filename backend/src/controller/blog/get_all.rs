@@ -7,7 +7,7 @@ use crate::{error::Result, state::ApiState};
 use super::Blog;
 
 #[utoipa::path(
-    post,
+    get,
     tag = "Blog",
     path = "/blog",
     responses(

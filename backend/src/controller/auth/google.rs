@@ -11,6 +11,7 @@ use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::{
+    config::oidc::FRONTEND_REDIRECT_URL,
     error::{AuthError, Result},
     state::ApiState,
 };
@@ -37,7 +38,7 @@ pub async fn authorized(
     session: Session,
     jar: CookieJar,
     Query(query): Query<AuthRequest>,
-) -> Result<CookieJar> {
+) -> Result<impl IntoResponse> {
     let database = state.database_pool.get().await?;
 
     let (csrf, nonce): (CsrfToken, Nonce) = session.remove(KEY).await.unwrap().unwrap();
@@ -80,5 +81,5 @@ pub async fn authorized(
         AuthError::InvalidAuthToken
     })?;
 
-    Ok(jar.add(cookie))
+    Ok((jar.add(cookie), Redirect::to(&FRONTEND_REDIRECT_URL)))
 }

@@ -7,6 +7,7 @@ use axum_extra::typed_header::TypedHeaderRejection;
 use database::{deadpool_postgres::PoolError, tokio_postgres};
 use serde::Serialize;
 use utoipa::ToSchema;
+use validator::ValidationErrors;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -25,6 +26,9 @@ pub enum Error {
 
     #[error("{0}")]
     Auth(#[from] AuthError),
+
+    #[error("{0}")]
+    Validation(#[from] ValidationErrors),
 
     #[error("Unknown error: {0}")]
     Other(#[from] anyhow::Error),
@@ -48,6 +52,13 @@ impl IntoResponse for Error {
                 .into_response(),
             Error::Auth(error) => error.into_response(),
             Error::Other(error) => (
+                StatusCode::BAD_REQUEST,
+                Json(ErrorResponse {
+                    message: error.to_string(),
+                }),
+            )
+                .into_response(),
+            Error::Validation(error) => (
                 StatusCode::BAD_REQUEST,
                 Json(ErrorResponse {
                     message: error.to_string(),

@@ -65,9 +65,12 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_ISSUER_URL: ${{ secrets.GOOGLE_ISSUER_URL }}
           GOOGLE_REDIRECT_URL: ${{ secrets.GOOGLE_REDIRECT_URL }}
+          GOOGLE_FRONTEND_REDIRECT_URL: ${{ secrets.GOOGLE_FRONTEND_REDIRECT_URL }}
+
           MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
           MICROSOFT_CLIENT_SECRET: ${{ secrets.MICROSOFT_CLIENT_SECRET }}
           MICROSOFT_ISSUER_URL: ${{ secrets.MICROSOFT_ISSUER_URL }}
           MICROSOFT_REDIRECT_URL: ${{ secrets.MICROSOFT_REDIRECT_URL }}
+          MICROSOFT_FRONTEND_REDIRECT_URL: ${{ secrets.MICROSOFT_FRONTEND_REDIRECT_URL }}
         run: |
           cargo test --target ${{ matrix.target }}

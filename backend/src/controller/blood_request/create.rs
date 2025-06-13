@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_valid::Valid;
 use chrono::{DateTime, Utc};
 use ctypes::{BloodGroup, RequestPriority};
 use database::{
@@ -11,10 +12,11 @@ use model_mapper::Mapper;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
+use validator::Validate;
 
-use crate::{error::Result, state::ApiState, util::jwt::Claims};
+use crate::{error::Result, state::ApiState, util::custom_validator, util::jwt::Claims};
 
-#[derive(Deserialize, ToSchema, Mapper)]
+#[derive(Deserialize, ToSchema, Mapper, Validate)]
 #[schema(as = blood_request::create::Request)]
 #[mapper(
     into(custom = "with_staff_id"),
@@ -24,9 +26,13 @@ use crate::{error::Result, state::ApiState, util::jwt::Claims};
 pub struct Request {
     pub blood_group: BloodGroup,
     pub priority: RequestPriority,
+    #[validate(length(min = 1))]
     pub title: String,
+    #[validate(range(min = 1))]
     pub max_people: i32,
+    #[validate(custom(function = "custom_validator::date_time_must_after_now"))]
     pub start_time: DateTime<Utc>,
+    #[validate(custom(function = "custom_validator::date_time_must_after_now"))]
     pub end_time: DateTime<Utc>,
 }
 
@@ -44,7 +50,7 @@ pub struct Request {
 pub async fn create(
     state: State<Arc<ApiState>>,
     claims: Claims,
-    Json(request): Json<Request>,
+    Valid(Json(request)): Valid<Json<Request>>,
 ) -> Result<Json<Uuid>> {
     let database = state.database_pool.get().await?;
 
