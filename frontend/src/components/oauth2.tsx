@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import * as api from '@/lib/api';
 import { FcGoogle } from 'react-icons/fc';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
