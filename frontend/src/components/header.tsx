@@ -161,7 +161,7 @@ export const Header = () => {
 
     return (
         <header className="m-5">
-            <nav className="flex items-center justify-between">
+            <nav className="grid grid-cols-[1fr_auto_1fr]">
                 <Logo />
                 <NavigationMenu className="hidden md:block">
                     <NavigationMenuList>
@@ -170,7 +170,7 @@ export const Header = () => {
                         ))}
                     </NavigationMenuList>
                 </NavigationMenu>
-                <div className="hidden items-center gap-4 md:flex">
+                <div className="justify-self-end hidden gap-4 md:flex items-end">
                     <Link href="/auth/register">
                         <Button variant="outline">Register</Button>
                     </Link>
