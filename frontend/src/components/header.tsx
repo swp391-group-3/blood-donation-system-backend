@@ -161,7 +161,7 @@ export const Header = () => {
 
     return (
         <header className="m-5">
-            <nav className="grid grid-cols-[1fr_auto_1fr]">
+            <nav className="flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
                 <Logo />
                 <NavigationMenu className="hidden md:block">
                     <NavigationMenuList>
@@ -204,10 +204,10 @@ export const Header = () => {
                             </div>
                             <div className="mt-6 flex flex-col gap-4">
                                 <Link href="/auth/register">
-                                    <Button variant="outline">Register</Button>
+                                    <Button className='w-full' variant="outline">Register</Button>
                                 </Link>
                                 <Link href="/auth/login">
-                                    <Button>Login</Button>
+                                    <Button className='w-full'>Login</Button>
                                 </Link>
                             </div>
                         </div>
