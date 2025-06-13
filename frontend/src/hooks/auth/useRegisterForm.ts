@@ -1,8 +1,10 @@
+'use client';
+
 import { fetchWrapper, throwIfError } from '@/lib/api';
 import { bloodGroups, genders } from '@/lib/api/dto/account';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';

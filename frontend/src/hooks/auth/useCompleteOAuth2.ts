@@ -1,7 +1,9 @@
+'use client';
+
 import { fetchWrapper, throwIfError } from '@/lib/api';
 import { schema as registerSchema } from './useRegisterForm';
 import { z } from 'zod';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
