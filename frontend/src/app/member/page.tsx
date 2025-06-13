@@ -1,6 +1,5 @@
 import WelcomeSection from '../../components/WelcomeSection';
 import {
-    actions,
     requests,
     appointments,
     donations,
@@ -16,41 +15,6 @@ export default function MemberHomePage() {
     return (
         <div className="flex-1 space-y-6 p-6">
             <WelcomeSection />
-            <div className="max-w-2xl">
-                <h2 className="text-lg font-semibold text-zinc-950 mb-4">
-                    Quick Actions
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {actions.map((action, index) => (
-                        <Button
-                            asChild
-                            variant="ghost"
-                            className="p-0 h-auto bg-transparent shadow-none hover:shadow-md transition-shadow text-left"
-                            key={index}
-                        >
-                            <Link href={action.href}>
-                                <Card className="h-full w-full">
-                                    <CardContent className="p-6 text-center flex flex-col items-center">
-                                        <div
-                                            className={`inline-flex p-5 rounded-full ${action.color} mb-3`}
-                                        >
-                                            <action.icon
-                                                style={{
-                                                    width: '20px',
-                                                    height: '20px',
-                                                }}
-                                            />
-                                        </div>
-                                        <h2 className="font-medium text-base text-zinc-950">
-                                            {action.title}
-                                        </h2>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        </Button>
-                    ))}
-                </div>
-            </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader>
