@@ -28,7 +28,7 @@ import Link from 'next/link';
 import { Role } from '@/lib/api/dto/account';
 import { useCurrentAccount } from '@/hooks/auth/useCurrentAccount';
 import { useMemo } from 'react';
-import { AccountIndicator } from './account-indicator';
+import { AccountIndicator, MobileAccountIndicator } from './account-indicator';
 
 interface MenuItem {
     title: string;
@@ -131,7 +131,7 @@ const MobileNavigationItem = ({ title, href, subItems }: MenuItem) => {
         );
     }
     return (
-        <Accordion type="single" collapsible className="mt-4 mb-2">
+        <Accordion type="single" collapsible>
             <AccordionItem value="solutions" className="border-none">
                 <AccordionTrigger className="text-base hover:no-underline">
                     {title}
@@ -174,7 +174,6 @@ export const Header = () => {
                 <div className="justify-self-end hidden md:block">
                     <AccountIndicator />
                 </div>
-                <AccountIndicator className='md:hidden' />
                 <Sheet>
                     <SheetTrigger asChild className="md:hidden">
                         <Button variant="outline" size="icon">
@@ -199,19 +198,7 @@ export const Header = () => {
                                     />
                                 ))}
                             </div>
-                            <div className="mt-6 flex flex-col gap-4">
-                                <Link href="/auth/register">
-                                    <Button
-                                        className="w-full"
-                                        variant="outline"
-                                    >
-                                        Register
-                                    </Button>
-                                </Link>
-                                <Link href="/auth/login">
-                                    <Button className="w-full">Login</Button>
-                                </Link>
-                            </div>
+                            <MobileAccountIndicator />
                         </div>
                     </SheetContent>
                 </Sheet>

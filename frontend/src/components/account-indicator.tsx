@@ -14,6 +14,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { LogOut, User } from 'lucide-react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 
 export const AccountIndicator = () => {
     const { data: account } = useCurrentAccount();
@@ -80,5 +86,51 @@ export const AccountIndicator = () => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
+    );
+};
+
+export const MobileAccountIndicator = () => {
+    const { data: account } = useCurrentAccount();
+
+    if (!account) {
+        return (
+            <div className="mt-6 flex flex-col gap-4">
+                <Link href="/auth/register">
+                    <Button className="w-full" variant="outline">
+                        Register
+                    </Button>
+                </Link>
+                <Link href="/auth/login">
+                    <Button className="w-full">Login</Button>
+                </Link>
+            </div>
+        );
+    }
+
+    return (
+        <Accordion className="mt-6" type="single" collapsible>
+            <AccordionItem value="solutions" className="border-none">
+                <AccordionTrigger className="text-base hover:no-underline">
+                    {account.email}
+                </AccordionTrigger>
+                <AccordionContent>
+                    <div className="grid md:grid-cols-2">
+                        <Link
+                            href="/profile"
+                            className="rounded-md p-3 transition-colors hover:bg-muted/70"
+                        >
+                            <p className="mb-1 font-semibold text-foreground">
+                                Profile
+                            </p>
+                        </Link>
+                        <div className="rounded-md p-3 transition-colors hover:bg-muted/70">
+                            <p className="mb-1 font-semibold text-foreground">
+                                Logout
+                            </p>
+                        </div>
+                    </div>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     );
 };
