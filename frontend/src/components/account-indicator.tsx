@@ -119,14 +119,16 @@ export const MobileAccountIndicator = () => {
                             href="/profile"
                             className="rounded-md p-3 transition-colors hover:bg-muted/70"
                         >
-                            <p className="mb-1 font-semibold text-foreground">
-                                Profile
-                            </p>
+                            <div className="flex flex-cols items-center gap-3 mb-1 font-semibold text-foreground">
+                                <User />
+                                <span>Profile</span>
+                            </div>
                         </Link>
-                        <div className="rounded-md p-3 transition-colors hover:bg-muted/70">
-                            <p className="mb-1 font-semibold text-foreground">
-                                Logout
-                            </p>
+                        <div className="hover:pointer rounded-md p-3 transition-colors hover:bg-muted/70">
+                            <div className="flex flex-cols items-center gap-3 mb-1 font-semibold text-foreground">
+                                <LogOut />
+                                <span>Logout</span>
+                            </div>
                         </div>
                     </div>
                 </AccordionContent>
