@@ -37,7 +37,7 @@ export const genders = ['male', 'female'] as const;
 export type Gender = (typeof genders)[number];
 
 export const displayGender = (gender: Gender): string => {
-    return gender.toUpperCase();
+    return gender.charAt(0).toUpperCase() + gender.substring(1).toLowerCase();
 };
 
 export type Role = 'member' | 'staff' | 'admin';
