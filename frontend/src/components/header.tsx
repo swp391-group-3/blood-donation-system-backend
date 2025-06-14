@@ -49,15 +49,15 @@ const getMenuItems = (role?: Role): MenuItem[] => {
             return [
                 {
                     title: 'Home',
-                    href: '/member',
+                    href: '/',
                 },
                 {
                     title: 'Blood Request',
-                    href: '/member/blood-request',
+                    href: '/blood-request',
                 },
                 {
                     title: 'Blog',
-                    href: 'member/blog',
+                    href: '/blog',
                 },
             ];
     }
