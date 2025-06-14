@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,170 +20,301 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { CalendarDays, Camera, User } from 'lucide-react';
+import {
+    Calendar,
+    CalendarDays,
+    Camera,
+    Heart,
+    Loader2,
+    LoaderCircle,
+    User,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import React from 'react';
+import {
+    Account,
+    bloodGroups,
+    displayBloodGroup,
+    displayGender,
+    genders,
+} from '@/lib/api/dto/account';
+import { AccountPicture } from '@/components/account-picture';
+import { useCurrentAccount } from '@/hooks/auth/useCurrentAccount';
+import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
+import { useUpdateAccountForm } from '@/hooks/account/useUpdateAccountForm';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
 
-export default function ProfileSettings() {
+const AccountTab = (account: Account) => {
+    const { mutation, form } = useUpdateAccountForm(account);
+
     return (
-        <div className="p-4 md:p-6">
-            <div className="mx-auto max-w-4xl space-y-6">
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Profile
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Manage your account information
-                    </p>
+        <div className="space-y-6">
+            <div className="relative">
+                <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <div className="h-28 bg-gradient-to-r from-blue-50 to-indigo-50 relative"></div>
+
+                    <div className="px-8 py-6 relative">
+                        <div className="flex size-16 justify-between items-end -mt-14 mb-6">
+                            <AccountPicture name={account.name} />
+                        </div>
+
+                        <div className="space-y-5">
+                            <div>
+                                <h1 className="text-2xl font-bold text-gray-900 mb-1">
+                                    {account.name}
+                                </h1>
+                                <p className="text-gray-500">{account.email}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <User className="h-5 w-5" />
-                            Profile Picture
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex items-center gap-4">
-                        <div className="relative">
-                            <Avatar className="h-20 w-20">
-                                <AvatarImage
-                                    src="/placeholder.svg"
-                                    alt="Profile"
+            <Form {...form}>
+                <form
+                    className="space-y-6"
+                    onSubmit={form.handleSubmit((values) =>
+                        mutation.mutate(values),
+                    )}
+                >
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Basic Information</CardTitle>
+                            <CardDescription>
+                                Account basic information
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid auto-cols-fr gap-5">
+                                <div className="grid gap-2">
+                                    <Label>Email</Label>
+                                    <Input disabled value={account.email} />
+                                </div>
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel>Name</FormLabel>
+                                            <FormControl>
+                                                <Input {...field} required />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                                <AvatarFallback className="text-lg font-semibold">
-                                    JS
-                                </AvatarFallback>
-                            </Avatar>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full p-0"
-                            >
-                                <Camera className="h-3 w-3" />
-                            </Button>
-                        </div>
-                        <div className="space-y-2">
-                            <Badge variant="secondary" className="text-sm">
-                                Member
-                            </Badge>
-                            <p className="text-sm text-muted-foreground">
-                                JPG, GIF or PNG. Max size of 2MB.
-                            </p>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Personal Information Card */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Personal Information</CardTitle>
-                        <CardDescription>
-                            Update your personal details and contact information
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label htmlFor="fullName">Full Name</Label>
-                                <Input
-                                    id="fullName"
-                                    placeholder="Enter your full name"
-                                    defaultValue="John Smith"
-                                    readOnly
+                                <FormField
+                                    control={form.control}
+                                    name="gender"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel>Gender</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Select a gender" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {genders.map(
+                                                        (gender, index) => (
+                                                            <SelectItem
+                                                                key={index}
+                                                                value={gender}
+                                                            >
+                                                                {displayGender(
+                                                                    gender,
+                                                                )}
+                                                            </SelectItem>
+                                                        ),
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Email Address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    defaultValue="john.smith@email.com"
-                                    readOnly
+                                <FormField
+                                    control={form.control}
+                                    name="birthday"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel>Birthday</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="date"
+                                                    {...field}
+                                                    required
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="phone">Phone Number</Label>
-                                <Input
-                                    id="phone"
-                                    type="tel"
-                                    placeholder="Enter your phone number"
-                                    defaultValue="+1234567890"
-                                    readOnly
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="bloodGroup">Blood Group</Label>
-                                <Select defaultValue="o-negative" disabled>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select blood group" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="a-positive">
-                                            A+
-                                        </SelectItem>
-                                        <SelectItem value="a-negative">
-                                            A-
-                                        </SelectItem>
-                                        <SelectItem value="b-positive">
-                                            B+
-                                        </SelectItem>
-                                        <SelectItem value="b-negative">
-                                            B-
-                                        </SelectItem>
-                                        <SelectItem value="ab-positive">
-                                            AB+
-                                        </SelectItem>
-                                        <SelectItem value="ab-negative">
-                                            AB-
-                                        </SelectItem>
-                                        <SelectItem value="o-positive">
-                                            O+
-                                        </SelectItem>
-                                        <SelectItem value="o-negative">
-                                            O-
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="dateOfBirth">
-                                    Date of Birth
-                                </Label>
-                                <div className="relative">
-                                    <Input
-                                        id="dateOfBirth"
-                                        type="date"
-                                        className="pr-10"
-                                        readOnly
-                                    />
-                                    <CalendarDays className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                <div className="grid gap-2">
+                                    <Label>Blood Group</Label>
+                                    <Select
+                                        disabled
+                                        defaultValue={account.blood_group}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select a blood group" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {bloodGroups.map(
+                                                (bloodGroup, index) => (
+                                                    <SelectItem
+                                                        key={index}
+                                                        value={bloodGroup}
+                                                    >
+                                                        {displayBloodGroup(
+                                                            bloodGroup,
+                                                        )}
+                                                    </SelectItem>
+                                                ),
+                                            )}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="emergencyContact">
-                                    Emergency Contact
-                                </Label>
-                                <Input
-                                    id="emergencyContact"
-                                    placeholder="Name and phone number"
-                                    defaultValue="Jane Smith - +1234567891"
-                                    readOnly
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Contact</CardTitle>
+                            <CardDescription>
+                                Contact information
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid auto-cols-fr gap-5">
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel>Phone</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="tel"
+                                                    {...field}
+                                                    required
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="address"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel>Address</FormLabel>
+                                            <FormControl>
+                                                <Textarea {...field} required />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
                             </div>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="address">Address</Label>
-                            <Textarea
-                                id="address"
-                                placeholder="Enter your full address"
-                                defaultValue="123 Main Street, City, State 12345"
-                                rows={3}
-                                readOnly
+                        </CardContent>
+                    </Card>
+                    <Button
+                        type="submit"
+                        disabled={mutation.isPending}
+                        data-loading={mutation.isPending}
+                        className="group relative disabled:opacity-100"
+                    >
+                        <span className="group-data-[loading=true]:text-transparent">
+                            Update
+                        </span>
+                        {mutation.isPending && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <LoaderCircle
+                                    className="animate-spin"
+                                    size={16}
+                                    strokeWidth={2}
+                                    aria-hidden="true"
+                                />
+                            </div>
+                        )}
+                    </Button>
+                </form>
+            </Form>
+        </div>
+    );
+};
+
+export default function ProfilePage() {
+    const { data: account, isPending, error } = useCurrentAccount();
+
+    if (isPending) {
+        return <div></div>;
+    }
+
+    if (error) {
+        toast.error('Login to use this feature');
+        redirect('/auth/login');
+    }
+
+    return (
+        <div className="mx-5 my-20">
+            <div className="mx-auto max-w-5xl space-y-6">
+                <Tabs
+                    defaultValue="account"
+                    orientation="vertical"
+                    className="flex w-full gap-2"
+                >
+                    <TabsList className="flex-col gap-1 rounded-none bg-transparent pr-5 lg:pr-10 py-0 text-foreground">
+                        <TabsTrigger
+                            className="px-5 relative w-full justify-start after:absolute after:inset-y-0 after:start-0 after:-ms-1 after:w-0.5 hover:bg-accent hover:text-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent"
+                            value="account"
+                        >
+                            <User
+                                className="-ms-0.5 me-1.5 opacity-60"
+                                size={16}
+                                strokeWidth={2}
+                                aria-hidden="true"
                             />
-                        </div>
-                    </CardContent>
-                </Card>
+                            Account
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="account">
+                        <AccountTab {...account} />
+                    </TabsContent>
+
+                    <TabsContent value="notifications" className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Notification Settings</CardTitle>
+                                <CardDescription>
+                                    Configure how you receive notifications
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                    Notification settings will be available
+                                    here.
+                                </p>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
             </div>
         </div>
     );
