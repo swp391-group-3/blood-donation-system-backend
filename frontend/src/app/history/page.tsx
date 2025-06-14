@@ -31,7 +31,7 @@ import {
     CheckCircle,
     FileText,
 } from 'lucide-react';
-import { donationHistory } from '../../../../constants/sample-data';
+import { donationHistory } from '../../../constants/sample-data';
 
 export default function MemberHistoryPage() {
     const [searchTerm, setSearchTerm] = useState('');

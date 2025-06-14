@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Calendar, MessageCircle, Send } from 'lucide-react';
-import { post, comments } from '../../../../../constants/sample-data';
+import { post, comments } from '../../../../constants/sample-data';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export default function BlogPostPage() {

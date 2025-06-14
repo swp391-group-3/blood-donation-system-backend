@@ -1,4 +1,5 @@
 'use client';
+
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -31,7 +32,7 @@ import {
     summaryStats,
     upcomingAppointments,
     completedAppointments,
-} from '../../../../constants/sample-data';
+} from '../../../constants/sample-data';
 import Link from 'next/link';
 
 const schema = z.object({

@@ -22,7 +22,7 @@ import {
     Users,
     Timer,
 } from 'lucide-react';
-import { emergencyRequests } from '../../../../constants/sample-data';
+import { emergencyRequests } from '../../../constants/sample-data';
 
 export default function EmergencyPage() {
     const [userLocation, setUserLocation] = useState<{
