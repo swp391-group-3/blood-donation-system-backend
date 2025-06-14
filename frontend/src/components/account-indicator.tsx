@@ -20,6 +20,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
+import { AccountPicture } from './account-picture';
 
 export const AccountIndicator = () => {
     const { data: account } = useCurrentAccount();
@@ -40,11 +41,9 @@ export const AccountIndicator = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Avatar className="hover:cursor-pointer h-8 w-8 rounded-lg">
-                    <AvatarFallback className="bg-rose-400/20 text-rose-500 rounded font-medium">
-                        {account.name[0]}
-                    </AvatarFallback>
-                </Avatar>
+                <div className="hover:cursor-pointer size-8">
+                    <AccountPicture name={account.name} />
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
                 className="min-w-56 rounded-lg"
@@ -53,11 +52,9 @@ export const AccountIndicator = () => {
             >
                 <DropdownMenuLabel className="p-0 font-normal">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                        <Avatar className="hover:cursor-pointer h-8 w-8 rounded-lg">
-                            <AvatarFallback className="bg-rose-400/20 text-rose-500 rounded font-medium">
-                                {account.name[0]}
-                            </AvatarFallback>
-                        </Avatar>
+                        <div className="hover:cursor-pointer size-8">
+                            <AccountPicture name={account.name} />
+                        </div>
                         <div className="grid flex-1 text-left text-sm leading-tight">
                             <span className="truncate font-medium">
                                 {account.name}
