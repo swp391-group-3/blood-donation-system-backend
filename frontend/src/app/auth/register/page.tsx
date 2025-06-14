@@ -3,9 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import {
     Form,
     FormControl,
@@ -15,15 +12,6 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import Link from 'next/link';
-import {
-    bloodGroups,
-    displayBloodGroup,
-    genders,
-    registerSchema,
-} from '@/lib/api/auth';
-import * as api from '@/lib/api';
-import { toast } from 'sonner';
-import { useMutation } from '@tanstack/react-query';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
 import {
     Popover,
@@ -42,25 +30,24 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/separator';
 import { OAuth2 } from '@/components/oauth2';
-import { useRouter } from 'next/navigation';
+import { useRegisterForm } from '@/hooks/auth/useRegisterForm';
+import {
+    bloodGroups,
+    displayBloodGroup,
+    displayGender,
+    genders,
+} from '@/lib/api/dto/account';
 
 const RegisterForm = () => {
-    const router = useRouter();
-
-    const { mutate: register, status } = useMutation({
-        mutationFn: api.auth.register,
-        onError: (error) => toast.error(error.message),
-        onSuccess: () => router.push('/'),
-    });
-
-    const form = useForm<z.infer<typeof registerSchema>>({
-        resolver: zodResolver(registerSchema),
-        defaultValues: {},
-    });
+    const { mutation, form } = useRegisterForm();
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit((values) => register(values))}>
+            <form
+                onSubmit={form.handleSubmit((values) =>
+                    mutation.mutate(values),
+                )}
+            >
                 <div className="flex flex-col gap-6">
                     <FormField
                         control={form.control}
@@ -123,7 +110,9 @@ const RegisterForm = () => {
                                                         'text-muted-foreground',
                                                 )}
                                             >
-                                                {field.value ?? 'Select Gender'}
+                                                {field.value
+                                                    ? displayGender(field.value)
+                                                    : 'Select Gender'}
                                                 <ChevronsUpDown className="opacity-50" />
                                             </Button>
                                         </FormControl>
@@ -141,7 +130,9 @@ const RegisterForm = () => {
                                                 <CommandGroup>
                                                     {genders.map((value) => (
                                                         <CommandItem
-                                                            value={value}
+                                                            value={displayGender(
+                                                                value,
+                                                            )}
                                                             key={value}
                                                             onSelect={() => {
                                                                 form.setValue(
@@ -150,7 +141,9 @@ const RegisterForm = () => {
                                                                 );
                                                             }}
                                                         >
-                                                            {value}
+                                                            {displayGender(
+                                                                value,
+                                                            )}
                                                             <Check
                                                                 className={cn(
                                                                     'ml-auto',
@@ -287,7 +280,7 @@ const RegisterForm = () => {
                         )}
                     />
 
-                    {status === 'pending' ? (
+                    {mutation.status === 'pending' ? (
                         <Button disabled className="w-full py-5">
                             <Loader2 className="animate-spin" />
                             Loading

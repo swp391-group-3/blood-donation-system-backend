@@ -23,5 +23,3 @@ export const fetchWrapper = (url: RequestInfo | URL, init?: RequestInit) => {
         credentials: 'include',
     });
 };
-
-export * as auth from './auth';

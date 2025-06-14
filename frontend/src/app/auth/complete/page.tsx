@@ -3,9 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import {
     Form,
     FormControl,
@@ -14,15 +11,6 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import {
-    bloodGroups,
-    displayBloodGroup,
-    genders,
-    oauth2CompleteSchema,
-} from '@/lib/api/auth';
-import * as api from '@/lib/api';
-import { toast } from 'sonner';
-import { useMutation } from '@tanstack/react-query';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
 import {
     Popover,
@@ -39,26 +27,23 @@ import {
     CommandList,
 } from '@/components/ui/command';
 import { Textarea } from '@/components/ui/textarea';
-import { useRouter } from 'next/navigation';
+import { useCompleteOAuth2 } from '@/hooks/auth/useCompleteOAuth2';
+import {
+    bloodGroups,
+    displayBloodGroup,
+    displayGender,
+    genders,
+} from '@/lib/api/dto/account';
 
 const CompleteForm = () => {
-    const router = useRouter();
-
-    const { mutate: oauth2Complete, status } = useMutation({
-        mutationFn: api.auth.oauth2Complete,
-        onError: (error) => toast.error(error.message),
-        onSuccess: () => router.push('/'),
-    });
-
-    const form = useForm<z.infer<typeof oauth2CompleteSchema>>({
-        resolver: zodResolver(oauth2CompleteSchema),
-        defaultValues: {},
-    });
+    const { mutation, form } = useCompleteOAuth2();
 
     return (
         <Form {...form}>
             <form
-                onSubmit={form.handleSubmit((values) => oauth2Complete(values))}
+                onSubmit={form.handleSubmit((values) =>
+                    mutation.mutate(values),
+                )}
             >
                 <div className="flex flex-col gap-6">
                     <FormField
@@ -92,7 +77,9 @@ const CompleteForm = () => {
                                                         'text-muted-foreground',
                                                 )}
                                             >
-                                                {field.value ?? 'Select Gender'}
+                                                {field.value
+                                                    ? displayGender(field.value)
+                                                    : 'Select Gender'}
                                                 <ChevronsUpDown className="opacity-50" />
                                             </Button>
                                         </FormControl>
@@ -110,7 +97,9 @@ const CompleteForm = () => {
                                                 <CommandGroup>
                                                     {genders.map((value) => (
                                                         <CommandItem
-                                                            value={value}
+                                                            value={displayGender(
+                                                                value,
+                                                            )}
                                                             key={value}
                                                             onSelect={() => {
                                                                 form.setValue(
@@ -119,7 +108,9 @@ const CompleteForm = () => {
                                                                 );
                                                             }}
                                                         >
-                                                            {value}
+                                                            {displayGender(
+                                                                value,
+                                                            )}
                                                             <Check
                                                                 className={cn(
                                                                     'ml-auto',
@@ -256,7 +247,7 @@ const CompleteForm = () => {
                         )}
                     />
 
-                    {status === 'pending' ? (
+                    {mutation.status === 'pending' ? (
                         <Button disabled className="w-full py-5">
                             <Loader2 className="animate-spin" />
                             Loading
@@ -274,7 +265,7 @@ const CompleteForm = () => {
 
 export default function CompletePage() {
     return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="flex w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-lg">
                 <div className="flex flex-col gap-6">
                     <Card>

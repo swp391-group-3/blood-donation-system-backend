@@ -49,7 +49,7 @@ import {
     mockHealthTrends,
     weightChartData,
     hemoglobinChartData,
-} from '../../../../constants/sample-data';
+} from '../../../constants/sample-data';
 
 const chartConfig = {
     weight: {

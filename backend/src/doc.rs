@@ -31,6 +31,7 @@ impl Modify for SecurityAddon {
         controller::auth::login,
         controller::auth::oauth2::oauth2,
         controller::auth::oauth2::complete,
+        controller::auth::me,
 
         controller::question::create,
         controller::question::get_all,

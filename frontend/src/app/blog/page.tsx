@@ -37,7 +37,7 @@ import {
     blogPosts,
     bloodDonationTags,
     emptyBlogList,
-} from '../../../../constants/sample-data';
+} from '../../../constants/sample-data';
 
 const schema = z.object({
     searchTerm: z.string().optional().default(''),

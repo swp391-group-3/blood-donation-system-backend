@@ -1,4 +1,5 @@
 mod login;
+mod me;
 pub mod oauth2;
 mod register;
 
@@ -9,6 +10,7 @@ use axum::{Router, routing};
 use crate::state::ApiState;
 
 pub use login::*;
+pub use me::*;
 pub use register::*;
 
 pub fn build() -> Router<Arc<ApiState>> {
@@ -21,4 +23,5 @@ pub fn build() -> Router<Arc<ApiState>> {
             routing::get(oauth2::authorized),
         )
         .route("/oauth2/complete", routing::post(oauth2::complete))
+        .route("/auth/me", routing::get(me))
 }

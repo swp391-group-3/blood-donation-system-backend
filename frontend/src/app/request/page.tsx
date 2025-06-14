@@ -28,7 +28,7 @@ import {
     Eye,
 } from 'lucide-react';
 import Link from 'next/link';
-import { mockRequests } from '../../../../constants/sample-data';
+import { mockRequests } from '../../../constants/sample-data';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 

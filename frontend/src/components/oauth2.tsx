@@ -1,7 +1,14 @@
 import { Button } from '@/components/ui/button';
-import * as api from '@/lib/api';
 import { FcGoogle } from 'react-icons/fc';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
+import { API_URL } from '@/lib/api';
+
+type Provider = 'google' | 'microsoft';
+
+const oauth2 = (provider: Provider) => {
+    redirect(`${API_URL}/oauth2/${provider}`);
+};
 
 export const OAuth2 = () => {
     return (
@@ -9,7 +16,7 @@ export const OAuth2 = () => {
             <Button
                 variant="outline"
                 className="w-full py-5"
-                onClick={() => api.auth.oauth2('google')}
+                onClick={() => oauth2('google')}
             >
                 <FcGoogle className="h-10 w-10" />
                 <span className="ml-2">Continue with Google</span>
@@ -17,7 +24,7 @@ export const OAuth2 = () => {
             <Button
                 variant="outline"
                 className="w-full py-5"
-                onClick={() => api.auth.oauth2('microsoft')}
+                onClick={() => oauth2('microsoft')}
             >
                 <Image
                     src="/microsoft.svg"
