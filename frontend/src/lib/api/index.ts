@@ -1,4 +1,4 @@
-export const API_URL = process.env.API_URL || 'http://localhost:3000';
+import { getApiUrl } from './api-url';
 
 export const throwIfError = async (response: Response) => {
     if (!response.ok) {
@@ -15,10 +15,15 @@ export const deserialize = async <T>(response: Response): Promise<T> => {
     return data;
 };
 
-export const fetchWrapper = (url: RequestInfo | URL, init?: RequestInit) => {
-    const apiUrl = `${API_URL}${url}`;
+export const fetchWrapper = async (
+    url: RequestInfo | URL,
+    init?: RequestInit,
+) => {
+    const base = await getApiUrl();
 
-    return fetch(apiUrl, {
+    const apiUrl = `${base}${url}`;
+
+    return await fetch(apiUrl, {
         ...init,
         credentials: 'include',
     });
