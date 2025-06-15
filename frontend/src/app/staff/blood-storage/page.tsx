@@ -139,10 +139,7 @@ export default function BloodBagsPage() {
         setRequestFormOpen(false);
     }
 
-    const [dateRange, setDateRange] = useState<DateRange | undefined>({
-        from: new Date(2025, 5, 9),
-        to: new Date(2025, 5 , 26),
-    })
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
     const filteredBloodBags = bloodBags.filter((bag) => {
         const matchesSearch =
@@ -458,19 +455,24 @@ export default function BloodBagsPage() {
                                                                 <FormControl>
                                                                     <Button
                                                                         variant="outline"
+                                                                        id="dates"
                                                                         className={"w-full justify-start text-left font-normal" + (!field.value ? " text-muted-foreground" : "")}
                                                                     >
+                                                                        {dateRange?.from && dateRange?.to
+                                                                         ? `${dateRange.from.toLocaleDateString()} - ${dateRange.to.toLocaleDateString()}`
+                                                                         : "Select Date"}
                                                                         <CalendarIcon className="mr-2 h-4 w-4" />
-                                                                        {field.value ? format(field.value, "PPP") : "Select required date"}
                                                                     </Button>
                                                                 </FormControl>
                                                             </PopoverTrigger>
                                                             <PopoverContent className="w-auto p-0">
                                                                 <Calendar 
                                                                     mode="range"
-                                                                    defaultMonth={dateRange?.from}
                                                                     selected={dateRange}
-                                                                    onSelect={setDateRange}
+                                                                    captionLayout="dropdown"
+                                                                    onSelect={(dateRange) => (
+                                                                        setDateRange(dateRange)
+                                                                    )}
                                                                     className="rounded-lg border shadow-sm"
                                                                 />
                                                             </PopoverContent>
