@@ -947,3 +947,11 @@ export const mockBloodBags = [
         lastChecked: '2024-01-20T14:45:00Z',
     },
 ];
+
+export const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+export const urgencyLevels = [
+  { value: "emergency", label: "🚨 Emergency - Immediate (Life threatening)" },
+  { value: "urgent", label: "⚡ Urgent - Within 24 hours" },
+  { value: "normal", label: "📅 Normal - Within a week" },
+  { value: "planned", label: "📋 Planned - Scheduled procedure" },
+]
