@@ -80,10 +80,10 @@ import {
     bloodTypeStats,
     bloodTypes,
     urgencyLevels,
-} from '../../../../constants/sample-data';
+} from '../../../constants/sample-data';
 import { useForm } from 'react-hook-form';
 import { TabsContent } from '@radix-ui/react-tabs';
-import { getDemandColor , getPriorityColor, getStatusColor } from "../../../utils/colorUtils"
+import { getDemandColor , getPriorityColor, getStatusColor } from "../../utils/colorUtils"
 
 export const requestBloodSchema = z.object({
     bloodType: z.string().min(1, 'Please select the blood type'),
