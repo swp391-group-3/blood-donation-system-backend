@@ -169,21 +169,6 @@ export default function BloodBagsPage() {
         );
     });
 
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'Available':
-                return <CheckCircle className="h-4 w-4" />;
-            case 'Reserved':
-                return <Clock className="h-4 w-4" />;
-            case 'Used':
-                return <Activity className="h-4 w-4" />;
-            case 'Expiring Soon':
-                return <AlertTriangle className="h-4 w-4" />;
-            default:
-                return <Info className="h-4 w-4" />;
-        }
-    };
-
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'Available':
@@ -532,14 +517,13 @@ export default function BloodBagsPage() {
                 </div>
             </div>
 
-            {/* Blood Type Distribution Dashboard */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {bloodTypeStats.map((stat) => (
                     <Card
                         key={stat.type}
                         className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-pink-50"></div>
+                        <div className="absolute inset-0 bg-red-50"></div>
                         <CardContent className="relative p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
@@ -555,7 +539,6 @@ export default function BloodBagsPage() {
                                         </p>
                                     </div>
                                 </div>
-                                {getTrendIcon(stat.trend)}
                             </div>
 
                             <div className="space-y-3">
@@ -569,14 +552,6 @@ export default function BloodBagsPage() {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-gray-600">
-                                        Reserved
-                                    </span>
-                                    <span className="font-bold text-blue-600">
-                                        {stat.reserved}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm text-gray-600">
                                         Total
                                     </span>
                                     <span className="font-bold text-gray-900">
@@ -584,7 +559,7 @@ export default function BloodBagsPage() {
                                     </span>
                                 </div>
 
-                                <div className="pt-2 border-t">
+                                <div className="pt-4 border-t">
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm text-gray-600">
                                             Demand
@@ -606,162 +581,157 @@ export default function BloodBagsPage() {
                 ))}
             </div>
 
-            {/* Enhanced Filters and Search */}
-            <Card className="border-0 shadow-lg">
-                <CardContent className="p-6">
-                    <div className="space-y-4">
-                        <div className="flex flex-col lg:flex-row gap-4">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                <Input
-                                    placeholder="Search by ID, donor name, blood type, or storage..."
-                                    className="pl-10 h-12 border-gray-200 focus:border-red-300 focus:ring-red-200"
-                                    value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="flex gap-2">
-                                <Select
-                                    value={statusFilter}
-                                    onValueChange={(value) => {
-                                        setStatusFilter(value);
-                                        if (value !== 'all')
-                                            addFilter('status', value);
-                                    }}
-                                >
-                                    <SelectTrigger className="w-[180px] h-12">
-                                        <SelectValue placeholder="Filter by status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            All Statuses
-                                        </SelectItem>
-                                        <SelectItem value="Available">
-                                            ✅ Available
-                                        </SelectItem>
-                                        <SelectItem value="Reserved">
-                                            🔒 Reserved
-                                        </SelectItem>
-                                        <SelectItem value="Used">
-                                            📋 Used
-                                        </SelectItem>
-                                        <SelectItem value="Expiring Soon">
-                                            ⚠️ Expiring Soon
-                                        </SelectItem>
-                                        <SelectItem value="Expired">
-                                            ❌ Expired
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <Select
-                                    value={bloodTypeFilter}
-                                    onValueChange={(value) => {
-                                        setBloodTypeFilter(value);
-                                        if (value !== 'all')
-                                            addFilter('bloodType', value);
-                                    }}
-                                >
-                                    <SelectTrigger className="w-[180px] h-12">
-                                        <SelectValue placeholder="Filter by blood type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            All Blood Types
-                                        </SelectItem>
-                                        <SelectItem value="A+">
-                                            🩸 A+
-                                        </SelectItem>
-                                        <SelectItem value="A-">
-                                            🩸 A-
-                                        </SelectItem>
-                                        <SelectItem value="B+">
-                                            🩸 B+
-                                        </SelectItem>
-                                        <SelectItem value="B-">
-                                            🩸 B-
-                                        </SelectItem>
-                                        <SelectItem value="AB+">
-                                            🩸 AB+
-                                        </SelectItem>
-                                        <SelectItem value="AB-">
-                                            🩸 AB-
-                                        </SelectItem>
-                                        <SelectItem value="O+">
-                                            🩸 O+
-                                        </SelectItem>
-                                        <SelectItem value="O-">
-                                            🩸 O-
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <Select
-                                    value={priorityFilter}
-                                    onValueChange={(value) => {
-                                        setPriorityFilter(value);
-                                        if (value !== 'all')
-                                            addFilter('priority', value);
-                                    }}
-                                >
-                                    <SelectTrigger className="w-[180px] h-12">
-                                        <SelectValue placeholder="Filter by priority" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            All Priorities
-                                        </SelectItem>
-                                        <SelectItem value="urgent">
-                                            🚨 Urgent
-                                        </SelectItem>
-                                        <SelectItem value="high">
-                                            ⚡ High
-                                        </SelectItem>
-                                        <SelectItem value="normal">
-                                            📋 Normal
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
+            <div className="space-y-4">
+                <div className="flex flex-col lg:flex-row gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Input
+                            placeholder="Search by ID, donor name, blood type"
+                            type="search"
+                            className="pl-10 h-9 border-gray-200 focus:border-red-300 focus:ring-red-200"
+                            value={searchTerm}
 
-                        {/* Active Filters */}
-                        {activeFilters.length > 0 && (
-                            <div className="flex flex-wrap gap-2 items-center">
-                                <span className="text-sm text-gray-600">
-                                    Active filters:
-                                </span>
-                                {activeFilters.map((filter) => {
-                                    const [type, value] = filter.split(':');
-                                    return (
-                                        <Badge
-                                            key={filter}
-                                            variant="secondary"
-                                            className="flex items-center gap-1 bg-red-100 text-red-800 hover:bg-red-200"
-                                        >
-                                            {type}: {value}
-                                            <X
-                                                className="h-3 w-3 cursor-pointer"
-                                                onClick={() =>
-                                                    removeFilter(filter)
-                                                }
-                                            />
-                                        </Badge>
-                                    );
-                                })}
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={clearAllFilters}
-                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                >
-                                    Clear all
-                                </Button>
-                            </div>
-                        )}
+                        />
                     </div>
-                </CardContent>
-            </Card>
+                    <div className="flex gap-2">
+                        <Select
+                            value={statusFilter}
+                            onValueChange={(value) => {
+                                setStatusFilter(value);
+                                if (value !== 'all')
+                                    addFilter('status', value);
+                            }}
+                        >
+                            <SelectTrigger className="w-[180px] h-12">
+                                <SelectValue placeholder="Filter by status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    All Statuses
+                                </SelectItem>
+                                <SelectItem value="Available">
+                                    Available
+                                </SelectItem>
+                                <SelectItem value="Reserved">
+                                    Reserved
+                                </SelectItem>
+                                <SelectItem value="Used">
+                                    Used
+                                </SelectItem>
+                                <SelectItem value="Expiring Soon">
+                                    Expiring Soon
+                                </SelectItem>
+                                <SelectItem value="Expired">
+                                    Expired
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select
+                            value={bloodTypeFilter}
+                            onValueChange={(value) => {
+                                setBloodTypeFilter(value);
+                                if (value !== 'all')
+                                    addFilter('bloodType', value);
+                            }}
+                        >
+                            <SelectTrigger className="w-[180px] h-12">
+                                <SelectValue placeholder="Filter by blood type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    All Blood Types
+                                </SelectItem>
+                                <SelectItem value="A+">
+                                    🩸 A+
+                                </SelectItem>
+                                <SelectItem value="A-">
+                                    🩸 A-
+                                </SelectItem>
+                                <SelectItem value="B+">
+                                    🩸 B+
+                                </SelectItem>
+                                <SelectItem value="B-">
+                                    🩸 B-
+                                </SelectItem>
+                                <SelectItem value="AB+">
+                                    🩸 AB+
+                                </SelectItem>
+                                <SelectItem value="AB-">
+                                    🩸 AB-
+                                </SelectItem>
+                                <SelectItem value="O+">
+                                    🩸 O+
+                                </SelectItem>
+                                <SelectItem value="O-">
+                                    🩸 O-
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select
+                            value={priorityFilter}
+                            onValueChange={(value) => {
+                                setPriorityFilter(value);
+                                if (value !== 'all')
+                                    addFilter('priority', value);
+                            }}
+                        >
+                            <SelectTrigger className="w-[180px] h-12">
+                                <SelectValue placeholder="Filter by priority" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    All Priorities
+                                </SelectItem>
+                                <SelectItem value="urgent">
+                                    🚨 Urgent
+                                </SelectItem>
+                                <SelectItem value="high">
+                                    ⚡ High
+                                </SelectItem>
+                                <SelectItem value="normal">
+                                    📋 Normal
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                {/* Active Filters */}
+                {activeFilters.length > 0 && (
+                    <div className="flex flex-wrap gap-2 items-center">
+                        <span className="text-sm text-gray-600">
+                            Active filters:
+                        </span>
+                        {activeFilters.map((filter) => {
+                            const [type, value] = filter.split(':');
+                            return (
+                                <Badge
+                                    key={filter}
+                                    variant="secondary"
+                                    className="flex items-center gap-1 bg-red-100 text-red-800 hover:bg-red-200"
+                                >
+                                    {type}: {value}
+                                    <X
+                                        className="h-3 w-3 cursor-pointer"
+                                        onClick={() =>
+                                            removeFilter(filter)
+                                        }
+                                    />
+                                </Badge>
+                            );
+                        })}
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearAllFilters}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                            Clear all
+                        </Button>
+                    </div>
+                )}
+            </div>
+
 
             {/* Results Summary */}
             <div className="flex items-center justify-between">
@@ -932,7 +902,6 @@ export default function BloodBagsPage() {
                                                         ),
                                                     )}
                                                 >
-                                                    {getStatusIcon(bag.status)}
                                                     {bag.status}
                                                 </Badge>
                                             </TableCell>
