@@ -108,7 +108,6 @@ export type RequestBloodFormType = z.infer<typeof requestBloodSchema>
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');
     const [bloodTypeFilter, setBloodTypeFilter] = useState('all');
     const [priorityFilter, setPriorityFilter] = useState('all');
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -139,35 +138,7 @@ export default function BloodBagsPage() {
         setRequestFormOpen(false);
     }
 
-    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
-
-    const filteredBloodBags = bloodBags.filter((bag) => {
-        const matchesSearch =
-            searchTerm === '' ||
-            bag.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            bag.donorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            bag.bloodType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            bag.storage.toLowerCase().includes(searchTerm.toLowerCase());
-
-        // Apply status filter
-        const matchesStatus =
-            statusFilter === 'all' || bag.status === statusFilter;
-
-        // Apply blood type filter
-        const matchesBloodType =
-            bloodTypeFilter === 'all' || bag.bloodType === bloodTypeFilter;
-
-        // Apply priority filter
-        const matchesPriority =
-            priorityFilter === 'all' || bag.priority === priorityFilter;
-
-        return (
-            matchesSearch &&
-            matchesStatus &&
-            matchesBloodType &&
-            matchesPriority
-        );
-    });
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)    
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -265,32 +236,6 @@ export default function BloodBagsPage() {
         if (!activeFilters.includes(filterKey)) {
             setActiveFilters([...activeFilters, filterKey]);
         }
-    };
-
-    const removeFilter = (filterKey: string) => {
-        setActiveFilters1(activeFilters.filter((f) => f !== filterKey));
-
-        // Reset the corresponding filter state
-        const [type, value] = filterKey.split(':');
-        switch (type) {
-            case 'status':
-                setStatusFilter('all');
-                break;
-            case 'bloodType':
-                setBloodTypeFilter('all');
-                break;
-            case 'priority':
-                setPriorityFilter('all');
-                break;
-        }
-    };
-
-    const clearAllFilters = () => {
-        setActiveFilters([]);
-        setStatusFilter('all');
-        setBloodTypeFilter('all');
-        setPriorityFilter('all');
-        setSearchTerm('');
     };
 
     return (
@@ -594,14 +539,7 @@ export default function BloodBagsPage() {
                         />
                     </div>
                     <div className="flex gap-2">
-                        <Select
-                            value={statusFilter}
-                            onValueChange={(value) => {
-                                setStatusFilter(value);
-                                if (value !== 'all')
-                                    addFilter('status', value);
-                            }}
-                        >
+                        <Select>
                             <SelectTrigger className="w-[180px] h-12">
                                 <SelectValue placeholder="Filter by status" />
                             </SelectTrigger>
@@ -626,14 +564,7 @@ export default function BloodBagsPage() {
                                 </SelectItem>
                             </SelectContent>
                         </Select>
-                        <Select
-                            value={bloodTypeFilter}
-                            onValueChange={(value) => {
-                                setBloodTypeFilter(value);
-                                if (value !== 'all')
-                                    addFilter('bloodType', value);
-                            }}
-                        >
+                        <Select>
                             <SelectTrigger className="w-[180px] h-12">
                                 <SelectValue placeholder="Filter by blood type" />
                             </SelectTrigger>
@@ -642,39 +573,32 @@ export default function BloodBagsPage() {
                                     All Blood Types
                                 </SelectItem>
                                 <SelectItem value="A+">
-                                    🩸 A+
+                                    A+
                                 </SelectItem>
                                 <SelectItem value="A-">
-                                    🩸 A-
+                                    A-
                                 </SelectItem>
                                 <SelectItem value="B+">
-                                    🩸 B+
+                                    B+
                                 </SelectItem>
                                 <SelectItem value="B-">
-                                    🩸 B-
+                                    B-
                                 </SelectItem>
                                 <SelectItem value="AB+">
-                                    🩸 AB+
+                                    AB+
                                 </SelectItem>
                                 <SelectItem value="AB-">
-                                    🩸 AB-
+                                    AB-
                                 </SelectItem>
                                 <SelectItem value="O+">
-                                    🩸 O+
+                                    O+
                                 </SelectItem>
                                 <SelectItem value="O-">
-                                    🩸 O-
+                                    O-
                                 </SelectItem>
                             </SelectContent>
                         </Select>
-                        <Select
-                            value={priorityFilter}
-                            onValueChange={(value) => {
-                                setPriorityFilter(value);
-                                if (value !== 'all')
-                                    addFilter('priority', value);
-                            }}
-                        >
+                        <Select>
                             <SelectTrigger className="w-[180px] h-12">
                                 <SelectValue placeholder="Filter by priority" />
                             </SelectTrigger>
@@ -683,57 +607,20 @@ export default function BloodBagsPage() {
                                     All Priorities
                                 </SelectItem>
                                 <SelectItem value="urgent">
-                                    🚨 Urgent
+                                    Urgent
                                 </SelectItem>
                                 <SelectItem value="high">
-                                    ⚡ High
+                                    High
                                 </SelectItem>
                                 <SelectItem value="normal">
-                                    📋 Normal
+                                    Normal
                                 </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
                 </div>
-
-                {/* Active Filters */}
-                {activeFilters.length > 0 && (
-                    <div className="flex flex-wrap gap-2 items-center">
-                        <span className="text-sm text-gray-600">
-                            Active filters:
-                        </span>
-                        {activeFilters.map((filter) => {
-                            const [type, value] = filter.split(':');
-                            return (
-                                <Badge
-                                    key={filter}
-                                    variant="secondary"
-                                    className="flex items-center gap-1 bg-red-100 text-red-800 hover:bg-red-200"
-                                >
-                                    {type}: {value}
-                                    <X
-                                        className="h-3 w-3 cursor-pointer"
-                                        onClick={() =>
-                                            removeFilter(filter)
-                                        }
-                                    />
-                                </Badge>
-                            );
-                        })}
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={clearAllFilters}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                            Clear all
-                        </Button>
-                    </div>
-                )}
             </div>
 
-
-            {/* Results Summary */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h2 className="text-xl font-semibold text-gray-900">
