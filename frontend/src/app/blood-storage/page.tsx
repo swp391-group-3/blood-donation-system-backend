@@ -55,7 +55,7 @@ import {
     getDemandColor,
     getPriorityColor,
     getStatusColor,
-} from '../../utils/colorUtils';
+} from '../../lib/colorUtils'
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -372,8 +372,8 @@ export default function BloodBagsPage() {
                                         </div>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-3 text-sm">
-                                            <div className="space-y-1">
+                                        <div className="grid grid-cols-1 gap-3 text-sm">
+                                            <div className="space-y-1 flex justify-between">
                                                 <p className="text-gray-500">
                                                     Volume
                                                 </p>
@@ -381,7 +381,7 @@ export default function BloodBagsPage() {
                                                     {bag.volume}ml
                                                 </p>
                                             </div>
-                                            <div className="space-y-1">
+                                            <div className="space-y-1 flex justify-between">
                                                 <p className="text-gray-500">
                                                     Collection
                                                 </p>
