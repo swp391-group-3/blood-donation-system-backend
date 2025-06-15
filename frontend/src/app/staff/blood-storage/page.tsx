@@ -17,8 +17,6 @@ import {
     FormItem,
     FormLabel,
     FormControl,
-    FormMessage,
-    FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -61,40 +59,23 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
-import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
+    User,
     Package2,
     Search,
     MoreVertical,
     CalendarIcon,
-    QrCode,
-    Printer,
-    Download,
     ShieldAlert,
-    Plus,
     Droplet,
-    AlertCircle,
-    Clock,
-    User,
-    Activity,
     TrendingUp,
     TrendingDown,
     Eye,
     Edit,
     RefreshCw,
-    X,
-    CheckCircle,
-    AlertTriangle,
-    Info,
-    Zap,
     Heart,
-    Shield,
-    Thermometer,
-    ArrowLeft,
 } from 'lucide-react';
 import {
     mockBloodBags,
@@ -118,17 +99,9 @@ export type RequestBloodFormType = z.infer<typeof requestBloodSchema>;
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
-    const [bloodTypeFilter, setBloodTypeFilter] = useState('all');
-    const [priorityFilter, setPriorityFilter] = useState('all');
-    const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [bloodBags, setBloodBags] = useState(mockBloodBags);
-    const [date, setDate] = useState<Date>();
-    const [role, setRole] = useState<string | null>(null);
     const [requestFormOpen, setRequestFormOpen] = useState(false);
-    const [selectedBloodBag, setSelectedBloodBag] = useState<any>(null);
     const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
-    const [sortBy, setSortBy] = useState('collectionDate');
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     const form = useForm<RequestBloodFormType>({
         resolver: zodResolver(requestBloodSchema),
@@ -197,32 +170,10 @@ export default function BloodBagsPage() {
         }
     };
 
-    const getTrendIcon = (trend: string) => {
-        switch (trend) {
-            case 'up':
-                return <TrendingUp className="h-4 w-4 text-green-600" />;
-            case 'down':
-                return <TrendingDown className="h-4 w-4 text-red-600" />;
-            default:
-                return <div className="h-4 w-4" />;
-        }
-    };
-
-    const handleRequestBlood = (bag: any) => {
-        setSelectedBloodBag(bag);
-        setRequestFormOpen(true);
-    };
-
     const handleSubmitRequest = (e: React.FormEvent) => {
         // come in future
     };
 
-    const addFilter = (filterType: string, value: string) => {
-        const filterKey = `${filterType}:${value}`;
-        if (!activeFilters.includes(filterKey)) {
-            setActiveFilters([...activeFilters, filterKey]);
-        }
-    };
 
     return (
         <div className="space-y-8 p-6 bg-gradient-to-br from-red-50 via-white to-pink-50 min-h-screen">
@@ -939,9 +890,6 @@ export default function BloodBagsPage() {
                                             <Button
                                                 size="sm"
                                                 className="flex-1 bg-red-600 hover:bg-red-700"
-                                                onClick={() =>
-                                                    handleRequestBlood(bag)
-                                                }
                                             >
                                                 <Droplet className="h-3 w-3 mr-1" />
                                                 Request
