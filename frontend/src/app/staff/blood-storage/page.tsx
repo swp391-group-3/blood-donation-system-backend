@@ -89,6 +89,7 @@ import {
 import {
     mockBloodBags,
     bloodTypeStats,
+    bloodTypes,
 } from '../../../../constants/sample-data';
 import { useForm } from 'react-hook-form';
 
@@ -130,6 +131,11 @@ export default function BloodBagsPage() {
             emergency: false,
         },
     })
+
+    const onSubmit = (data: RequestBloodFormType) => {
+        // come in future
+        setRequestFormOpen(false);
+    }
 
     const filteredBloodBags = bloodBags.filter((bag) => {
         const matchesSearch =
@@ -348,191 +354,41 @@ export default function BloodBagsPage() {
                                         are reviewed by our medical team.
                                     </DialogDescription>
                                 </DialogHeader>
-                                <form
-                                    onSubmit={handleSubmitRequest}
-                                    className="space-y-6"
-                                >
-                                    <div className="grid gap-6">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="space-y-2">
-                                                <Label htmlFor="bloodType">
-                                                    Blood Type *
-                                                </Label>
-                                                <Select defaultValue="A+">
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select blood type" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="A+">
-                                                            A+
-                                                        </SelectItem>
-                                                        <SelectItem value="A-">
-                                                            A-
-                                                        </SelectItem>
-                                                        <SelectItem value="B+">
-                                                            B+
-                                                        </SelectItem>
-                                                        <SelectItem value="B-">
-                                                            B-
-                                                        </SelectItem>
-                                                        <SelectItem value="AB+">
-                                                            AB+
-                                                        </SelectItem>
-                                                        <SelectItem value="AB-">
-                                                            AB-
-                                                        </SelectItem>
-                                                        <SelectItem value="O+">
-                                                            O+
-                                                        </SelectItem>
-                                                        <SelectItem value="O-">
-                                                            O-
-                                                        </SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <Label htmlFor="quantity">
-                                                    Quantity (units) *
-                                                </Label>
-                                                <Input
-                                                    id="quantity"
-                                                    type="number"
-                                                    defaultValue="1"
-                                                    min="1"
-                                                    max="10"
+                                <Form {...form}>
+                                    <form
+                                        onSubmit={form.handleSubmit(onSubmit)}
+                                        className="space-y-6"
+                                    >
+                                        <div className="grid gap-6">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <FormField 
+                                                    control={form.control}
+                                                    name="bloodType"
+                                                    render={({field}) => (
+                                                        <FormItem>
+                                                            <FormLabel>Blood Type</FormLabel>
+                                                            <Select>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select Blood Type" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {bloodTypes.map(type =>(
+                                                                        <SelectItem value={type}>{type}</SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </FormItem>
+                                                    )}
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <Label htmlFor="urgency">
-                                                Urgency Level *
-                                            </Label>
-                                            <Select defaultValue="normal">
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select urgency level" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="emergency">
-                                                        🚨 Emergency -
-                                                        Immediate (Life
-                                                        threatening)
-                                                    </SelectItem>
-                                                    <SelectItem value="urgent">
-                                                        ⚡ Urgent - Within
-                                                        24 hours
-                                                    </SelectItem>
-                                                    <SelectItem value="normal">
-                                                        📅 Normal - Within a
-                                                        week
-                                                    </SelectItem>
-                                                    <SelectItem value="planned">
-                                                        📋 Planned -
-                                                        Scheduled procedure
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="department">
-                                                Department/Ward *
-                                            </Label>
-                                            <Input
-                                                id="department"
-                                                placeholder="e.g., Emergency Department, Surgery Ward"
-                                            />
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="reason">
-                                                Medical Reason *
-                                            </Label>
-                                            <Textarea
-                                                id="reason"
-                                                placeholder="Please provide details about the medical condition or procedure requiring blood transfusion"
-                                                rows={3}
-                                            />
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="date">
-                                                Required By *
-                                            </Label>
-                                            <Popover>
-                                                <PopoverTrigger asChild>
-                                                    <Button
-                                                        variant="outline"
-                                                        className={cn(
-                                                            'w-full justify-start text-left font-normal',
-                                                            !date &&
-                                                                'text-muted-foreground',
-                                                        )}
-                                                    >
-                                                        <CalendarIcon className="mr-2 h-4 w-4" />
-                                                        {date
-                                                            ? format(
-                                                                    date,
-                                                                    'PPP',
-                                                                )
-                                                            : 'Select required date'}
-                                                    </Button>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-auto p-0">
-                                                    <Calendar
-                                                        mode="single"
-                                                        selected={date}
-                                                        onSelect={setDate}
-                                                        initialFocus
-                                                    />
-                                                </PopoverContent>
-                                            </Popover>
-                                        </div>
-
-                                        <div className="space-y-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                                            <div className="flex items-center space-x-2">
-                                                <Checkbox id="terms" />
-                                                <label
-                                                    htmlFor="terms"
-                                                    className="text-sm font-medium leading-none"
-                                                >
-                                                    I confirm this is a
-                                                    legitimate medical
-                                                    request
-                                                </label>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <Checkbox id="emergency" />
-                                                <label
-                                                    htmlFor="emergency"
-                                                    className="text-sm font-medium leading-none"
-                                                >
-                                                    I understand that false
-                                                    emergency requests may
-                                                    result in account
-                                                    suspension
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <DialogFooter>
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            onClick={() =>
-                                                setRequestFormOpen(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </Button>
-                                        <Button
-                                            type="submit"
-                                            className="bg-red-600 hover:bg-red-700"
-                                        >
-                                            Submit Request
-                                        </Button>
-                                    </DialogFooter>
-                                </form>
+                                    </form>
+                                </Form>
+                                
+                                    
                             </DialogContent>
                         </Dialog>
                     </div>
