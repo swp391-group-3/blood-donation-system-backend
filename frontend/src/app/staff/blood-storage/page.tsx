@@ -624,19 +624,13 @@ export default function BloodBagsPage() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h2 className="text-xl font-semibold text-gray-900">
-                        Blood Units Registry ({filteredBloodBags.length}{' '}
-                        results)
+                        Blood Units Registry 10 Results
                     </h2>
                     <Badge
                         variant="outline"
                         className="bg-blue-50 text-blue-700"
                     >
-                        {
-                            filteredBloodBags.filter(
-                                (bag) => bag.status === 'Available',
-                            ).length
-                        }{' '}
-                        Available
+                        5 Available
                     </Badge>
                 </div>
                 <div className="flex items-center gap-2">
@@ -657,8 +651,7 @@ export default function BloodBagsPage() {
                 </div>
             </div>
 
-            {/* Blood Bags Display */}
-            {filteredBloodBags.length === 0 ? (
+            {mockBloodBags.length === 0 ? (
                 <Card className="border-0 shadow-lg">
                     <CardContent className="p-12">
                         title="No blood units found" description="Try adjusting
@@ -699,7 +692,7 @@ export default function BloodBagsPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredBloodBags.map((bag) => {
+                                {mockBloodBags.map((bag) => {
                                     const expiryInfo = getExpiryProgress(
                                         bag.expiryDate,
                                     );
