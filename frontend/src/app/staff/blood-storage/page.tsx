@@ -14,6 +14,7 @@ import {
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription} from '@/components/ui/form'
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Dialog,
     DialogContent,
@@ -634,20 +635,12 @@ export default function BloodBagsPage() {
                     </Badge>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button
-                        variant={viewMode === 'table' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setViewMode('table')}
-                    >
-                        Table
-                    </Button>
-                    <Button
-                        variant={viewMode === 'grid' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setViewMode('grid')}
-                    >
-                        Grid
-                    </Button>
+                    <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "grid")}>
+                        <TabsList>
+                            <TabsTrigger value="table">Table</TabsTrigger>
+                            <TabsTrigger value="grid">Grid</TabsTrigger>
+                        </TabsList>
+                    </Tabs>
                 </div>
             </div>
 
@@ -859,7 +852,7 @@ export default function BloodBagsPage() {
                 </Card>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredBloodBags.map((bag) => {
+                    {mockBloodBags.map((bag) => {
                         const expiryInfo = getExpiryProgress(bag.expiryDate);
                         return (
                             <Card
@@ -950,7 +943,6 @@ export default function BloodBagsPage() {
                                                 getStatusColor(bag.status),
                                             )}
                                         >
-                                            {getStatusIcon(bag.status)}
                                             {bag.status}
                                         </Badge>
                                         <Badge
