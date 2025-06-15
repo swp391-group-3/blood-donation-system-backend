@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useState } from 'react';
-import { z } from "zod"
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,10 +11,18 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription} from '@/components/ui/form'
+import {
+    Form,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormControl,
+    FormMessage,
+    FormDescription,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Dialog,
     DialogContent,
@@ -46,7 +54,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Calendar } from '@/components/ui/calendar';
-import { type DateRange } from "react-day-picker"
+import { type DateRange } from 'react-day-picker';
 import {
     Popover,
     PopoverContent,
@@ -98,15 +106,15 @@ import { useForm } from 'react-hook-form';
 import { TabsContent } from '@radix-ui/react-tabs';
 
 export const requestBloodSchema = z.object({
-    bloodType: z.string().min(1, "Please select the blood type"),
-    quantity: z.number().min(1, "Please input the quantity"),
-    urgency: z.string().min(1, "Please select the urgency of the request"),
-    reason: z.string().min(1, "Input the medical reason for this request"),
-    date: z.string().min(1, "Please select the date of the donation"),
-    terms: z.boolean().refine(val => val, "You must confirm legitimacy"),
-    emergency: z.boolean().refine(val => val, "Acknowledge emergency policy"),
-})
-export type RequestBloodFormType = z.infer<typeof requestBloodSchema>
+    bloodType: z.string().min(1, 'Please select the blood type'),
+    quantity: z.number().min(1, 'Please input the quantity'),
+    urgency: z.string().min(1, 'Please select the urgency of the request'),
+    reason: z.string().min(1, 'Input the medical reason for this request'),
+    date: z.string().min(1, 'Please select the date of the donation'),
+    terms: z.boolean().refine((val) => val, 'You must confirm legitimacy'),
+    emergency: z.boolean().refine((val) => val, 'Acknowledge emergency policy'),
+});
+export type RequestBloodFormType = z.infer<typeof requestBloodSchema>;
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -125,22 +133,24 @@ export default function BloodBagsPage() {
     const form = useForm<RequestBloodFormType>({
         resolver: zodResolver(requestBloodSchema),
         defaultValues: {
-            bloodType: "A+",
+            bloodType: 'A+',
             quantity: 1,
-            urgency: "normal",
-            reason: "",
+            urgency: 'normal',
+            reason: '',
             date: undefined,
             terms: false,
             emergency: false,
         },
-    })
+    });
 
     const onSubmit = (data: RequestBloodFormType) => {
         // come in future
         setRequestFormOpen(false);
-    }
+    };
 
-    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)    
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(
+        undefined,
+    );
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -250,7 +260,8 @@ export default function BloodBagsPage() {
                             Blood Bank Management
                         </h1>
                         <p className="text-red-100 text-lg">
-                            Hospital blood inventory tracking and management system
+                            Hospital blood inventory tracking and management
+                            system
                         </p>
                         <div className="flex items-center gap-4 mt-4">
                             <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
@@ -285,9 +296,9 @@ export default function BloodBagsPage() {
                                         Request Blood
                                     </DialogTitle>
                                     <DialogDescription>
-                                        Fill out this form to request blood
-                                        for medical purposes. All requests
-                                        are reviewed by our medical team.
+                                        Fill out this form to request blood for
+                                        medical purposes. All requests are
+                                        reviewed by our medical team.
                                     </DialogDescription>
                                 </DialogHeader>
                                 <Form {...form}>
@@ -297,12 +308,14 @@ export default function BloodBagsPage() {
                                     >
                                         <div className="grid gap-6">
                                             <div className="grid grid-cols-2 gap-4">
-                                                <FormField 
+                                                <FormField
                                                     control={form.control}
                                                     name="bloodType"
-                                                    render={({field}) => (
+                                                    render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Blood Type</FormLabel>
+                                                            <FormLabel>
+                                                                Blood Type
+                                                            </FormLabel>
                                                             <Select>
                                                                 <FormControl>
                                                                     <SelectTrigger>
@@ -310,64 +323,112 @@ export default function BloodBagsPage() {
                                                                     </SelectTrigger>
                                                                 </FormControl>
                                                                 <SelectContent>
-                                                                    {bloodTypes.map(type =>(
-                                                                        <SelectItem value={type}>{type}</SelectItem>
-                                                                    ))}
+                                                                    {bloodTypes.map(
+                                                                        (
+                                                                            type,
+                                                                        ) => (
+                                                                            <SelectItem
+                                                                                value={
+                                                                                    type
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    type
+                                                                                }
+                                                                            </SelectItem>
+                                                                        ),
+                                                                    )}
                                                                 </SelectContent>
                                                             </Select>
                                                         </FormItem>
                                                     )}
                                                 />
 
-                                                <FormField 
+                                                <FormField
                                                     control={form.control}
                                                     name="quantity"
-                                                    render={({field}) => (
+                                                    render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Quantity (units) *</FormLabel>
+                                                            <FormLabel>
+                                                                Quantity (units)
+                                                                *
+                                                            </FormLabel>
                                                             <FormControl>
                                                                 <Input
                                                                     type="number"
                                                                     min={1}
                                                                     {...field}
-                                                                    value={field.value ?? 1}
-                                                                    onChange={e => field.onChange(Number(e.target.value))}
-                                                                >                                                                
-                                                                </Input>
+                                                                    value={
+                                                                        field.value ??
+                                                                        1
+                                                                    }
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) =>
+                                                                        field.onChange(
+                                                                            Number(
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                            ),
+                                                                        )
+                                                                    }
+                                                                ></Input>
                                                             </FormControl>
                                                         </FormItem>
                                                     )}
                                                 />
                                             </div>
-                                            <FormField 
+                                            <FormField
                                                 control={form.control}
                                                 name="urgency"
-                                                render={({field}) => (
+                                                render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Urgency Level *</FormLabel>
-                                                        <Select onValueChange={field.onChange}>
+                                                        <FormLabel>
+                                                            Urgency Level *
+                                                        </FormLabel>
+                                                        <Select
+                                                            onValueChange={
+                                                                field.onChange
+                                                            }
+                                                        >
                                                             <FormControl>
                                                                 <SelectTrigger>
-                                                                    <SelectValue placeholder="Select the urgent level"/>
+                                                                    <SelectValue placeholder="Select the urgent level" />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
-                                                                {urgencyLevels.map(item => (
-                                                                    <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
-                                                                ))}
+                                                                {urgencyLevels.map(
+                                                                    (item) => (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                item.value
+                                                                            }
+                                                                            value={
+                                                                                item.value
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item.label
+                                                                            }
+                                                                        </SelectItem>
+                                                                    ),
+                                                                )}
                                                             </SelectContent>
                                                         </Select>
                                                     </FormItem>
                                                 )}
                                             />
-                                            <FormField 
+                                            <FormField
                                                 control={form.control}
                                                 name="reason"
-                                                render={({field}) => (
+                                                render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Medical Reason</FormLabel>
+                                                        <FormLabel>
+                                                            Medical Reason
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Textarea 
+                                                            <Textarea
                                                                 rows={3}
                                                                 placeholder="Please provide the request reason"
                                                                 {...field}
@@ -376,35 +437,51 @@ export default function BloodBagsPage() {
                                                     </FormItem>
                                                 )}
                                             />
-                                            <FormField 
+                                            <FormField
                                                 control={form.control}
                                                 name="date"
-                                                render={({field}) => (
+                                                render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Require By *</FormLabel>
+                                                        <FormLabel>
+                                                            Require By *
+                                                        </FormLabel>
                                                         <Popover>
-                                                            <PopoverTrigger asChild>
+                                                            <PopoverTrigger
+                                                                asChild
+                                                            >
                                                                 <FormControl>
                                                                     <Button
                                                                         variant="outline"
                                                                         id="dates"
-                                                                        className={"w-full justify-start text-left font-normal" + (!field.value ? " text-muted-foreground" : "")}
+                                                                        className={
+                                                                            'w-full justify-start text-left font-normal' +
+                                                                            (!field.value
+                                                                                ? ' text-muted-foreground'
+                                                                                : '')
+                                                                        }
                                                                     >
-                                                                        {dateRange?.from && dateRange?.to
-                                                                         ? `${dateRange.from.toLocaleDateString()} - ${dateRange.to.toLocaleDateString()}`
-                                                                         : "Select Date"}
+                                                                        {dateRange?.from &&
+                                                                        dateRange?.to
+                                                                            ? `${dateRange.from.toLocaleDateString()} - ${dateRange.to.toLocaleDateString()}`
+                                                                            : 'Select Date'}
                                                                         <CalendarIcon className="mr-2 h-4 w-4" />
                                                                     </Button>
                                                                 </FormControl>
                                                             </PopoverTrigger>
                                                             <PopoverContent className="w-auto p-0">
-                                                                <Calendar 
+                                                                <Calendar
                                                                     mode="range"
-                                                                    selected={dateRange}
+                                                                    selected={
+                                                                        dateRange
+                                                                    }
                                                                     captionLayout="dropdown"
-                                                                    onSelect={(dateRange) => (
-                                                                        setDateRange(dateRange)
-                                                                    )}
+                                                                    onSelect={(
+                                                                        dateRange,
+                                                                    ) =>
+                                                                        setDateRange(
+                                                                            dateRange,
+                                                                        )
+                                                                    }
                                                                     className="rounded-lg border shadow-sm"
                                                                 />
                                                             </PopoverContent>
@@ -413,34 +490,58 @@ export default function BloodBagsPage() {
                                                 )}
                                             />
                                             <div className="space-y-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                                                <FormField 
+                                                <FormField
                                                     control={form.control}
                                                     name="terms"
-                                                    render={({field}) => (
+                                                    render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                                                             <FormControl>
-                                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} id="terms"/>
+                                                                <Checkbox
+                                                                    checked={
+                                                                        field.value
+                                                                    }
+                                                                    onCheckedChange={
+                                                                        field.onChange
+                                                                    }
+                                                                    id="terms"
+                                                                />
                                                             </FormControl>
                                                             <FormLabel className="text-sm font-medium leading-none">
-                                                                I confirm this is a legitimate medical request
+                                                                I confirm this
+                                                                is a legitimate
+                                                                medical request
                                                             </FormLabel>
                                                         </FormItem>
-                                                    )}                                                
+                                                    )}
                                                 />
 
-                                                <FormField 
+                                                <FormField
                                                     control={form.control}
                                                     name="emergency"
-                                                    render={({field}) => (
+                                                    render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                                                             <FormControl>
-                                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} id="emergency"/>
+                                                                <Checkbox
+                                                                    checked={
+                                                                        field.value
+                                                                    }
+                                                                    onCheckedChange={
+                                                                        field.onChange
+                                                                    }
+                                                                    id="emergency"
+                                                                />
                                                             </FormControl>
-                                                            <FormLabel className="text-sm font-medium leading-none" >
-                                                                I understand that false emergency requests may result in account suspension
+                                                            <FormLabel className="text-sm font-medium leading-none">
+                                                                I understand
+                                                                that false
+                                                                emergency
+                                                                requests may
+                                                                result in
+                                                                account
+                                                                suspension
                                                             </FormLabel>
                                                         </FormItem>
-                                                    )}                                                
+                                                    )}
                                                 />
                                             </div>
                                         </div>
@@ -448,11 +549,16 @@ export default function BloodBagsPage() {
                                             <Button
                                                 type="button"
                                                 variant="outline"
-                                                onClick={() => setRequestFormOpen(false)}
+                                                onClick={() =>
+                                                    setRequestFormOpen(false)
+                                                }
                                             >
                                                 Cancel
                                             </Button>
-                                            <Button type="submit" className="bg-red-600 hover:bg-red-700">
+                                            <Button
+                                                type="submit"
+                                                className="bg-red-600 hover:bg-red-700"
+                                            >
                                                 Submit Request
                                             </Button>
                                         </DialogFooter>
@@ -537,7 +643,7 @@ export default function BloodBagsPage() {
                             type="search"
                             className="pl-10 h-9 border-gray-200 focus:border-red-300 focus:ring-red-200"
                             value={searchTerm}
-                            onChange={e => setSearchTerm(e.target.value)}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className="flex gap-2">
@@ -555,15 +661,11 @@ export default function BloodBagsPage() {
                                 <SelectItem value="Reserved">
                                     Reserved
                                 </SelectItem>
-                                <SelectItem value="Used">
-                                    Used
-                                </SelectItem>
+                                <SelectItem value="Used">Used</SelectItem>
                                 <SelectItem value="Expiring Soon">
                                     Expiring Soon
                                 </SelectItem>
-                                <SelectItem value="Expired">
-                                    Expired
-                                </SelectItem>
+                                <SelectItem value="Expired">Expired</SelectItem>
                             </SelectContent>
                         </Select>
                         <Select>
@@ -574,30 +676,14 @@ export default function BloodBagsPage() {
                                 <SelectItem value="all">
                                     All Blood Types
                                 </SelectItem>
-                                <SelectItem value="A+">
-                                    A+
-                                </SelectItem>
-                                <SelectItem value="A-">
-                                    A-
-                                </SelectItem>
-                                <SelectItem value="B+">
-                                    B+
-                                </SelectItem>
-                                <SelectItem value="B-">
-                                    B-
-                                </SelectItem>
-                                <SelectItem value="AB+">
-                                    AB+
-                                </SelectItem>
-                                <SelectItem value="AB-">
-                                    AB-
-                                </SelectItem>
-                                <SelectItem value="O+">
-                                    O+
-                                </SelectItem>
-                                <SelectItem value="O-">
-                                    O-
-                                </SelectItem>
+                                <SelectItem value="A+">A+</SelectItem>
+                                <SelectItem value="A-">A-</SelectItem>
+                                <SelectItem value="B+">B+</SelectItem>
+                                <SelectItem value="B-">B-</SelectItem>
+                                <SelectItem value="AB+">AB+</SelectItem>
+                                <SelectItem value="AB-">AB-</SelectItem>
+                                <SelectItem value="O+">O+</SelectItem>
+                                <SelectItem value="O-">O-</SelectItem>
                             </SelectContent>
                         </Select>
                         <Select>
@@ -608,15 +694,9 @@ export default function BloodBagsPage() {
                                 <SelectItem value="all">
                                     All Priorities
                                 </SelectItem>
-                                <SelectItem value="urgent">
-                                    Urgent
-                                </SelectItem>
-                                <SelectItem value="high">
-                                    High
-                                </SelectItem>
-                                <SelectItem value="normal">
-                                    Normal
-                                </SelectItem>
+                                <SelectItem value="urgent">Urgent</SelectItem>
+                                <SelectItem value="high">High</SelectItem>
+                                <SelectItem value="normal">Normal</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -637,13 +717,18 @@ export default function BloodBagsPage() {
                 </div>
             </div>
 
-            <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "grid")}>
+            <Tabs
+                value={viewMode}
+                onValueChange={(value) =>
+                    setViewMode(value as 'table' | 'grid')
+                }
+            >
                 <TabsList>
                     <TabsTrigger value="table">Table</TabsTrigger>
                     <TabsTrigger value="grid">Grid</TabsTrigger>
                 </TabsList>
                 <TabsContent value="table">
-                    <Card className="border-0 shadow-lg overflow-hidden">
+                    <Card className="border-0 shadow-lg overflow-hidden p-4 mt-4">
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
@@ -663,11 +748,8 @@ export default function BloodBagsPage() {
                                         <TableHead className="font-semibold">
                                             Expiry Status
                                         </TableHead>
-                                        <TableHead className="font-semibold">
+                                        <TableHead className="font-semibold text-center">
                                             Status
-                                        </TableHead>
-                                        <TableHead className="font-semibold">
-                                            Storage
                                         </TableHead>
                                         <TableHead className="text-right font-semibold">
                                             Actions
@@ -697,7 +779,7 @@ export default function BloodBagsPage() {
                                                 <TableCell>
                                                     <Badge
                                                         variant="outline"
-                                                        className="bg-red-50 text-red-800 border-red-200 font-bold"
+                                                        className="bg-red-50 text-red-700 border-red-200 font-bold"
                                                     >
                                                         {bag.bloodType}
                                                     </Badge>
@@ -717,7 +799,7 @@ export default function BloodBagsPage() {
                                                         {bag.collectionDate}
                                                     </div>
                                                 </TableCell>
-                                                <TableCell>
+                                                <TableCell className="pr-4">
                                                     <div className="space-y-2">
                                                         <div className="text-sm text-gray-900">
                                                             {bag.expiryDate}
@@ -729,8 +811,8 @@ export default function BloodBagsPage() {
                                                                     expiryInfo.isExpired
                                                                         ? 'bg-red-500'
                                                                         : expiryInfo.isExpiringSoon
-                                                                        ? 'bg-amber-500'
-                                                                        : 'bg-green-500',
+                                                                          ? 'bg-amber-500'
+                                                                          : 'bg-green-500',
                                                                 )}
                                                                 style={{
                                                                     width: `${expiryInfo.progress}%`,
@@ -743,19 +825,19 @@ export default function BloodBagsPage() {
                                                                 expiryInfo.isExpired
                                                                     ? 'text-red-600'
                                                                     : expiryInfo.isExpiringSoon
-                                                                    ? 'text-amber-600'
-                                                                    : 'text-green-600',
+                                                                      ? 'text-amber-600'
+                                                                      : 'text-green-600',
                                                             )}
                                                         >
                                                             {expiryInfo.isExpired
                                                                 ? 'Expired'
                                                                 : expiryInfo.isExpiringSoon
-                                                                ? `${expiryInfo.remainingDays} days left`
-                                                                : `${expiryInfo.remainingDays} days remaining`}
+                                                                  ? `${expiryInfo.remainingDays} days left`
+                                                                  : `${expiryInfo.remainingDays} days remaining`}
                                                         </div>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell>
+                                                <TableCell className="flex justify-center items-center">
                                                     <Badge
                                                         variant="outline"
                                                         className={cn(
@@ -767,12 +849,6 @@ export default function BloodBagsPage() {
                                                     >
                                                         {bag.status}
                                                     </Badge>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                                                        <Thermometer className="h-3 w-3" />
-                                                        {bag.storage}
-                                                    </div>
                                                 </TableCell>
                                                 <TableCell className="text-right">
                                                     <DropdownMenu>
@@ -795,7 +871,8 @@ export default function BloodBagsPage() {
                                                                 <Eye className="h-4 w-4" />
                                                                 View Details
                                                             </DropdownMenuItem>
-                                                            {role === 'member' &&
+                                                            {role ===
+                                                                'member' &&
                                                                 bag.status ===
                                                                     'Available' && (
                                                                     <DropdownMenuItem
@@ -807,17 +884,20 @@ export default function BloodBagsPage() {
                                                                         className="flex items-center gap-2 text-red-600"
                                                                     >
                                                                         <Droplet className="h-4 w-4" />
-                                                                        Request This
+                                                                        Request
+                                                                        This
                                                                         Unit
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                            {(role === 'staff' ||
+                                                            {(role ===
+                                                                'staff' ||
                                                                 role ===
                                                                     'admin') && (
                                                                 <>
                                                                     <DropdownMenuItem className="flex items-center gap-2">
                                                                         <Edit className="h-4 w-4" />
-                                                                        Edit Details
+                                                                        Edit
+                                                                        Details
                                                                     </DropdownMenuItem>
                                                                     <DropdownMenuItem className="flex items-center gap-2">
                                                                         <RefreshCw className="h-4 w-4" />
@@ -826,7 +906,8 @@ export default function BloodBagsPage() {
                                                                     </DropdownMenuItem>
                                                                     <DropdownMenuItem className="flex items-center gap-2">
                                                                         <Printer className="h-4 w-4" />
-                                                                        Print Label
+                                                                        Print
+                                                                        Label
                                                                     </DropdownMenuItem>
                                                                 </>
                                                             )}
@@ -844,7 +925,9 @@ export default function BloodBagsPage() {
                 <TabsContent value="grid">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {mockBloodBags.map((bag) => {
-                            const expiryInfo = getExpiryProgress(bag.expiryDate);
+                            const expiryInfo = getExpiryProgress(
+                                bag.expiryDate,
+                            );
                             return (
                                 <Card
                                     key={bag.id}
@@ -902,15 +985,15 @@ export default function BloodBagsPage() {
                                                         expiryInfo.isExpired
                                                             ? 'text-red-600'
                                                             : expiryInfo.isExpiringSoon
-                                                            ? 'text-amber-600'
-                                                            : 'text-green-600',
+                                                              ? 'text-amber-600'
+                                                              : 'text-green-600',
                                                     )}
                                                 >
                                                     {expiryInfo.isExpired
                                                         ? 'Expired'
                                                         : expiryInfo.isExpiringSoon
-                                                        ? `${expiryInfo.remainingDays} days left`
-                                                        : `${expiryInfo.remainingDays} days remaining`}
+                                                          ? `${expiryInfo.remainingDays} days left`
+                                                          : `${expiryInfo.remainingDays} days remaining`}
                                                 </span>
                                             </div>
                                             <Progress
@@ -920,8 +1003,8 @@ export default function BloodBagsPage() {
                                                     expiryInfo.isExpired
                                                         ? '[&>div]:bg-red-500'
                                                         : expiryInfo.isExpiringSoon
-                                                        ? '[&>div]:bg-amber-500'
-                                                        : '[&>div]:bg-green-500',
+                                                          ? '[&>div]:bg-amber-500'
+                                                          : '[&>div]:bg-green-500',
                                                 )}
                                             />
                                         </div>
@@ -972,7 +1055,9 @@ export default function BloodBagsPage() {
                                                         size="sm"
                                                         className="flex-1 bg-red-600 hover:bg-red-700"
                                                         onClick={() =>
-                                                            handleRequestBlood(bag)
+                                                            handleRequestBlood(
+                                                                bag,
+                                                            )
                                                         }
                                                     >
                                                         <Droplet className="h-3 w-3 mr-1" />
@@ -981,7 +1066,10 @@ export default function BloodBagsPage() {
                                                 )}
                                             {(role === 'staff' ||
                                                 role === 'admin') && (
-                                                <Button variant="outline" size="sm">
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
                                                     <Edit className="h-3 w-3" />
                                                 </Button>
                                             )}
