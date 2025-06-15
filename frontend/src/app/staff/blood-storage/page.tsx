@@ -1,5 +1,5 @@
 'use client';
-import type React from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { z } from "zod"
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,6 +45,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Calendar } from '@/components/ui/calendar';
+import { type DateRange } from "react-day-picker"
 import {
     Popover,
     PopoverContent,
@@ -137,6 +138,11 @@ export default function BloodBagsPage() {
         // come in future
         setRequestFormOpen(false);
     }
+
+    const [dateRange, setDateRange] = useState<DateRange | undefined>({
+        from: new Date(2025, 5, 9),
+        to: new Date(2025, 5 , 26),
+    })
 
     const filteredBloodBags = bloodBags.filter((bag) => {
         const matchesSearch =
@@ -424,6 +430,54 @@ export default function BloodBagsPage() {
                                                         </Select>
                                                     </FormItem>
                                                 )}
+                                            />
+                                            <FormField 
+                                                control={form.control}
+                                                name="reason"
+                                                render={({field}) => (
+                                                    <FormItem>
+                                                        <FormLabel>Medical Reason</FormLabel>
+                                                        <FormControl>
+                                                            <Textarea 
+                                                                rows={3}
+                                                                placeholder="Please provide the request reason"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField 
+                                                control={form.control}
+                                                name="date"
+                                                render={({field}) => (
+                                                    <FormItem>
+                                                        <FormLabel>Require By *</FormLabel>
+                                                        <Popover>
+                                                            <PopoverTrigger asChild>
+                                                                <FormControl>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        className={"w-full justify-start text-left font-normal" + (!field.value ? " text-muted-foreground" : "")}
+                                                                    >
+                                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                                        {field.value ? format(field.value, "PPP") : "Select required date"}
+                                                                    </Button>
+                                                                </FormControl>
+                                                            </PopoverTrigger>
+                                                            <PopoverContent className="w-auto p-0">
+                                                                <Calendar 
+                                                                    mode="range"
+                                                                    defaultMonth={dateRange?.from}
+                                                                    selected={dateRange}
+                                                                    onSelect={setDateRange}
+                                                                    className="rounded-lg border shadow-sm"
+                                                                />
+                                                            </PopoverContent>
+                                                        </Popover>
+                                                    </FormItem>
+                                                )}
+                                                
                                             />
                                         </div>
                                     </form>
