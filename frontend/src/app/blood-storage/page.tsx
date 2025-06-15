@@ -115,14 +115,6 @@ export default function BloodBagsPage() {
                                         {stat.available}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm text-gray-600">
-                                        Total
-                                    </span>
-                                    <span className="font-bold text-gray-900">
-                                        {stat.total}
-                                    </span>
-                                </div>
                             </div>
                         </CardContent>
                     </Card>
