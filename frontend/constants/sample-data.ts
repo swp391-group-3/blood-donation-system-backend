@@ -746,74 +746,58 @@ export const bloodTypeStats = [
     {
         type: 'A+',
         available: 12,
-        reserved: 3,
         used: 8,
         total: 23,
         demand: 'high',
-        trend: 'up',
     },
     {
         type: 'A-',
         available: 6,
-        reserved: 1,
         used: 4,
         total: 11,
         demand: 'medium',
-        trend: 'stable',
     },
     {
         type: 'B+',
         available: 8,
-        reserved: 2,
         used: 5,
         total: 15,
         demand: 'medium',
-        trend: 'up',
     },
     {
         type: 'B-',
         available: 3,
-        reserved: 1,
         used: 2,
         total: 6,
         demand: 'low',
-        trend: 'down',
     },
     {
         type: 'AB+',
         available: 4,
-        reserved: 0,
         used: 3,
         total: 7,
         demand: 'low',
-        trend: 'stable',
     },
     {
         type: 'AB-',
         available: 2,
-        reserved: 1,
         used: 1,
         total: 4,
         demand: 'low',
-        trend: 'stable',
     },
     {
         type: 'O+',
         available: 15,
-        reserved: 4,
         used: 12,
         total: 31,
         demand: 'very-high',
-        trend: 'up',
     },
     {
         type: 'O-',
         available: 5,
-        reserved: 2,
         used: 6,
         total: 13,
         demand: 'high',
-        trend: 'up',
     },
 ];
 
@@ -948,10 +932,13 @@ export const mockBloodBags = [
     },
 ];
 
-export const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+export const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 export const urgencyLevels = [
-  { value: "emergency", label: "🚨 Emergency - Immediate (Life threatening)" },
-  { value: "urgent", label: "⚡ Urgent - Within 24 hours" },
-  { value: "normal", label: "📅 Normal - Within a week" },
-  { value: "planned", label: "📋 Planned - Scheduled procedure" },
-]
+    {
+        value: 'emergency',
+        label: '🚨 Emergency - Immediate (Life threatening)',
+    },
+    { value: 'urgent', label: '⚡ Urgent - Within 24 hours' },
+    { value: 'normal', label: '📅 Normal - Within a week' },
+    { value: 'planned', label: '📋 Planned - Scheduled procedure' },
+];
