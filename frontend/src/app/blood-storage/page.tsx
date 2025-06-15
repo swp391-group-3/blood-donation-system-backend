@@ -190,20 +190,6 @@ export default function BloodBagsPage() {
                 </div>
             </div>
 
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                        Blood Units Registry 10 Results
-                    </h2>
-                    <Badge
-                        variant="outline"
-                        className="bg-blue-50 text-blue-700"
-                    >
-                        5 Available
-                    </Badge>
-                </div>
-            </div>
-
             <Tabs
                 value={viewMode}
                 onValueChange={(value) =>
