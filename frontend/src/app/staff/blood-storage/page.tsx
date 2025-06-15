@@ -95,6 +95,7 @@ import {
     urgencyLevels,
 } from '../../../../constants/sample-data';
 import { useForm } from 'react-hook-form';
+import { TabsContent } from '@radix-ui/react-tabs';
 
 export const requestBloodSchema = z.object({
     bloodType: z.string().min(1, "Please select the blood type"),
@@ -536,7 +537,7 @@ export default function BloodBagsPage() {
                             type="search"
                             className="pl-10 h-9 border-gray-200 focus:border-red-300 focus:ring-red-200"
                             value={searchTerm}
-
+                            onChange={e => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className="flex gap-2">
@@ -634,411 +635,364 @@ export default function BloodBagsPage() {
                         5 Available
                     </Badge>
                 </div>
-                <div className="flex items-center gap-2">
-                    <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "grid")}>
-                        <TabsList>
-                            <TabsTrigger value="table">Table</TabsTrigger>
-                            <TabsTrigger value="grid">Grid</TabsTrigger>
-                        </TabsList>
-                    </Tabs>
-                </div>
             </div>
 
-            {mockBloodBags.length === 0 ? (
-                <Card className="border-0 shadow-lg">
-                    <CardContent className="p-12">
-                        title="No blood units found" description="Try adjusting
-                        your search criteria or filters to find what you're
-                        looking for."
-                    </CardContent>
-                </Card>
-            ) : viewMode === 'table' ? (
-                <Card className="border-0 shadow-lg overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="bg-gray-50">
-                                    <TableHead className="font-semibold">
-                                        Unit Info
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Blood Type
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Donor
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Collection
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Expiry Status
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Status
-                                    </TableHead>
-                                    <TableHead className="font-semibold">
-                                        Storage
-                                    </TableHead>
-                                    <TableHead className="text-right font-semibold">
-                                        Actions
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {mockBloodBags.map((bag) => {
-                                    const expiryInfo = getExpiryProgress(
-                                        bag.expiryDate,
-                                    );
-                                    return (
-                                        <TableRow
-                                            key={bag.id}
-                                            className="hover:bg-gray-50 transition-colors"
-                                        >
-                                            <TableCell>
-                                                <div className="space-y-1">
-                                                    <div className="font-medium text-gray-900">
-                                                        {bag.id}
+            <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "grid")}>
+                <TabsList>
+                    <TabsTrigger value="table">Table</TabsTrigger>
+                    <TabsTrigger value="grid">Grid</TabsTrigger>
+                </TabsList>
+                <TabsContent value="table">
+                    <Card className="border-0 shadow-lg overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="bg-gray-50">
+                                        <TableHead className="font-semibold">
+                                            Unit Info
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Blood Type
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Donor
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Collection
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Expiry Status
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Status
+                                        </TableHead>
+                                        <TableHead className="font-semibold">
+                                            Storage
+                                        </TableHead>
+                                        <TableHead className="text-right font-semibold">
+                                            Actions
+                                        </TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {mockBloodBags.map((bag) => {
+                                        const expiryInfo = getExpiryProgress(
+                                            bag.expiryDate,
+                                        );
+                                        return (
+                                            <TableRow
+                                                key={bag.id}
+                                                className="hover:bg-gray-50 transition-colors"
+                                            >
+                                                <TableCell>
+                                                    <div className="space-y-1">
+                                                        <div className="font-medium text-gray-900">
+                                                            {bag.id}
+                                                        </div>
+                                                        <div className="text-sm text-gray-500">
+                                                            {bag.volume}ml
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        {bag.volume}ml
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="bg-red-50 text-red-800 border-red-200 font-bold"
+                                                    >
+                                                        {bag.bloodType}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="space-y-1">
+                                                        <div className="font-medium text-gray-900">
+                                                            {bag.donorName}
+                                                        </div>
+                                                        <div className="text-sm text-gray-500">
+                                                            ID: {bag.donorId}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge
-                                                    variant="outline"
-                                                    className="bg-red-50 text-red-800 border-red-200 font-bold"
-                                                >
-                                                    {bag.bloodType}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="space-y-1">
-                                                    <div className="font-medium text-gray-900">
-                                                        {bag.donorName}
-                                                    </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        ID: {bag.donorId}
-                                                    </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="text-sm text-gray-900">
-                                                    {bag.collectionDate}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="space-y-2">
+                                                </TableCell>
+                                                <TableCell>
                                                     <div className="text-sm text-gray-900">
-                                                        {bag.expiryDate}
+                                                        {bag.collectionDate}
                                                     </div>
-                                                    <div className="w-full bg-gray-200 rounded-full h-2">
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="space-y-2">
+                                                        <div className="text-sm text-gray-900">
+                                                            {bag.expiryDate}
+                                                        </div>
+                                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                                            <div
+                                                                className={cn(
+                                                                    'h-2 rounded-full transition-all',
+                                                                    expiryInfo.isExpired
+                                                                        ? 'bg-red-500'
+                                                                        : expiryInfo.isExpiringSoon
+                                                                        ? 'bg-amber-500'
+                                                                        : 'bg-green-500',
+                                                                )}
+                                                                style={{
+                                                                    width: `${expiryInfo.progress}%`,
+                                                                }}
+                                                            ></div>
+                                                        </div>
                                                         <div
                                                             className={cn(
-                                                                'h-2 rounded-full transition-all',
+                                                                'text-xs font-medium',
                                                                 expiryInfo.isExpired
-                                                                    ? 'bg-red-500'
+                                                                    ? 'text-red-600'
                                                                     : expiryInfo.isExpiringSoon
-                                                                      ? 'bg-amber-500'
-                                                                      : 'bg-green-500',
+                                                                    ? 'text-amber-600'
+                                                                    : 'text-green-600',
                                                             )}
-                                                            style={{
-                                                                width: `${expiryInfo.progress}%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
-                                                    <div
-                                                        className={cn(
-                                                            'text-xs font-medium',
-                                                            expiryInfo.isExpired
-                                                                ? 'text-red-600'
+                                                        >
+                                                            {expiryInfo.isExpired
+                                                                ? 'Expired'
                                                                 : expiryInfo.isExpiringSoon
-                                                                  ? 'text-amber-600'
-                                                                  : 'text-green-600',
+                                                                ? `${expiryInfo.remainingDays} days left`
+                                                                : `${expiryInfo.remainingDays} days remaining`}
+                                                        </div>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={cn(
+                                                            'flex items-center gap-1 w-fit',
+                                                            getStatusColor(
+                                                                bag.status,
+                                                            ),
                                                         )}
                                                     >
-                                                        {expiryInfo.isExpired
-                                                            ? 'Expired'
-                                                            : expiryInfo.isExpiringSoon
-                                                              ? `${expiryInfo.remainingDays} days left`
-                                                              : `${expiryInfo.remainingDays} days remaining`}
+                                                        {bag.status}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                                                        <Thermometer className="h-3 w-3" />
+                                                        {bag.storage}
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge
-                                                    variant="outline"
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger
+                                                            asChild
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="h-8 w-8 p-0"
+                                                            >
+                                                                <MoreVertical className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent
+                                                            align="end"
+                                                            className="w-48"
+                                                        >
+                                                            <DropdownMenuItem className="flex items-center gap-2">
+                                                                <Eye className="h-4 w-4" />
+                                                                View Details
+                                                            </DropdownMenuItem>
+                                                            {role === 'member' &&
+                                                                bag.status ===
+                                                                    'Available' && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() =>
+                                                                            handleRequestBlood(
+                                                                                bag,
+                                                                            )
+                                                                        }
+                                                                        className="flex items-center gap-2 text-red-600"
+                                                                    >
+                                                                        <Droplet className="h-4 w-4" />
+                                                                        Request This
+                                                                        Unit
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                            {(role === 'staff' ||
+                                                                role ===
+                                                                    'admin') && (
+                                                                <>
+                                                                    <DropdownMenuItem className="flex items-center gap-2">
+                                                                        <Edit className="h-4 w-4" />
+                                                                        Edit Details
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem className="flex items-center gap-2">
+                                                                        <RefreshCw className="h-4 w-4" />
+                                                                        Update
+                                                                        Status
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem className="flex items-center gap-2">
+                                                                        <Printer className="h-4 w-4" />
+                                                                        Print Label
+                                                                    </DropdownMenuItem>
+                                                                </>
+                                                            )}
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="grid">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {mockBloodBags.map((bag) => {
+                            const expiryInfo = getExpiryProgress(bag.expiryDate);
+                            return (
+                                <Card
+                                    key={bag.id}
+                                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+                                >
+                                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-pink-500"></div>
+                                    <CardHeader className="pb-3">
+                                        <div className="flex justify-between items-start">
+                                            <div className="space-y-1">
+                                                <CardTitle className="text-lg flex items-center gap-2">
+                                                    <Package2 className="h-5 w-5 text-red-600" />
+                                                    {bag.id}
+                                                </CardTitle>
+                                                <CardDescription className="flex items-center gap-1">
+                                                    <User className="h-3 w-3" />
+                                                    {bag.donorName}
+                                                </CardDescription>
+                                            </div>
+                                            <Badge
+                                                variant="outline"
+                                                className="bg-red-50 text-red-800 border-red-200 font-bold text-lg"
+                                            >
+                                                {bag.bloodType}
+                                            </Badge>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-3 text-sm">
+                                            <div className="space-y-1">
+                                                <p className="text-gray-500">
+                                                    Volume
+                                                </p>
+                                                <p className="font-medium">
+                                                    {bag.volume}ml
+                                                </p>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-gray-500">
+                                                    Collection
+                                                </p>
+                                                <p className="font-medium">
+                                                    {bag.collectionDate}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-gray-500">
+                                                    Expiry Status
+                                                </span>
+                                                <span
                                                     className={cn(
-                                                        'flex items-center gap-1 w-fit',
-                                                        getStatusColor(
-                                                            bag.status,
-                                                        ),
+                                                        'text-xs font-medium',
+                                                        expiryInfo.isExpired
+                                                            ? 'text-red-600'
+                                                            : expiryInfo.isExpiringSoon
+                                                            ? 'text-amber-600'
+                                                            : 'text-green-600',
                                                     )}
                                                 >
-                                                    {bag.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex items-center gap-1 text-sm text-gray-600">
-                                                    <Thermometer className="h-3 w-3" />
-                                                    {bag.storage}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger
-                                                        asChild
-                                                    >
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="h-8 w-8 p-0"
-                                                        >
-                                                            <MoreVertical className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent
-                                                        align="end"
-                                                        className="w-48"
-                                                    >
-                                                        <DropdownMenuItem className="flex items-center gap-2">
-                                                            <Eye className="h-4 w-4" />
-                                                            View Details
-                                                        </DropdownMenuItem>
-                                                        {role === 'member' &&
-                                                            bag.status ===
-                                                                'Available' && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() =>
-                                                                        handleRequestBlood(
-                                                                            bag,
-                                                                        )
-                                                                    }
-                                                                    className="flex items-center gap-2 text-red-600"
-                                                                >
-                                                                    <Droplet className="h-4 w-4" />
-                                                                    Request This
-                                                                    Unit
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                        {(role === 'staff' ||
-                                                            role ===
-                                                                'admin') && (
-                                                            <>
-                                                                <DropdownMenuItem className="flex items-center gap-2">
-                                                                    <Edit className="h-4 w-4" />
-                                                                    Edit Details
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuItem className="flex items-center gap-2">
-                                                                    <RefreshCw className="h-4 w-4" />
-                                                                    Update
-                                                                    Status
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuItem className="flex items-center gap-2">
-                                                                    <Printer className="h-4 w-4" />
-                                                                    Print Label
-                                                                </DropdownMenuItem>
-                                                            </>
-                                                        )}
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </Card>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mockBloodBags.map((bag) => {
-                        const expiryInfo = getExpiryProgress(bag.expiryDate);
-                        return (
-                            <Card
-                                key={bag.id}
-                                className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-                            >
-                                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-pink-500"></div>
-                                <CardHeader className="pb-3">
-                                    <div className="flex justify-between items-start">
-                                        <div className="space-y-1">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                                <Package2 className="h-5 w-5 text-red-600" />
-                                                {bag.id}
-                                            </CardTitle>
-                                            <CardDescription className="flex items-center gap-1">
-                                                <User className="h-3 w-3" />
-                                                {bag.donorName}
-                                            </CardDescription>
-                                        </div>
-                                        <Badge
-                                            variant="outline"
-                                            className="bg-red-50 text-red-800 border-red-200 font-bold text-lg"
-                                        >
-                                            {bag.bloodType}
-                                        </Badge>
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-3 text-sm">
-                                        <div className="space-y-1">
-                                            <p className="text-gray-500">
-                                                Volume
-                                            </p>
-                                            <p className="font-medium">
-                                                {bag.volume}ml
-                                            </p>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-gray-500">
-                                                Collection
-                                            </p>
-                                            <p className="font-medium">
-                                                {bag.collectionDate}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-gray-500">
-                                                Expiry Status
-                                            </span>
-                                            <span
-                                                className={cn(
-                                                    'text-xs font-medium',
-                                                    expiryInfo.isExpired
-                                                        ? 'text-red-600'
+                                                    {expiryInfo.isExpired
+                                                        ? 'Expired'
                                                         : expiryInfo.isExpiringSoon
-                                                          ? 'text-amber-600'
-                                                          : 'text-green-600',
+                                                        ? `${expiryInfo.remainingDays} days left`
+                                                        : `${expiryInfo.remainingDays} days remaining`}
+                                                </span>
+                                            </div>
+                                            <Progress
+                                                value={expiryInfo.progress}
+                                                className={cn(
+                                                    'h-2',
+                                                    expiryInfo.isExpired
+                                                        ? '[&>div]:bg-red-500'
+                                                        : expiryInfo.isExpiringSoon
+                                                        ? '[&>div]:bg-amber-500'
+                                                        : '[&>div]:bg-green-500',
+                                                )}
+                                            />
+                                        </div>
+
+                                        <div className="flex items-center justify-between">
+                                            <Badge
+                                                variant="outline"
+                                                className={cn(
+                                                    'flex items-center gap-1',
+                                                    getStatusColor(bag.status),
                                                 )}
                                             >
-                                                {expiryInfo.isExpired
-                                                    ? 'Expired'
-                                                    : expiryInfo.isExpiringSoon
-                                                      ? `${expiryInfo.remainingDays} days left`
-                                                      : `${expiryInfo.remainingDays} days remaining`}
-                                            </span>
+                                                {bag.status}
+                                            </Badge>
+                                            <Badge
+                                                variant="outline"
+                                                className={getPriorityColor(
+                                                    bag.priority,
+                                                )}
+                                            >
+                                                {bag.priority}
+                                            </Badge>
                                         </div>
-                                        <Progress
-                                            value={expiryInfo.progress}
-                                            className={cn(
-                                                'h-2',
-                                                expiryInfo.isExpired
-                                                    ? '[&>div]:bg-red-500'
-                                                    : expiryInfo.isExpiringSoon
-                                                      ? '[&>div]:bg-amber-500'
-                                                      : '[&>div]:bg-green-500',
-                                            )}
-                                        />
-                                    </div>
 
-                                    <div className="flex items-center justify-between">
-                                        <Badge
-                                            variant="outline"
-                                            className={cn(
-                                                'flex items-center gap-1',
-                                                getStatusColor(bag.status),
-                                            )}
-                                        >
-                                            {bag.status}
-                                        </Badge>
-                                        <Badge
-                                            variant="outline"
-                                            className={getPriorityColor(
-                                                bag.priority,
-                                            )}
-                                        >
-                                            {bag.priority}
-                                        </Badge>
-                                    </div>
+                                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                                            <Thermometer className="h-3 w-3" />
+                                            {bag.storage}
+                                        </div>
 
-                                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                                        <Thermometer className="h-3 w-3" />
-                                        {bag.storage}
-                                    </div>
+                                        {bag.notes && (
+                                            <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                                                {bag.notes}
+                                            </p>
+                                        )}
 
-                                    {bag.notes && (
-                                        <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                                            {bag.notes}
-                                        </p>
-                                    )}
-
-                                    <div className="flex gap-2 pt-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="flex-1"
-                                        >
-                                            <Eye className="h-3 w-3 mr-1" />
-                                            View
-                                        </Button>
-                                        {role === 'member' &&
-                                            bag.status === 'Available' && (
-                                                <Button
-                                                    size="sm"
-                                                    className="flex-1 bg-red-600 hover:bg-red-700"
-                                                    onClick={() =>
-                                                        handleRequestBlood(bag)
-                                                    }
-                                                >
-                                                    <Droplet className="h-3 w-3 mr-1" />
-                                                    Request
+                                        <div className="flex gap-2 pt-2">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="flex-1"
+                                            >
+                                                <Eye className="h-3 w-3 mr-1" />
+                                                View
+                                            </Button>
+                                            {role === 'member' &&
+                                                bag.status === 'Available' && (
+                                                    <Button
+                                                        size="sm"
+                                                        className="flex-1 bg-red-600 hover:bg-red-700"
+                                                        onClick={() =>
+                                                            handleRequestBlood(bag)
+                                                        }
+                                                    >
+                                                        <Droplet className="h-3 w-3 mr-1" />
+                                                        Request
+                                                    </Button>
+                                                )}
+                                            {(role === 'staff' ||
+                                                role === 'admin') && (
+                                                <Button variant="outline" size="sm">
+                                                    <Edit className="h-3 w-3" />
                                                 </Button>
                                             )}
-                                        {(role === 'staff' ||
-                                            role === 'admin') && (
-                                            <Button variant="outline" size="sm">
-                                                <Edit className="h-3 w-3" />
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
-                </div>
-            )}
-
-            {/* Emergency Request CTA for Members */}
-            {role === 'member' && (
-                <Card className="border-2 border-dashed border-red-300 bg-gradient-to-r from-red-50 to-pink-50 shadow-lg">
-                    <CardContent className="p-8 text-center">
-                        <div className="space-y-4">
-                            <div className="flex justify-center">
-                                <div className="p-3 bg-red-100 rounded-full">
-                                    <Zap className="h-8 w-8 text-red-600" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-red-800 mb-2">
-                                    Need Blood Urgently?
-                                </h3>
-                                <p className="text-red-700 mb-4">
-                                    If you or someone you know needs blood
-                                    urgently, create a detailed blood request
-                                    that will be prioritized by our medical
-                                    team.
-                                </p>
-                                <Button
-                                    size="lg"
-                                    className="bg-red-600 hover:bg-red-700"
-                                    onClick={() =>
-                                        router.push(
-                                            '/dashboard/requests/create',
-                                        )
-                                    }
-                                >
-                                    <AlertCircle className="mr-2 h-5 w-5" />
-                                    Create Urgent Blood Request
-                                </Button>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            );
+                        })}
+                    </div>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }
