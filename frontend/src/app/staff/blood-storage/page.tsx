@@ -90,6 +90,7 @@ import {
     mockBloodBags,
     bloodTypeStats,
     bloodTypes,
+    urgencyLevels,
 } from '../../../../constants/sample-data';
 import { useForm } from 'react-hook-form';
 
@@ -382,9 +383,49 @@ export default function BloodBagsPage() {
                                                         </FormItem>
                                                     )}
                                                 />
-                                            </div>
-                                        </div>
 
+                                                <FormField 
+                                                    control={form.control}
+                                                    name="quantity"
+                                                    render={({field}) => (
+                                                        <FormItem>
+                                                            <FormLabel>Quantity (units) *</FormLabel>
+                                                            <FormControl>
+                                                                <Input
+                                                                    type="number"
+                                                                    min={1}
+                                                                    {...field}
+                                                                    value={field.value ?? 1}
+                                                                    onChange={e => field.onChange(Number(e.target.value))}
+                                                                >                                                                
+                                                                </Input>
+                                                            </FormControl>
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                            <FormField 
+                                                control={form.control}
+                                                name="urgency"
+                                                render={({field}) => (
+                                                    <FormItem>
+                                                        <FormLabel>Urgency Level *</FormLabel>
+                                                        <Select onValueChange={field.onChange}>
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="Select the urgent level"/>
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                {urgencyLevels.map(item => (
+                                                                    <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
                                     </form>
                                 </Form>
                                 
