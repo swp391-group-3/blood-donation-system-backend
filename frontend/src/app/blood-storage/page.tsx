@@ -55,7 +55,7 @@ import {
     getDemandColor,
     getPriorityColor,
     getStatusColor,
-} from '../../lib/colorUtils'
+} from '../../lib/color'
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
