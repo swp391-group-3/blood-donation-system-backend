@@ -1,7 +1,8 @@
 'use client';
 import type React from 'react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -10,6 +11,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription} from '@/components/ui/form'
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -88,6 +90,18 @@ import {
     mockBloodBags,
     bloodTypeStats,
 } from '../../../../constants/sample-data';
+import { useForm } from 'react-hook-form';
+
+export const requestBloodSchema = z.object({
+    bloodType: z.string().min(1, "Please select the blood type"),
+    quantity: z.number().min(1, "Please input the quantity"),
+    urgency: z.string().min(1, "Please select the urgency of the request"),
+    reason: z.string().min(1, "Input the medical reason for this request"),
+    date: z.string().min(1, "Please select the date of the donation"),
+    terms: z.boolean().refine(val => val, "You must confirm legitimacy"),
+    emergency: z.boolean().refine(val => val, "Acknowledge emergency policy"),
+})
+export type RequestBloodFormType = z.infer<typeof requestBloodSchema>
 
 export default function BloodBagsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -103,7 +117,19 @@ export default function BloodBagsPage() {
     const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
     const [sortBy, setSortBy] = useState('collectionDate');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-    const router = useRouter();
+
+    const form = useForm<RequestBloodFormType>({
+        resolver: zodResolver(requestBloodSchema),
+        defaultValues: {
+            bloodType: "A+",
+            quantity: 1,
+            urgency: "normal",
+            reason: "",
+            date: undefined,
+            terms: false,
+            emergency: false,
+        },
+    })
 
     const filteredBloodBags = bloodBags.filter((bag) => {
         const matchesSearch =
@@ -247,7 +273,7 @@ export default function BloodBagsPage() {
     };
 
     const removeFilter = (filterKey: string) => {
-        setActiveFilters(activeFilters.filter((f) => f !== filterKey));
+        setActiveFilters1(activeFilters.filter((f) => f !== filterKey));
 
         // Reset the corresponding filter state
         const [type, value] = filterKey.split(':');
