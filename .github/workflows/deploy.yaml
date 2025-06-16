@@ -60,6 +60,7 @@ jobs:
       contents: read
       packages: write
     env:
+      REGISTRY: ghcr.io/${{ github.repository }}
       PG_USER: ${{ secrets.PG_USER }}
       PG_PASS: ${{ secrets.PG_PASS }}
       PG_DB: ${{ secrets.PG_DB }}
